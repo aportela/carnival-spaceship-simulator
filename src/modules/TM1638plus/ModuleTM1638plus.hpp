@@ -26,7 +26,9 @@ private:
 
     Buttons *buttons = nullptr;
     ILedEffect *ledEffect = nullptr;
-    LED_EFFECT_TYPE currentLedEffectType = LED_EFFECT_TYPE_CHASE;
+    LED_EFFECT_TYPE currentLedEffectType = LED_EFFECT_TYPE_NONE;
+
+    void toggleLedEffect(void);
 
 public:
     ModuleTM1638plus(uint8_t strobePIN, uint8_t clockPIN, uint8_t dioPIN, bool highFreq);
