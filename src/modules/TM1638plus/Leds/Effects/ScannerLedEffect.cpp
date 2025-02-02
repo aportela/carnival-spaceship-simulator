@@ -10,24 +10,30 @@ ScannerLedEffect::~ScannerLedEffect()
 
 bool ScannerLedEffect::loop(void)
 {
-    if (this->LEDposition == 7)
+    if (this->refresh())
     {
-        this->inc = false;
-    }
-    else if (this->LEDposition == 0)
-    {
-        this->inc = true;
-    }
-    this->module->setLED(this->LEDposition, 1);
-    delay(this->delayMS);
-    this->module->setLED(this->LEDposition, 0);
-    if (this->inc)
-    {
-        this->LEDposition++;
+        this->module->setLEDs(0);
+        if (this->LEDposition == 7)
+        {
+            this->inc = false;
+        }
+        else if (this->LEDposition == 0)
+        {
+            this->inc = true;
+        }
+        this->module->setLED(this->LEDposition, 1);
+        if (this->inc)
+        {
+            this->LEDposition++;
+        }
+        else
+        {
+            this->LEDposition--;
+        }
+        return (true);
     }
     else
     {
-        this->LEDposition--;
+        return (false);
     }
-    return (false);
 }
