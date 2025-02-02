@@ -12,7 +12,7 @@ bool VuMeterMirroredLedEffect::loop(void)
 {
     if (this->refresh())
     {
-        this->module->setLEDs(0);
+        this->module->setLEDs(this->inverse ? 0xFF00 : 0);
         if (this->activeLeds == 8)
         {
             this->inc = false;
@@ -23,20 +23,20 @@ bool VuMeterMirroredLedEffect::loop(void)
         }
         if (activeLeds >= 2)
         {
-            this->module->setLED(3, 1);
-            this->module->setLED(4, 1);
+            this->module->setLED(3, this->inverse ? 0 : 1);
+            this->module->setLED(4, this->inverse ? 0 : 1);
             if (activeLeds >= 4)
             {
-                this->module->setLED(2, 1);
-                this->module->setLED(5, 1);
+                this->module->setLED(2, this->inverse ? 0 : 1);
+                this->module->setLED(5, this->inverse ? 0 : 1);
                 if (activeLeds >= 6)
                 {
-                    this->module->setLED(1, 1);
-                    this->module->setLED(6, 1);
+                    this->module->setLED(1, this->inverse ? 0 : 1);
+                    this->module->setLED(6, this->inverse ? 0 : 1);
                     if (activeLeds == 8)
                     {
-                        this->module->setLED(0, 1);
-                        this->module->setLED(7, 1);
+                        this->module->setLED(0, this->inverse ? 0 : 1);
+                        this->module->setLED(7, this->inverse ? 0 : 1);
                     }
                 }
             }

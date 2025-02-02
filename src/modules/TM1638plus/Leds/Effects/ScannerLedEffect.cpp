@@ -12,7 +12,7 @@ bool ScannerLedEffect::loop(void)
 {
     if (this->refresh())
     {
-        this->module->setLEDs(0);
+        this->module->setLEDs(this->inverse ? 0xFF00 : 0);
         if (this->LEDposition == 7)
         {
             this->inc = false;
@@ -21,7 +21,7 @@ bool ScannerLedEffect::loop(void)
         {
             this->inc = true;
         }
-        this->module->setLED(this->LEDposition, 1);
+        this->module->setLED(this->LEDposition, this->inverse ? 0 : 1);
         if (this->inc)
         {
             this->LEDposition++;

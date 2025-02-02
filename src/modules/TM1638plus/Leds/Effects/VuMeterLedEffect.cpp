@@ -12,7 +12,7 @@ bool VuMeterLedEffect::loop(void)
 {
     if (this->refresh())
     {
-        this->module->setLEDs(0);
+        this->module->setLEDs(this->inverse ? 0xFF00 : 0);
         if (this->LEDposition == 7)
         {
             this->inc = false;
@@ -23,7 +23,7 @@ bool VuMeterLedEffect::loop(void)
         }
         for (uint8_t i = 0; i <= this->LEDposition; i++)
         {
-            this->module->setLED(i, 1);
+            this->module->setLED(i, this->inverse ? 0 : 1);
         }
         if (this->inc)
         {
