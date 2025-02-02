@@ -6,6 +6,8 @@ class ILedEffect
 public:
     virtual ~ILedEffect() {}
     virtual bool loop(void) = 0;
+
+    virtual bool toggleInverse(void) = 0;
 };
 
 #endif // TM1638_PLUS_LED_EFFECT_INTERFACE_H

@@ -23,3 +23,9 @@ bool LedEffect::refresh(void)
         return (false);
     }
 }
+
+bool LedEffect::toggleInverse(void)
+{
+    this->inverse = !this->inverse;
+    return (this->inverse);
+}

@@ -33,6 +33,7 @@ private:
     LED_EFFECT_TYPE currentLedEffectType = LED_EFFECT_TYPE_NONE;
 
     void toggleLedEffect(void);
+    void toggleLedInverseMode(void);
 
 public:
     ModuleTM1638plus(uint8_t strobePIN, uint8_t clockPIN, uint8_t dioPIN, bool highFreq);

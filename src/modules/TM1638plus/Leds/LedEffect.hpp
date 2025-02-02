@@ -10,6 +10,7 @@ class LedEffect : public ILedEffect
 protected:
     TM1638plus *module = nullptr;
     uint64_t lastRefresh = 0;
+    bool inverse = false;
 
 public:
     LedEffect(TM1638plus *module);
@@ -18,6 +19,7 @@ public:
     virtual bool loop(void) = 0;
 
     bool refresh(void);
+    bool toggleInverse(void) override;
 };
 
 #endif // TM1638_PLUS_LED_EFFECT_H
