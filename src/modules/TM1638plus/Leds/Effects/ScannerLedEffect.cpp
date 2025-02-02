@@ -1,5 +1,7 @@
 #include "ScannerLedEffect.hpp"
 
+const uint16_t ScannerLedEffect::individualLedMasks[8] = {0x0100, 0x0200, 0x0400, 0x0800, 0x1000, 0x2000, 0x4000, 0x8000};
+
 ScannerLedEffect::ScannerLedEffect(TM1638plus *module) : LedEffect(module)
 {
 }
@@ -12,23 +14,17 @@ bool ScannerLedEffect::loop(void)
 {
     if (this->refresh())
     {
-        this->module->setLEDs(this->inverse ? 0xFF00 : 0);
-        if (this->LEDposition == 7)
+        this->inc = (this->currentLedIndex == 7) ? false : (this->currentLedIndex == 0 ? true : this->inc);
+        uint16_t mask = this->individualLedMasks[currentLedIndex];
+        if (inverse)
         {
-            this->inc = false;
+            mask = 0xFFFF & ~mask;
         }
-        else if (this->LEDposition == 0)
+        this->module->setLEDs(mask);
+        this->currentLedIndex = (this->currentLedIndex + (this->inc ? 1 : -1)) % 8;
+        if (this->currentLedIndex < 0)
         {
-            this->inc = true;
-        }
-        this->module->setLED(this->LEDposition, this->inverse ? 0 : 1);
-        if (this->inc)
-        {
-            this->LEDposition++;
-        }
-        else
-        {
-            this->LEDposition--;
+            this->currentLedIndex += 8;
         }
         return (true);
     }
