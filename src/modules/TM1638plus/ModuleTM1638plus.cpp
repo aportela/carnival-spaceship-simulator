@@ -40,6 +40,10 @@ void ModuleTM1638plus::toggleLedEffect(void)
         this->ledEffect = new ChaseLedEffect(this->module);
         break;
     case LED_EFFECT_TYPE_CHASE:
+        this->currentLedEffectType = LED_EFFECT_VUMETER;
+        this->ledEffect = new VuMeterLedEffect(this->module);
+        break;
+    case LED_EFFECT_VUMETER:
         this->currentLedEffectType = LED_EFFECT_TYPE_NONE;
         break;
     default:

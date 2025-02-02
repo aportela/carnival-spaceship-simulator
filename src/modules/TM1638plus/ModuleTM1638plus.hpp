@@ -9,6 +9,7 @@
 #include "Leds/ILedEffect.hpp"
 #include "Leds/Effects/ScannerLedEffect.hpp"
 #include "Leds/Effects/ChaseLedEffect.hpp"
+#include "Leds/Effects/VuMeterLedEffect.hpp"
 
 #define MAX_BRIGHTNESS 8
 
@@ -17,6 +18,7 @@ enum LED_EFFECT_TYPE
     LED_EFFECT_TYPE_NONE = 0,
     LED_EFFECT_TYPE_SCANNER = 1,
     LED_EFFECT_TYPE_CHASE = 2,
+    LED_EFFECT_VUMETER = 3,
 };
 
 class ModuleTM1638plus
