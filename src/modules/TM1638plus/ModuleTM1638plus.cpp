@@ -63,6 +63,14 @@ void ModuleTM1638plus::toggleLedInverseMode(void)
     }
 }
 
+void ModuleTM1638plus::toggleLedSpeed(void)
+{
+    if (this->currentLedEffectType != LED_EFFECT_TYPE_NONE && this->ledEffect != nullptr)
+    {
+        this->ledEffect->toggleCurrentSpeed();
+    }
+}
+
 bool ModuleTM1638plus::loop()
 {
     uint8_t buttons = this->buttons->loop();
@@ -73,6 +81,10 @@ bool ModuleTM1638plus::loop()
     if (buttons == BUTTON_S2)
     {
         this->toggleLedInverseMode();
+    }
+    if (buttons == BUTTON_S3)
+    {
+        this->toggleLedSpeed();
     }
     if (this->currentLedEffectType != LED_EFFECT_TYPE_NONE && this->ledEffect != nullptr)
     {

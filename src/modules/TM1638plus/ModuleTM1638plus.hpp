@@ -34,6 +34,7 @@ private:
 
     void toggleLedEffect(void);
     void toggleLedInverseMode(void);
+    void toggleLedSpeed(void);
 
 public:
     ModuleTM1638plus(uint8_t strobePIN, uint8_t clockPIN, uint8_t dioPIN, bool highFreq);
