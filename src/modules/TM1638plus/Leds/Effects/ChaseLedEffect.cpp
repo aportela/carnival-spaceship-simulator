@@ -1,5 +1,7 @@
 #include "ChaseLedEffect.hpp"
 
+const uint16_t ChaseLedEffect::individualLedMasks[11] = {LED_NONE, LED_1, LED_1 | LED_2, LED_1 | LED_2 | LED_3, LED_2 | LED_3 | LED_4, LED_3 | LED_4 | LED_5, LED_4 | LED_5 | LED_6, LED_5 | LED_6 | LED_7, LED_6 | LED_7 | LED_8, LED_7 | LED_8, LED_8};
+
 ChaseLedEffect::ChaseLedEffect(TM1638plus *module) : LedEffect(module)
 {
 }
@@ -12,59 +14,17 @@ bool ChaseLedEffect::loop(void)
 {
     if (this->refresh())
     {
-        this->module->setLEDs(this->inverse ? 0xFF00 : 0);
-        switch (this->LEDposition)
+        if (this->currentLedIndex >= 11)
         {
-        case 0:
-            this->module->setLED(0, this->inverse ? 0 : 1);
-            break;
-        case 1:
-            this->module->setLED(0, this->inverse ? 0 : 1);
-            this->module->setLED(1, this->inverse ? 0 : 1);
-            break;
-        case 2:
-            this->module->setLED(0, this->inverse ? 0 : 1);
-            this->module->setLED(1, this->inverse ? 0 : 1);
-            this->module->setLED(2, this->inverse ? 0 : 1);
-            break;
-        case 3:
-            this->module->setLED(1, this->inverse ? 0 : 1);
-            this->module->setLED(2, this->inverse ? 0 : 1);
-            this->module->setLED(3, this->inverse ? 0 : 1);
-            break;
-        case 4:
-            this->module->setLED(2, this->inverse ? 0 : 1);
-            this->module->setLED(3, this->inverse ? 0 : 1);
-            this->module->setLED(4, this->inverse ? 0 : 1);
-            break;
-        case 5:
-            this->module->setLED(3, this->inverse ? 0 : 1);
-            this->module->setLED(4, this->inverse ? 0 : 1);
-            this->module->setLED(5, this->inverse ? 0 : 1);
-            break;
-        case 6:
-            this->module->setLED(4, this->inverse ? 0 : 1);
-            this->module->setLED(5, this->inverse ? 0 : 1);
-            this->module->setLED(6, this->inverse ? 0 : 1);
-            break;
-        case 7:
-            this->module->setLED(5, this->inverse ? 0 : 1);
-            this->module->setLED(6, this->inverse ? 0 : 1);
-            this->module->setLED(7, this->inverse ? 0 : 1);
-            break;
-        case 8:
-            this->module->setLED(6, this->inverse ? 0 : 1);
-            this->module->setLED(7, this->inverse ? 0 : 1);
-            break;
-        case 9:
-            this->module->setLED(7, this->inverse ? 0 : 1);
-            break;
+            this->currentLedIndex = 0;
         }
-        this->LEDposition++;
-        if (this->LEDposition == 9)
+        uint16_t mask = this->individualLedMasks[currentLedIndex];
+        if (inverse)
         {
-            this->LEDposition = 0;
+            mask = 0xFFFF & ~mask;
         }
+        this->module->setLEDs(mask);
+        this->currentLedIndex++;
         return (true);
     }
     else
