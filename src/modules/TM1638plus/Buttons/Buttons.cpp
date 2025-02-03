@@ -13,7 +13,7 @@ Buttons::~Buttons()
 uint8_t Buttons::loop(void)
 {
     uint64_t timestamp = millis();
-    if (timestamp - this->lastTimestamp > BUTTON_DEBOUNCE_MS)
+    if (timestamp - this->lastTimestamp >= BUTTON_DEBOUNCE_MS)
     {
         this->lastTimestamp = timestamp;
         /* buttons contains a byte with values of button s8s7s6s5s4s3s2s1

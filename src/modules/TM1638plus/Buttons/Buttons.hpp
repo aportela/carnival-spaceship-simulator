@@ -5,7 +5,7 @@
 
 #include <TM1638plus.h>
 
-#define BUTTON_DEBOUNCE_MS 128
+#define BUTTON_DEBOUNCE_MS 200
 
 enum BUTTON_VALUE
 {
