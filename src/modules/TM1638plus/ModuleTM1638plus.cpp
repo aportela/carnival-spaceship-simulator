@@ -48,6 +48,10 @@ void ModuleTM1638plus::toggleLedEffect(void)
         this->ledEffect = new VuMeterMirroredLedEffect(this->module);
         break;
     case LED_EFFECT_VUMETER_MIRRORED:
+        this->currentLedEffectType = LED_EFFECT_ALTERNATE;
+        this->ledEffect = new AlternateLedEffect(this->module);
+        break;
+    case LED_EFFECT_ALTERNATE:
         this->currentLedEffectType = LED_EFFECT_TYPE_NONE;
         break;
     default:
