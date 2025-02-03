@@ -11,6 +11,8 @@
 #define LED_7 0x4000
 #define LED_8 0x8000
 
+#define MAX_SPEED 16
+
 #include <stdint.h>
 #include "ILedEffect.hpp"
 #include <TM1638plus.h>
@@ -23,18 +25,20 @@ protected:
     TM1638plus *module = nullptr;
     uint64_t lastRefresh = 0;
     bool inverse = false;
-    uint8_t currentSpeed = 8;
+    uint16_t *frames = nullptr;
+    size_t totalFrames = 0;
+    size_t currentFrameIndex = 0;
+    uint8_t currentSpeed = 3;
     uint16_t msDelay = currentSpeed * DEFAULT_MS_DELAY;
 
 public:
-    LedEffect(TM1638plus *module);
+    LedEffect(TM1638plus *module, const uint16_t *maskedFrames, size_t frameCount);
     ~LedEffect();
-
-    virtual bool loop(void) = 0;
 
     bool refresh(void);
     bool toggleInverse(void) override;
     uint8_t toggleCurrentSpeed(void) override;
+    bool loop(void);
 };
 
 #endif // TM1638_PLUS_LED_EFFECT_H
