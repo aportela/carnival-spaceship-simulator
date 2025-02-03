@@ -1,6 +1,6 @@
 #include "ScannerLedEffect.hpp"
 
-const uint16_t ScannerLedEffect::individualLedMasks[8] = {0x0100, 0x0200, 0x0400, 0x0800, 0x1000, 0x2000, 0x4000, 0x8000};
+const uint16_t ScannerLedEffect::individualLedMasks[8] = {LED_1, LED_2, LED_3, LED_4, LED_5, LED_6, LED_7, LED_8};
 
 ScannerLedEffect::ScannerLedEffect(TM1638plus *module) : LedEffect(module)
 {
