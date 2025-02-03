@@ -67,7 +67,6 @@ bool LedEffect::loop(void)
             mask = ~mask;
         }
         this->module->setLEDs(mask);
-        this->module->displayIntNum(this->currentFrameIndex, false, TMAlignTextRight);
         this->currentFrameIndex++;
         return (true);
     }
