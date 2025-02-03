@@ -8,7 +8,8 @@
 class VuMeterMirroredLedEffect : public LedEffect
 {
 private:
-    uint8_t activeLeds = 0;
+    static const uint16_t individualLedMasks[5];
+    uint8_t currentLedIndex = 0;
     bool inc = true;
 
 public:

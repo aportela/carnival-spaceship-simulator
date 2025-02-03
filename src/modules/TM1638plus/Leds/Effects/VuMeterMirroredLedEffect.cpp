@@ -1,5 +1,13 @@
 #include "VuMeterMirroredLedEffect.hpp"
 
+const uint16_t VuMeterMirroredLedEffect::individualLedMasks[5] = {
+    LED_NONE,
+    LED_4 | LED_5,
+    LED_3 | LED_4 | LED_5 | LED_6,
+    LED_2 | LED_3 | LED_4 | LED_5 | LED_6 | LED_7,
+    LED_1 | LED_2 | LED_3 | LED_4 | LED_5 | LED_6 | LED_7 | LED_8,
+};
+
 VuMeterMirroredLedEffect::VuMeterMirroredLedEffect(TM1638plus *module) : LedEffect(module)
 {
 }
@@ -12,42 +20,17 @@ bool VuMeterMirroredLedEffect::loop(void)
 {
     if (this->refresh())
     {
-        this->module->setLEDs(this->inverse ? 0xFF00 : 0);
-        if (this->activeLeds == 8)
+        this->inc = (this->currentLedIndex == 4) ? false : (this->currentLedIndex == 0 ? true : this->inc);
+        uint16_t mask = this->individualLedMasks[currentLedIndex];
+        if (inverse)
         {
-            this->inc = false;
+            mask = 0xFFFF & ~mask;
         }
-        else if (this->activeLeds == 0)
+        this->module->setLEDs(mask);
+        this->currentLedIndex = (this->currentLedIndex + (this->inc ? 1 : -1)) % 5;
+        if (this->currentLedIndex < 0)
         {
-            this->inc = true;
-        }
-        if (activeLeds >= 2)
-        {
-            this->module->setLED(3, this->inverse ? 0 : 1);
-            this->module->setLED(4, this->inverse ? 0 : 1);
-            if (activeLeds >= 4)
-            {
-                this->module->setLED(2, this->inverse ? 0 : 1);
-                this->module->setLED(5, this->inverse ? 0 : 1);
-                if (activeLeds >= 6)
-                {
-                    this->module->setLED(1, this->inverse ? 0 : 1);
-                    this->module->setLED(6, this->inverse ? 0 : 1);
-                    if (activeLeds == 8)
-                    {
-                        this->module->setLED(0, this->inverse ? 0 : 1);
-                        this->module->setLED(7, this->inverse ? 0 : 1);
-                    }
-                }
-            }
-        }
-        if (this->inc)
-        {
-            this->activeLeds += 2;
-        }
-        else
-        {
-            this->activeLeds -= 2;
+            this->currentLedIndex += 5;
         }
         return (true);
     }
