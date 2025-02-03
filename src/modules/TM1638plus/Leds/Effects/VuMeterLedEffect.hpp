@@ -8,7 +8,8 @@
 class VuMeterLedEffect : public LedEffect
 {
 private:
-    uint8_t LEDposition = 0;
+    static const uint16_t individualLedMasks[9];
+    uint8_t currentLedIndex = 0;
     bool inc = true;
 
 public:

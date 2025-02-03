@@ -1,5 +1,16 @@
 #include "VuMeterLedEffect.hpp"
 
+const uint16_t VuMeterLedEffect::individualLedMasks[9] = {
+    LED_NONE,
+    LED_1,
+    LED_1 | LED_2,
+    LED_1 | LED_2 | LED_3,
+    LED_1 | LED_2 | LED_3 | LED_4,
+    LED_1 | LED_2 | LED_3 | LED_4 | LED_5,
+    LED_1 | LED_2 | LED_3 | LED_4 | LED_5 | LED_6,
+    LED_1 | LED_2 | LED_3 | LED_4 | LED_5 | LED_6 | LED_7,
+    LED_1 | LED_2 | LED_3 | LED_4 | LED_5 | LED_6 | LED_7 | LED_8};
+
 VuMeterLedEffect::VuMeterLedEffect(TM1638plus *module) : LedEffect(module)
 {
 }
@@ -12,26 +23,17 @@ bool VuMeterLedEffect::loop(void)
 {
     if (this->refresh())
     {
-        this->module->setLEDs(this->inverse ? 0xFF00 : 0);
-        if (this->LEDposition == 7)
+        this->inc = (this->currentLedIndex == 8) ? false : (this->currentLedIndex == 0 ? true : this->inc);
+        uint16_t mask = this->individualLedMasks[currentLedIndex];
+        if (inverse)
         {
-            this->inc = false;
+            mask = 0xFFFF & ~mask;
         }
-        else if (this->LEDposition == 0)
+        this->module->setLEDs(mask);
+        this->currentLedIndex = (this->currentLedIndex + (this->inc ? 1 : -1)) % 9;
+        if (this->currentLedIndex < 0)
         {
-            this->inc = true;
-        }
-        for (uint8_t i = 0; i <= this->LEDposition; i++)
-        {
-            this->module->setLED(i, this->inverse ? 0 : 1);
-        }
-        if (this->inc)
-        {
-            this->LEDposition++;
-        }
-        else
-        {
-            this->LEDposition--;
+            this->currentLedIndex += 9;
         }
         return (true);
     }
