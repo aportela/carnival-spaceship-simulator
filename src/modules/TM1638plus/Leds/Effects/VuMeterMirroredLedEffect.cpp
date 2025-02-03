@@ -1,6 +1,6 @@
 #include "VuMeterMirroredLedEffect.hpp"
 
-const uint16_t VuMeterMirroredLedEffect::individualLedMasks[8] = {
+const uint16_t VuMeterMirroredLedEffect::individualLedMasks[] = {
     LED_NONE,
     LED_4 | LED_5,
     LED_3 | LED_4 | LED_5 | LED_6,

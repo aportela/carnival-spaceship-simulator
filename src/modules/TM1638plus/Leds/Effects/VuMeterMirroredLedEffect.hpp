@@ -8,7 +8,7 @@
 class VuMeterMirroredLedEffect : public LedEffect
 {
 private:
-    static const uint16_t individualLedMasks[8];
+    static const uint16_t individualLedMasks[];
 
 public:
     VuMeterMirroredLedEffect(TM1638plus *module);

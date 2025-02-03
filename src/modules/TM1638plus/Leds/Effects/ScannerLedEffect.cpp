@@ -1,6 +1,6 @@
 #include "ScannerLedEffect.hpp"
 
-const uint16_t ScannerLedEffect::individualLedMasks[14] = {
+const uint16_t ScannerLedEffect::individualLedMasks[] = {
     LED_1,
     LED_2,
     LED_3,

@@ -1,6 +1,6 @@
 #include "VuMeterLedEffect.hpp"
 
-const uint16_t VuMeterLedEffect::individualLedMasks[16] = {
+const uint16_t VuMeterLedEffect::individualLedMasks[] = {
     LED_NONE,
     LED_1,
     LED_1 | LED_2,

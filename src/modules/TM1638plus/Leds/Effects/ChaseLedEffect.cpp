@@ -1,6 +1,6 @@
 #include "ChaseLedEffect.hpp"
 
-const uint16_t ChaseLedEffect::individualLedMasks[11] = {
+const uint16_t ChaseLedEffect::individualLedMasks[] = {
     LED_NONE,
     LED_1,
     LED_1 | LED_2,

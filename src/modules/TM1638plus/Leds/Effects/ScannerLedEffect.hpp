@@ -8,7 +8,7 @@
 class ScannerLedEffect : public LedEffect
 {
 private:
-    static const uint16_t individualLedMasks[14];
+    static const uint16_t individualLedMasks[];
 
 public:
     ScannerLedEffect(TM1638plus *module);

@@ -8,7 +8,7 @@
 class VuMeterLedEffect : public LedEffect
 {
 private:
-    static const uint16_t individualLedMasks[16];
+    static const uint16_t individualLedMasks[];
 
 public:
     VuMeterLedEffect(TM1638plus *module);
