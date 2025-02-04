@@ -53,6 +53,7 @@ void ModuleTM1638plus::toggleSevenSegmentSpeed(void)
 {
     if (this->currentSevenSegmentEffectType != SEVEN_SEGMENT_EFFECT_TYPE_NONE)
     {
+        this->sevenSegmentDisplayEffect->toggleCurrentSpeed();
     }
 }
 
