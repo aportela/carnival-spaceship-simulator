@@ -10,7 +10,7 @@ void setup()
 {
     Serial.begin(9600);
     delay(100);
-    controlPanel = new ModuleTM1638plus(STROBE_TM, CLOCK_TM, DIO_TM, false);
+    controlPanel = new ModuleTM1638plus(STROBE_TM, CLOCK_TM, DIO_TM, true);
 }
 
 void loop()
