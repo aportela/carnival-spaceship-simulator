@@ -6,6 +6,7 @@
 #include <TM1638plus.h>
 
 #include "Buttons/Buttons.hpp"
+#include "SevenSegmentDisplay/SevenSegmentDisplayEffect.hpp"
 #include "Leds/ILedEffect.hpp"
 #include "Leds/Effects/ScannerLedEffect.hpp"
 #include "Leds/Effects/ChaseLedEffect.hpp"
@@ -25,6 +26,12 @@ enum LED_EFFECT_TYPE
     LED_EFFECT_ALTERNATE = 5,
 };
 
+enum SEVEN_SEGMENT_EFFECT_TYPE
+{
+    SEVEN_SEGMENT_EFFECT_TYPE_NONE = 0,
+    SEVEN_SEGMENT_EFFECT_TYPE_RANDOM_WORDS = 1
+};
+
 class ModuleTM1638plus
 {
 private:
@@ -32,7 +39,12 @@ private:
 
     Buttons *buttons = nullptr;
     ILedEffect *ledEffect = nullptr;
+    SevenSegmentDisplayEffect *sevenSegmentDisplayEffect = nullptr;
     LED_EFFECT_TYPE currentLedEffectType = LED_EFFECT_TYPE_NONE;
+    SEVEN_SEGMENT_EFFECT_TYPE currentSevenSegmentEffectType = SEVEN_SEGMENT_EFFECT_TYPE_NONE;
+
+    void toggleSevenSegmentEffect(void);
+    void toggleSevenSegmentSpeed(void);
 
     void toggleLedEffect(void);
     void toggleLedInverseMode(void);

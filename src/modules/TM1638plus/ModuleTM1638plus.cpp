@@ -6,18 +6,53 @@ ModuleTM1638plus::ModuleTM1638plus(uint8_t strobePIN, uint8_t clockPIN, uint8_t 
     this->module->displayBegin();
     this->module->brightness(MAX_BRIGHTNESS);
     this->buttons = new Buttons(this->module);
+    this->toggleLedEffect();
+    this->toggleSevenSegmentEffect();
 }
 
 ModuleTM1638plus::~ModuleTM1638plus()
 {
-    delete this->buttons;
-    this->buttons = nullptr;
-    delete this->module;
-    this->module = nullptr;
+    if (this->sevenSegmentDisplayEffect != nullptr)
+    {
+        delete this->sevenSegmentDisplayEffect;
+        this->sevenSegmentDisplayEffect = nullptr;
+    }
     if (this->ledEffect != nullptr)
     {
         delete this->ledEffect;
         this->ledEffect = nullptr;
+    }
+    delete this->buttons;
+    this->buttons = nullptr;
+    delete this->module;
+    this->module = nullptr;
+}
+
+void ModuleTM1638plus::toggleSevenSegmentEffect(void)
+{
+    if (this->sevenSegmentDisplayEffect != nullptr)
+    {
+        delete this->sevenSegmentDisplayEffect;
+        this->sevenSegmentDisplayEffect = nullptr;
+    }
+    switch (this->currentSevenSegmentEffectType)
+    {
+    case SEVEN_SEGMENT_EFFECT_TYPE_NONE:
+        this->currentSevenSegmentEffectType = SEVEN_SEGMENT_EFFECT_TYPE_RANDOM_WORDS;
+        this->sevenSegmentDisplayEffect = new SevenSegmentDisplayEffect(this->module);
+        break;
+    case SEVEN_SEGMENT_EFFECT_TYPE_RANDOM_WORDS:
+        this->currentSevenSegmentEffectType = SEVEN_SEGMENT_EFFECT_TYPE_NONE;
+        break;
+    default:
+        break;
+    }
+}
+
+void ModuleTM1638plus::toggleSevenSegmentSpeed(void)
+{
+    if (this->currentSevenSegmentEffectType != SEVEN_SEGMENT_EFFECT_TYPE_NONE)
+    {
     }
 }
 
@@ -90,9 +125,21 @@ bool ModuleTM1638plus::loop()
     {
         this->toggleLedSpeed();
     }
+    if (buttons == BUTTON_S4)
+    {
+        this->toggleSevenSegmentEffect();
+    }
+    if (buttons == BUTTON_S5)
+    {
+        this->toggleSevenSegmentSpeed();
+    }
     if (this->currentLedEffectType != LED_EFFECT_TYPE_NONE && this->ledEffect != nullptr)
     {
         this->ledEffect->loop();
+    }
+    if (this->currentSevenSegmentEffectType != SEVEN_SEGMENT_EFFECT_TYPE_NONE && this->sevenSegmentDisplayEffect != nullptr)
+    {
+        this->sevenSegmentDisplayEffect->loop();
     }
     return (false);
 }
