@@ -1,0 +1,34 @@
+#ifndef EXTERNAL_BUTTONS_H
+#define EXTERNAL_BUTTONS_H
+
+#include <Bounce2.h>
+
+#define BUTTON_DEBOUNCE_MS 200
+
+enum EXTERNAL_BUTTON
+{
+    EXTERNAL_BUTTON_NONE = 0,
+    EXTERNAL_BUTTON_1 = 1,
+    EXTERNAL_BUTTON_2 = 2,
+    EXTERNAL_BUTTON_3 = 3,
+    EXTERNAL_BUTTON_4 = 4,
+    EXTERNAL_BUTTON_5 = 5,
+};
+
+#define TOTAL_BUTTONS 5
+#define DEBOUNCE_TIME 25
+
+class ExternalButtons
+{
+private:
+    Bounce *buttons[TOTAL_BUTTONS];
+    bool pressed = false;
+
+public:
+    ExternalButtons(const uint8_t BUTTON_PINS[TOTAL_BUTTONS]);
+    ~ExternalButtons();
+
+    EXTERNAL_BUTTON loop(void);
+};
+
+#endif // EXTERNAL_BUTTONS_H
