@@ -43,6 +43,7 @@ bool SevenSegmentDisplayEffect::loop(void)
 {
     if (this->refresh())
     {
+        /*
         const char *words[] = {
             "[------]",
             "[--||--]",
@@ -54,6 +55,23 @@ bool SevenSegmentDisplayEffect::loop(void)
             "[      ]",
         };
         this->module->displayText(words[random(0, sizeof(words) / sizeof(words[0]))]);
+        */
+        // const uint8_t seq[] = {SEGMENT_A, SEGMENT_B, SEGMENT_G, SEGMENT_E, SEGMENT_D, SEGMENT_C, SEGMENT_G, SEGMENT_F}; // A, B, G, E, D, C, G, F
+        const uint8_t seq[] = {SEGMENT_A, SEGMENT_B, SEGMENT_C, SEGMENT_D, SEGMENT_E, SEGMENT_F}; // A, B, G, E, D, C, G, F
+        this->totalFrames = sizeof(seq) / sizeof(seq[0]);
+        if (this->currentFrameIndex >= this->totalFrames)
+        {
+            this->currentFrameIndex = 0;
+        }
+        this->module->display7Seg(0, seq[this->currentFrameIndex]);
+        this->module->display7Seg(1, seq[this->currentFrameIndex]);
+        this->module->display7Seg(2, seq[this->currentFrameIndex]);
+        this->module->display7Seg(3, seq[this->currentFrameIndex]);
+        this->module->display7Seg(4, seq[this->currentFrameIndex]);
+        this->module->display7Seg(5, seq[this->currentFrameIndex]);
+        this->module->display7Seg(6, seq[this->currentFrameIndex]);
+        this->module->display7Seg(7, seq[this->currentFrameIndex]);
+        this->currentFrameIndex++;
         return (true);
     }
     else
