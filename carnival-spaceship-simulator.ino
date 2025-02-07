@@ -17,7 +17,7 @@ void setup()
     // controlPanel = new ModuleTM1638plus(STROBE_TM, CLOCK_TM, DIO_TM, true);
     // synth = new Synth(I2S_BCK_PIN, I2S_LRCK_PIN, I2S_DATA_PIN);
     sampler = new Sampler(I2S_BCK_PIN, I2S_LRCK_PIN, I2S_DATA_PIN);
-    sampler->play();
+    sampler->play(SAMPLE_LASER1_SINGLE);
 }
 
 const float frequencies[] = {392.00, 440.00, 349.23, 174.61, 261.63};

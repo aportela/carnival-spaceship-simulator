@@ -10,6 +10,12 @@
 #define SAMPLE_RATE 44100
 #define BITS_PER_SAMPLE 16
 
+enum SAMPLE
+{
+    SAMPLE_NONE = 0,
+    SAMPLE_LASER1_SINGLE = 1,
+};
+
 class Sampler
 {
 private:
@@ -22,7 +28,7 @@ private:
 public:
     Sampler(uint8_t I2S_BCK_PIN, uint8_t I2S_LRCK_PIN, uint8_t I2S_DATA_PIN);
     ~Sampler(void);
-    void play(void);
+    void play(SAMPLE sample);
     void loop(void);
 };
 

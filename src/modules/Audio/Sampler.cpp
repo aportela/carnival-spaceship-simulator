@@ -18,11 +18,16 @@ Sampler::~Sampler()
     delete this->out;
 }
 
-void Sampler::play(void)
+void Sampler::play(SAMPLE sample)
 {
-    this->file[0] = new AudioFileSourcePROGMEM(laser_wav, laser_wav_len);
-    this->wav[0] = new AudioGeneratorWAV();
-    this->wav[0]->begin(this->file[0], this->stub[0]);
+    switch (sample)
+    {
+    case SAMPLE_LASER1_SINGLE:
+        this->file[0] = new AudioFileSourcePROGMEM(laser_wav, laser_wav_len);
+        this->wav[0] = new AudioGeneratorWAV();
+        this->wav[0]->begin(this->file[0], this->stub[0]);
+        break;
+    }
 }
 
 void Sampler::loop(void)
@@ -33,7 +38,6 @@ void Sampler::loop(void)
         {
             this->wav[0]->stop();
             this->stub[0]->stop();
-            // Serial.printf("stopping 1\n");
         }
     }
 }
