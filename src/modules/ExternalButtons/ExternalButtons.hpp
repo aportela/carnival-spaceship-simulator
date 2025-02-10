@@ -5,6 +5,8 @@
 
 #define BUTTON_DEBOUNCE_MS 200
 
+#define BUTTON_MODE_INVERSE
+
 enum EXTERNAL_BUTTON
 {
     EXTERNAL_BUTTON_NONE = 0,
@@ -22,7 +24,11 @@ class ExternalButtons
 {
 private:
     Bounce *buttons[TOTAL_BUTTONS];
+#ifndef BUTTON_MODE_INVERSE
     bool pressed = false;
+#else
+    bool pressed = true;
+#endif
 
 public:
     ExternalButtons(const uint8_t BUTTON_PINS[TOTAL_BUTTONS]);

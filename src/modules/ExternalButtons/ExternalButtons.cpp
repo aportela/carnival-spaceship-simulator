@@ -26,7 +26,11 @@ EXTERNAL_BUTTON ExternalButtons::loop(void)
         for (int i = 0; i < TOTAL_BUTTONS; i++)
         {
             this->buttons[i]->update();
+#ifndef BUTTON_MODE_INVERSE
             if (this->buttons[i]->rose())
+#else
+            if (this->buttons[i]->fell())
+#endif
             {
                 this->pressed = false;
                 return (EXTERNAL_BUTTON_NONE);
@@ -37,7 +41,11 @@ EXTERNAL_BUTTON ExternalButtons::loop(void)
     for (int i = 0; i < TOTAL_BUTTONS; i++)
     {
         this->buttons[i]->update();
+#ifndef BUTTON_MODE_INVERSE
         if (this->buttons[i]->fell())
+#else
+        if (this->buttons[i]->rose())
+#endif
         {
             this->pressed = true;
             return static_cast<EXTERNAL_BUTTON>(1 << i);
