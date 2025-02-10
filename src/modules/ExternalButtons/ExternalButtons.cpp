@@ -5,7 +5,7 @@ ExternalButtons::ExternalButtons(const uint8_t BUTTON_PINS[TOTAL_BUTTONS])
     for (int i = 0; i < TOTAL_BUTTONS; i++)
     {
         this->buttons[i] = new Bounce();
-        this->buttons[i]->attach(BUTTON_PINS[i]);
+        this->buttons[i]->attach(BUTTON_PINS[i], INPUT_PULLUP);
         this->buttons[i]->interval(DEBOUNCE_TIME);
     }
 }
@@ -48,7 +48,8 @@ EXTERNAL_BUTTON ExternalButtons::loop(void)
 #endif
         {
             this->pressed = true;
-            return static_cast<EXTERNAL_BUTTON>(1 << i);
+            // return static_cast<EXTERNAL_BUTTON>(1 << i);
+            return static_cast<EXTERNAL_BUTTON>(i + 1);
         }
     }
     return (EXTERNAL_BUTTON_NONE);
