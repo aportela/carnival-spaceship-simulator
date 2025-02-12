@@ -21,6 +21,7 @@ void setup()
     Serial.begin(9600);
     controlPanel = new ModuleTM1638plus(STROBE_TM, CLOCK_TM, DIO_TM, true);
     sampler = new Sampler(I2S_BCK_PIN, I2S_LRCK_PIN, I2S_DATA_PIN);
+    sampler->play(SAMPLE_LASER1_SINGLE);
 }
 
 const float frequencies[] = {392.00, 440.00, 349.23, 174.61, 261.63};
@@ -30,23 +31,23 @@ void loop()
     switch (buttons->loop())
     {
     case EXTERNAL_BUTTON_1:
-        sampler->play(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1);
+
         Serial.println("BUTTON1");
+        sampler->play(SAMPLE_LASER1_SINGLE);
         break;
     case EXTERNAL_BUTTON_2:
-        sampler->play(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1);
         Serial.println("BUTTON2");
+        sampler->play(SAMPLE_LASER1_SINGLE);
         break;
     case EXTERNAL_BUTTON_3:
-        sampler->play(SAMPLE_LASER1_SINGLE);
         Serial.println("BUTTON3");
+        sampler->play(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1);
         break;
     case EXTERNAL_BUTTON_4:
-        // sampler->play(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4);
         Serial.println("BUTTON4");
+        sampler->play(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1);
         break;
     case EXTERNAL_BUTTON_5:
-        // sampler->play(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5);
         Serial.println("BUTTON5");
         break;
     }

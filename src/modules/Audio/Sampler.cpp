@@ -1,5 +1,6 @@
 #include "Sampler.hpp"
 #include "../../data/samples/laser_01.wav.h"
+
 #include "../../data/samples/low_tone_01.wav.h"
 #include "../../data/samples/low_tone_02.wav.h"
 #include "../../data/samples/low_tone_03.wav.h"
