@@ -24,20 +24,20 @@ void setup()
     sampler->play(SAMPLE_LASER1_SINGLE);
 }
 
-const float frequencies[] = {392.00, 440.00, 349.23, 174.61, 261.63};
-
+SAMPLE lastSingleLaserSample = SAMPLE_NONE;
 void loop()
 {
     switch (buttons->loop())
     {
     case EXTERNAL_BUTTON_1:
-
         Serial.println("BUTTON1");
-        sampler->play(SAMPLE_LASER1_SINGLE);
+        lastSingleLaserSample = sampler->getRandomSingleLaser(lastSingleLaserSample);
+        sampler->play(lastSingleLaserSample);
         break;
     case EXTERNAL_BUTTON_2:
         Serial.println("BUTTON2");
-        sampler->play(SAMPLE_LASER1_SINGLE);
+        lastSingleLaserSample = sampler->getRandomSingleLaser(lastSingleLaserSample);
+        sampler->play(lastSingleLaserSample);
         break;
     case EXTERNAL_BUTTON_3:
         Serial.println("BUTTON3");

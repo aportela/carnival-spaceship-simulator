@@ -1,21 +1,9 @@
 #include "Sampler.hpp"
-#include "../../data/samples/laser_01.wav.h"
-
-#include "../../data/samples/low_tone_01.wav.h"
-#include "../../data/samples/low_tone_02.wav.h"
-#include "../../data/samples/low_tone_03.wav.h"
-#include "../../data/samples/low_tone_04.wav.h"
-#include "../../data/samples/low_tone_05.wav.h"
-
-#include "../../data/samples/high_tone_01.wav.h"
-#include "../../data/samples/high_tone_02.wav.h"
-#include "../../data/samples/high_tone_03.wav.h"
-#include "../../data/samples/high_tone_04.wav.h"
-#include "../../data/samples/high_tone_05.wav.h"
+#include "Samples.hpp"
 
 Sampler::Sampler(uint8_t I2S_BCK_PIN, uint8_t I2S_LRCK_PIN, uint8_t I2S_DATA_PIN)
 {
-
+    randomSeed(analogRead(0));
     this->out = new AudioOutputI2S();
     this->mixer = new AudioOutputMixer(32, this->out);
     this->stub[0] = this->mixer->NewInput();
@@ -37,6 +25,18 @@ void Sampler::play(SAMPLE sample)
     {
     case SAMPLE_LASER1_SINGLE:
         this->file[0] = new AudioFileSourcePROGMEM(laser_01_wav, laser_01_wav_len);
+        break;
+    case SAMPLE_LASER2_SINGLE:
+        this->file[0] = new AudioFileSourcePROGMEM(laser_02_wav, laser_02_wav_len);
+        break;
+    case SAMPLE_LASER3_SINGLE:
+        this->file[0] = new AudioFileSourcePROGMEM(laser_03_wav, laser_03_wav_len);
+        break;
+    case SAMPLE_LASER4_SINGLE:
+        this->file[0] = new AudioFileSourcePROGMEM(laser_04_wav, laser_04_wav_len);
+        break;
+    case SAMPLE_ALARM_REVERB:
+        // this->file[0] = new AudioFileSourcePROGMEM(alarm_reverb_wav, alarm_reverb_wav_len);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1:
         this->file[0] = new AudioFileSourcePROGMEM(low_tone_01_wav, low_tone_01_wav_len);
@@ -74,6 +74,39 @@ void Sampler::play(SAMPLE sample)
         this->wav[0] = new AudioGeneratorWAV();
         this->wav[0]->begin(this->file[0], this->stub[0]);
     }
+}
+
+SAMPLE Sampler::getRandomSingleLaser(SAMPLE lastSample)
+{
+    SAMPLE sample = SAMPLE_NONE;
+    switch (random(1, 5))
+    {
+    case 1:
+        if (lastSample != SAMPLE_LASER1_SINGLE)
+        {
+            sample = SAMPLE_LASER1_SINGLE;
+        }
+        break;
+    case 2:
+        if (lastSample != SAMPLE_LASER2_SINGLE)
+        {
+            sample = SAMPLE_LASER2_SINGLE;
+        }
+        break;
+    case 3:
+        if (lastSample != SAMPLE_LASER3_SINGLE)
+        {
+            sample = SAMPLE_LASER3_SINGLE;
+        }
+        break;
+    case 4:
+        if (lastSample != SAMPLE_LASER4_SINGLE)
+        {
+            sample = SAMPLE_LASER4_SINGLE;
+        }
+        break;
+    }
+    return (sample);
 }
 
 void Sampler::loop(void)
