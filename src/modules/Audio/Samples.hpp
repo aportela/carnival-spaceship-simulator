@@ -35,4 +35,13 @@ extern const uint32_t high_tone_04_wav_len;
 extern const uint8_t high_tone_05_wav[];
 extern const uint32_t high_tone_05_wav_len;
 
+extern const uint8_t alien_voice_01_wav[];
+extern const uint32_t alien_voice_01_wav_len;
+extern const uint8_t alien_voice_02_wav[];
+extern const uint32_t alien_voice_02_wav_len;
+extern const uint8_t alien_voice_03_wav[];
+extern const uint32_t alien_voice_03_wav_len;
+extern const uint8_t alien_voice_04_wav[];
+extern const uint32_t alien_voice_04_wav_len;
+
 #endif // SAMPLES_H

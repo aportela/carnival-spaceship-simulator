@@ -68,6 +68,18 @@ void Sampler::play(SAMPLE sample)
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5:
         this->file[0] = new AudioFileSourcePROGMEM(high_tone_05_wav, high_tone_05_wav_len);
         break;
+    case SAMPLE_ALIEN_VOICE_01:
+        this->file[0] = new AudioFileSourcePROGMEM(alien_voice_01_wav, alien_voice_01_wav_len);
+        break;
+    case SAMPLE_ALIEN_VOICE_02:
+        this->file[0] = new AudioFileSourcePROGMEM(alien_voice_02_wav, alien_voice_02_wav_len);
+        break;
+    case SAMPLE_ALIEN_VOICE_03:
+        this->file[0] = new AudioFileSourcePROGMEM(alien_voice_03_wav, alien_voice_03_wav_len);
+        break;
+    case SAMPLE_ALIEN_VOICE_04:
+        this->file[0] = new AudioFileSourcePROGMEM(alien_voice_04_wav, alien_voice_04_wav_len);
+        break;
     }
     if (sample != SAMPLE_NONE)
     {
@@ -142,6 +154,15 @@ void Sampler::loop(void)
                 break;
             case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4:
                 this->play(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5);
+                break;
+            case SAMPLE_ALIEN_VOICE_01:
+                this->play(SAMPLE_ALIEN_VOICE_02);
+                break;
+            case SAMPLE_ALIEN_VOICE_02:
+                this->play(SAMPLE_ALIEN_VOICE_03);
+                break;
+            case SAMPLE_ALIEN_VOICE_03:
+                this->play(SAMPLE_ALIEN_VOICE_04);
                 break;
             default:
                 this->currentSample = SAMPLE_NONE;

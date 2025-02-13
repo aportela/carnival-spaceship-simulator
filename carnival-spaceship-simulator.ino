@@ -21,7 +21,7 @@ void setup()
     Serial.begin(9600);
     controlPanel = new ModuleTM1638plus(STROBE_TM, CLOCK_TM, DIO_TM, true);
     sampler = new Sampler(I2S_BCK_PIN, I2S_LRCK_PIN, I2S_DATA_PIN);
-    sampler->play(SAMPLE_LASER1_SINGLE);
+    sampler->play(SAMPLE_ALIEN_VOICE_01);
 }
 
 SAMPLE lastSingleLaserSample = SAMPLE_NONE;
