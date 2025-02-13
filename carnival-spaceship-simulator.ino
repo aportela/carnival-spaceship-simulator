@@ -21,7 +21,7 @@ void setup()
     Serial.begin(9600);
     controlPanel = new ModuleTM1638plus(STROBE_TM, CLOCK_TM, DIO_TM, true);
     sampler = new Sampler(I2S_BCK_PIN, I2S_LRCK_PIN, I2S_DATA_PIN);
-    sampler->play(SAMPLE_ALIEN_VOICE_01);
+    sampler->play(SAMPLE_DIRTY_SYREN_1);
 }
 
 SAMPLE lastSingleLaserSample = SAMPLE_NONE;
@@ -49,6 +49,7 @@ void loop()
         break;
     case EXTERNAL_BUTTON_5:
         Serial.println("BUTTON5");
+        sampler->play(SAMPLE_ALARM_REVERB);
         break;
     }
     controlPanel->loop();

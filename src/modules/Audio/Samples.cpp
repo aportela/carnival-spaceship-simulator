@@ -5,6 +5,10 @@
 #include "../../data/samples/laser_03.wav.h"
 #include "../../data/samples/laser_04.wav.h"
 
+#include "../../data/samples/alarm_reverb.wav.h"
+#include "../../data/samples/dirty_syren_01.wav.h"
+#include "../../data/samples/dirty_syren_02.wav.h"
+
 #include "../../data/samples/low_tone_01.wav.h"
 #include "../../data/samples/low_tone_02.wav.h"
 #include "../../data/samples/low_tone_03.wav.h"

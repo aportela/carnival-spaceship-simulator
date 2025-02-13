@@ -36,7 +36,13 @@ void Sampler::play(SAMPLE sample)
         this->file[0] = new AudioFileSourcePROGMEM(laser_04_wav, laser_04_wav_len);
         break;
     case SAMPLE_ALARM_REVERB:
-        // this->file[0] = new AudioFileSourcePROGMEM(alarm_reverb_wav, alarm_reverb_wav_len);
+        this->file[0] = new AudioFileSourcePROGMEM(alarm_reverb_wav, alarm_reverb_wav_len);
+        break;
+    case SAMPLE_DIRTY_SYREN_1:
+        this->file[0] = new AudioFileSourcePROGMEM(dirty_syren_01_wav, dirty_syren_01_wav_len);
+        break;
+    case SAMPLE_DIRTY_SYREN_2:
+        this->file[0] = new AudioFileSourcePROGMEM(dirty_syren_02_wav, dirty_syren_02_wav_len);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1:
         this->file[0] = new AudioFileSourcePROGMEM(low_tone_01_wav, low_tone_01_wav_len);
@@ -131,6 +137,9 @@ void Sampler::loop(void)
             this->stub[0]->stop();
             switch (this->currentSample)
             {
+            case SAMPLE_DIRTY_SYREN_1:
+                this->play(SAMPLE_DIRTY_SYREN_2);
+                break;
             case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1:
                 this->play(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2);
                 break;
