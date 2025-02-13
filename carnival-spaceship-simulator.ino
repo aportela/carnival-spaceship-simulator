@@ -36,7 +36,7 @@ void loop()
         break;
     case EXTERNAL_BUTTON_2:
         Serial.println("BUTTON2");
-        lastSingleLaserSample = sampler->getRandomSingleLaser(lastSingleLaserSample);
+        lastSingleLaserSample = sampler->getRandomDoubleLaser(lastSingleLaserSample);
         sampler->play(lastSingleLaserSample);
         break;
     case EXTERNAL_BUTTON_3:

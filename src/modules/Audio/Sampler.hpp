@@ -17,9 +17,13 @@ enum SAMPLE
     SAMPLE_LASER2_SINGLE = 2,
     SAMPLE_LASER3_SINGLE = 3,
     SAMPLE_LASER4_SINGLE = 4,
-    SAMPLE_ALARM_REVERB = 5,
-    SAMPLE_DIRTY_SYREN_1 = 6,
-    SAMPLE_DIRTY_SYREN_2 = 7,
+    SAMPLE_LASER1_DOUBLE = 5,
+    SAMPLE_LASER2_DOUBLE = 6,
+    SAMPLE_LASER3_DOUBLE = 7,
+    SAMPLE_LASER4_DOUBLE = 8,
+    SAMPLE_ALARM_REVERB = 9,
+    SAMPLE_DIRTY_SYREN_1 = 10,
+    SAMPLE_DIRTY_SYREN_2 = 11,
     SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1 = 12,
     SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2 = 13,
     SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3 = 14,
@@ -46,12 +50,14 @@ private:
     AudioOutputMixer *mixer;
     AudioOutputMixerStub *stub[2];
     SAMPLE currentSample = SAMPLE_NONE;
+    bool doubleLaser = true;
 
 public:
     Sampler(uint8_t I2S_BCK_PIN, uint8_t I2S_LRCK_PIN, uint8_t I2S_DATA_PIN);
     ~Sampler(void);
     void play(SAMPLE sample);
     SAMPLE getRandomSingleLaser(SAMPLE lastSample);
+    SAMPLE getRandomDoubleLaser(SAMPLE lastSample);
     void loop(void);
 };
 

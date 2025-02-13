@@ -24,16 +24,24 @@ void Sampler::play(SAMPLE sample)
     switch (sample)
     {
     case SAMPLE_LASER1_SINGLE:
+    case SAMPLE_LASER1_DOUBLE:
         this->file[0] = new AudioFileSourcePROGMEM(laser_01_wav, laser_01_wav_len);
+        this->doubleLaser = sample == SAMPLE_LASER1_DOUBLE;
         break;
     case SAMPLE_LASER2_SINGLE:
+    case SAMPLE_LASER2_DOUBLE:
         this->file[0] = new AudioFileSourcePROGMEM(laser_02_wav, laser_02_wav_len);
+        this->doubleLaser = sample == SAMPLE_LASER2_DOUBLE;
         break;
     case SAMPLE_LASER3_SINGLE:
+    case SAMPLE_LASER3_DOUBLE:
         this->file[0] = new AudioFileSourcePROGMEM(laser_03_wav, laser_03_wav_len);
+        this->doubleLaser = sample == SAMPLE_LASER3_DOUBLE;
         break;
     case SAMPLE_LASER4_SINGLE:
+    case SAMPLE_LASER4_DOUBLE:
         this->file[0] = new AudioFileSourcePROGMEM(laser_04_wav, laser_04_wav_len);
+        this->doubleLaser = sample == SAMPLE_LASER4_DOUBLE;
         break;
     case SAMPLE_ALARM_REVERB:
         this->file[0] = new AudioFileSourcePROGMEM(alarm_reverb_wav, alarm_reverb_wav_len);
@@ -127,6 +135,39 @@ SAMPLE Sampler::getRandomSingleLaser(SAMPLE lastSample)
     return (sample);
 }
 
+SAMPLE Sampler::getRandomDoubleLaser(SAMPLE lastSample)
+{
+    SAMPLE sample = SAMPLE_NONE;
+    switch (random(1, 5))
+    {
+    case 1:
+        if (lastSample != SAMPLE_LASER1_DOUBLE)
+        {
+            sample = SAMPLE_LASER1_DOUBLE;
+        }
+        break;
+    case 2:
+        if (lastSample != SAMPLE_LASER2_DOUBLE)
+        {
+            sample = SAMPLE_LASER2_DOUBLE;
+        }
+        break;
+    case 3:
+        if (lastSample != SAMPLE_LASER3_DOUBLE)
+        {
+            sample = SAMPLE_LASER3_DOUBLE;
+        }
+        break;
+    case 4:
+        if (lastSample != SAMPLE_LASER4_DOUBLE)
+        {
+            sample = SAMPLE_LASER4_DOUBLE;
+        }
+        break;
+    }
+    return (sample);
+}
+
 void Sampler::loop(void)
 {
     if (this->wav[0]->isRunning())
@@ -137,6 +178,50 @@ void Sampler::loop(void)
             this->stub[0]->stop();
             switch (this->currentSample)
             {
+            case SAMPLE_LASER1_DOUBLE:
+                if (this->doubleLaser)
+                {
+                    this->play(SAMPLE_LASER1_DOUBLE);
+                    this->doubleLaser = false;
+                }
+                else
+                {
+                    this->currentSample = SAMPLE_NONE;
+                }
+                break;
+            case SAMPLE_LASER2_DOUBLE:
+                if (this->doubleLaser)
+                {
+                    this->play(SAMPLE_LASER2_DOUBLE);
+                    this->doubleLaser = false;
+                }
+                else
+                {
+                    this->currentSample = SAMPLE_NONE;
+                }
+                break;
+            case SAMPLE_LASER3_DOUBLE:
+                if (this->doubleLaser)
+                {
+                    this->play(SAMPLE_LASER3_DOUBLE);
+                    this->doubleLaser = false;
+                }
+                else
+                {
+                    this->currentSample = SAMPLE_NONE;
+                }
+                break;
+            case SAMPLE_LASER4_DOUBLE:
+                if (this->doubleLaser)
+                {
+                    this->play(SAMPLE_LASER4_DOUBLE);
+                    this->doubleLaser = false;
+                }
+                else
+                {
+                    this->currentSample = SAMPLE_NONE;
+                }
+                break;
             case SAMPLE_DIRTY_SYREN_1:
                 this->play(SAMPLE_DIRTY_SYREN_2);
                 break;
