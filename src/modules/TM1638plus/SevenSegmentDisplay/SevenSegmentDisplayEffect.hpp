@@ -39,7 +39,7 @@ protected:
     size_t totalFrames = 0;
     size_t currentFrameIndex = 0;
     uint64_t lastRefresh = 0;
-    uint8_t currentSpeed = 3;
+    uint8_t currentSpeed = 7;
     uint16_t msDelay = currentSpeed * DEFAULT_MS_DELAY;
 
 public:
