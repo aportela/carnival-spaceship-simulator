@@ -5,10 +5,12 @@
 Sampler::Sampler(uint8_t I2S_BCK_PIN, uint8_t I2S_LRCK_PIN, uint8_t I2S_DATA_PIN)
 {
     randomSeed(analogRead(0));
+    this->sampleQueue = new std::queue<SAMPLE>();
     this->out = new AudioOutputI2S();
     this->mixer = new AudioOutputMixer(32, this->out);
     for (uint8_t i = 0; i < MAX_SIMULTANEOUS_VOICES; i++)
     {
+        this->currentSample[i] = SAMPLE_NONE;
         this->stub[i] = this->mixer->NewInput();
         this->stub[i]->SetGain(0.5);
         this->activeVoices[i] = false;
@@ -26,6 +28,7 @@ Sampler::~Sampler()
     }
     delete this->mixer;
     delete this->out;
+    delete this->sampleQueue;
 }
 
 int8_t Sampler::getFirstFreeVoiceIndex(void)
@@ -40,34 +43,53 @@ int8_t Sampler::getFirstFreeVoiceIndex(void)
     return (-1);
 }
 
-void Sampler::play(SAMPLE sample)
+void Sampler::queueSample(SAMPLE sample)
 {
-    this->currentSample = sample;
+    // Serial.printf("Push sample %d into queue\n", sample);
+    this->sampleQueue->push(sample);
+    // Serial.printf("New queue size: %d\n", this->sampleQueue->size());
+}
+
+void Sampler::playQueue(void)
+{
+    if (!this->sampleQueue->empty())
+    {
+        SAMPLE sample = this->sampleQueue->front();
+        if (this->play(sample))
+        {
+            this->sampleQueue->pop();
+        }
+    }
+    else
+    {
+        // Serial.println("Queue is empty");
+    }
+}
+
+bool Sampler::play(SAMPLE sample)
+{
     int8_t firstFreeVoiceIndex = this->getFirstFreeVoiceIndex();
     if (firstFreeVoiceIndex != -1)
     {
-        Serial.printf("Playing sample %d on index %d\n", sample, firstFreeVoiceIndex);
+        // Serial.printf("Playing sample %d on index %d\n", sample, firstFreeVoiceIndex);
+        this->currentSample[firstFreeVoiceIndex] = sample;
         switch (sample)
         {
         case SAMPLE_LASER1_SINGLE:
         case SAMPLE_LASER1_DOUBLE:
             this->file[firstFreeVoiceIndex] = new AudioFileSourcePROGMEM(laser_01_wav, laser_01_wav_len);
-            this->doubleLaser = sample == SAMPLE_LASER1_DOUBLE;
             break;
         case SAMPLE_LASER2_SINGLE:
         case SAMPLE_LASER2_DOUBLE:
             this->file[firstFreeVoiceIndex] = new AudioFileSourcePROGMEM(laser_02_wav, laser_02_wav_len);
-            this->doubleLaser = sample == SAMPLE_LASER2_DOUBLE;
             break;
         case SAMPLE_LASER3_SINGLE:
         case SAMPLE_LASER3_DOUBLE:
             this->file[firstFreeVoiceIndex] = new AudioFileSourcePROGMEM(laser_03_wav, laser_03_wav_len);
-            this->doubleLaser = sample == SAMPLE_LASER3_DOUBLE;
             break;
         case SAMPLE_LASER4_SINGLE:
         case SAMPLE_LASER4_DOUBLE:
             this->file[firstFreeVoiceIndex] = new AudioFileSourcePROGMEM(laser_04_wav, laser_04_wav_len);
-            this->doubleLaser = sample == SAMPLE_LASER4_DOUBLE;
             break;
         case SAMPLE_ALARM_REVERB:
             this->file[firstFreeVoiceIndex] = new AudioFileSourcePROGMEM(alarm_reverb_wav, alarm_reverb_wav_len);
@@ -120,6 +142,13 @@ void Sampler::play(SAMPLE sample)
         case SAMPLE_ALIEN_VOICE_04:
             this->file[firstFreeVoiceIndex] = new AudioFileSourcePROGMEM(alien_voice_04_wav, alien_voice_04_wav_len);
             break;
+        case SAMPLE_SOS_01:
+        case SAMPLE_SOS_03:
+            this->file[firstFreeVoiceIndex] = new AudioFileSourcePROGMEM(morse_letter_s_wav, morse_letter_s_wav_len);
+            break;
+        case SAMPLE_SOS_02:
+            this->file[firstFreeVoiceIndex] = new AudioFileSourcePROGMEM(morse_letter_o_wav, morse_letter_o_wav_len);
+            break;
         }
         if (sample != SAMPLE_NONE)
         {
@@ -129,90 +158,40 @@ void Sampler::play(SAMPLE sample)
             }
             this->wav[firstFreeVoiceIndex]->begin(this->file[firstFreeVoiceIndex], this->stub[firstFreeVoiceIndex]);
             this->activeVoices[firstFreeVoiceIndex] = true;
+            return (true);
+        }
+        else
+        {
+            return (true);
         }
     }
     else
     {
-        Serial.println("All voices are in use");
+        // Serial.println("All voices are in use");
+        return (false);
     }
 }
 
-SAMPLE Sampler::getRandomSingleLaser(SAMPLE lastSample)
+SAMPLE Sampler::getRandomSingleLaser()
 {
-    SAMPLE sample = SAMPLE_NONE;
-    switch (random(1, 5))
-    {
-    case 1:
-        if (lastSample != SAMPLE_LASER1_SINGLE)
-        {
-            sample = SAMPLE_LASER1_SINGLE;
-        }
-        break;
-    case 2:
-        if (lastSample != SAMPLE_LASER2_SINGLE)
-        {
-            sample = SAMPLE_LASER2_SINGLE;
-        }
-        break;
-    case 3:
-        if (lastSample != SAMPLE_LASER3_SINGLE)
-        {
-            sample = SAMPLE_LASER3_SINGLE;
-        }
-        break;
-    case 4:
-        if (lastSample != SAMPLE_LASER4_SINGLE)
-        {
-            sample = SAMPLE_LASER4_SINGLE;
-        }
-        break;
-    }
-    return (sample);
+    return ((SAMPLE)random(1, 5));
 }
 
-SAMPLE Sampler::getRandomDoubleLaser(SAMPLE lastSample)
+SAMPLE Sampler::getRandomDoubleLaser()
 {
-    SAMPLE sample = SAMPLE_NONE;
-    switch (random(1, 5))
-    {
-    case 1:
-        if (lastSample != SAMPLE_LASER1_DOUBLE)
-        {
-            sample = SAMPLE_LASER1_DOUBLE;
-        }
-        break;
-    case 2:
-        if (lastSample != SAMPLE_LASER2_DOUBLE)
-        {
-            sample = SAMPLE_LASER2_DOUBLE;
-        }
-        break;
-    case 3:
-        if (lastSample != SAMPLE_LASER3_DOUBLE)
-        {
-            sample = SAMPLE_LASER3_DOUBLE;
-        }
-        break;
-    case 4:
-        if (lastSample != SAMPLE_LASER4_DOUBLE)
-        {
-            sample = SAMPLE_LASER4_DOUBLE;
-        }
-        break;
-    }
-    return (sample);
+    return ((SAMPLE)random(5, 9));
 }
 
 void Sampler::loop(void)
 {
+    this->playQueue();
     for (uint8_t i = 0; i < MAX_SIMULTANEOUS_VOICES; i++)
     {
         if (this->wav[i] != nullptr && this->wav[i]->isRunning())
         {
-            // Serial.printf("%d isRunning\n", i);
             if (!this->wav[i]->loop())
             {
-                Serial.printf("%d Not looping, stopping\n", i);
+                // Serial.printf("%d Sample ends (not looping), stopping sample\n", i);
                 this->wav[i]->stop();
                 delete this->wav[i];
                 this->wav[i] = nullptr;
@@ -220,93 +199,61 @@ void Sampler::loop(void)
                 this->file[i] = nullptr;
                 this->stub[i]->stop();
                 this->activeVoices[i] = false;
-                switch (this->currentSample)
+                switch (this->currentSample[i])
                 {
                 case SAMPLE_LASER1_DOUBLE:
-                    if (this->doubleLaser)
-                    {
-                        this->play(SAMPLE_LASER1_DOUBLE);
-                        this->doubleLaser = false;
-                    }
-                    else
-                    {
-                        this->currentSample = SAMPLE_NONE;
-                    }
+                    this->queueSample(SAMPLE_LASER1_SINGLE);
                     break;
                 case SAMPLE_LASER2_DOUBLE:
-                    if (this->doubleLaser)
-                    {
-                        this->play(SAMPLE_LASER2_DOUBLE);
-                        this->doubleLaser = false;
-                    }
-                    else
-                    {
-                        this->currentSample = SAMPLE_NONE;
-                    }
+                    this->queueSample(SAMPLE_LASER2_SINGLE);
                     break;
                 case SAMPLE_LASER3_DOUBLE:
-                    if (this->doubleLaser)
-                    {
-                        this->play(SAMPLE_LASER3_DOUBLE);
-                        this->doubleLaser = false;
-                    }
-                    else
-                    {
-                        this->currentSample = SAMPLE_NONE;
-                    }
+                    this->queueSample(SAMPLE_LASER3_SINGLE);
                     break;
                 case SAMPLE_LASER4_DOUBLE:
-                    if (this->doubleLaser)
-                    {
-                        this->play(SAMPLE_LASER4_DOUBLE);
-                        this->doubleLaser = false;
-                    }
-                    else
-                    {
-                        this->currentSample = SAMPLE_NONE;
-                    }
-                    break;
-                case SAMPLE_DIRTY_SYREN_1:
-                    this->play(SAMPLE_DIRTY_SYREN_2);
+                    this->queueSample(SAMPLE_LASER4_SINGLE);
                     break;
                 case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1:
-                    this->play(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2);
+                    this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2);
                     break;
                 case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2:
-                    this->play(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3);
+                    this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3);
                     break;
                 case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3:
-                    this->play(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4);
+                    this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4);
                     break;
                 case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4:
-                    this->play(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5);
+                    this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5);
                     break;
                 case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1:
-                    this->play(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2);
+                    this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2);
                     break;
                 case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2:
-                    this->play(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3);
+                    this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3);
                     break;
                 case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3:
-                    this->play(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4);
+                    this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4);
                     break;
                 case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4:
-                    this->play(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5);
+                    this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5);
                     break;
                 case SAMPLE_ALIEN_VOICE_01:
-                    this->play(SAMPLE_ALIEN_VOICE_02);
+                    this->queueSample(SAMPLE_ALIEN_VOICE_02);
                     break;
                 case SAMPLE_ALIEN_VOICE_02:
-                    this->play(SAMPLE_ALIEN_VOICE_03);
+                    this->queueSample(SAMPLE_ALIEN_VOICE_03);
                     break;
                 case SAMPLE_ALIEN_VOICE_03:
-                    this->play(SAMPLE_ALIEN_VOICE_04);
+                    this->queueSample(SAMPLE_ALIEN_VOICE_04);
                     break;
+                case SAMPLE_SOS_01:
+                    this->queueSample(SAMPLE_SOS_02);
+                case SAMPLE_SOS_02:
+                    this->queueSample(SAMPLE_SOS_03);
                 default:
-                    this->currentSample = SAMPLE_NONE;
                     break;
-                    Serial.println("No more samples, stopping");
                 }
+                this->currentSample[i] = SAMPLE_NONE;
             }
         }
     }

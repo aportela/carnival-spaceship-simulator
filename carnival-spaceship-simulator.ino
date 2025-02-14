@@ -21,35 +21,35 @@ void setup()
     Serial.begin(9600);
     controlPanel = new ModuleTM1638plus(STROBE_TM, CLOCK_TM, DIO_TM, true);
     sampler = new Sampler(I2S_BCK_PIN, I2S_LRCK_PIN, I2S_DATA_PIN);
-    sampler->play(SAMPLE_DIRTY_SYREN_1);
+    delay(2000);
+    Serial.println("Starting...");
 }
 
-SAMPLE lastSingleLaserSample = SAMPLE_NONE;
 void loop()
 {
     switch (buttons->loop())
     {
     case EXTERNAL_BUTTON_1:
         Serial.println("BUTTON1");
-        lastSingleLaserSample = sampler->getRandomSingleLaser(lastSingleLaserSample);
-        sampler->play(lastSingleLaserSample);
+        sampler->queueSample(sampler->getRandomSingleLaser());
         break;
     case EXTERNAL_BUTTON_2:
         Serial.println("BUTTON2");
-        lastSingleLaserSample = sampler->getRandomDoubleLaser(lastSingleLaserSample);
-        sampler->play(lastSingleLaserSample);
+        sampler->queueSample(sampler->getRandomDoubleLaser());
         break;
     case EXTERNAL_BUTTON_3:
         Serial.println("BUTTON3");
-        sampler->play(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1);
+        // sampler->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1);
+        sampler->queueSample(SAMPLE_DIRTY_SYREN_1);
         break;
     case EXTERNAL_BUTTON_4:
         Serial.println("BUTTON4");
-        sampler->play(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1);
+        // sampler->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1);
+        sampler->queueSample(SAMPLE_DIRTY_SYREN_2);
         break;
     case EXTERNAL_BUTTON_5:
         Serial.println("BUTTON5");
-        sampler->play(SAMPLE_ALARM_REVERB);
+        sampler->queueSample(SAMPLE_SOS_01);
         break;
     }
     controlPanel->loop();

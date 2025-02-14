@@ -7,10 +7,12 @@
 #include "AudioOutputI2S.h"
 #include "AudioOutputMixer.h"
 
+#include <queue>
+
 #define SAMPLE_RATE 44100
 #define BITS_PER_SAMPLE 16
 
-#define MAX_SIMULTANEOUS_VOICES 2
+#define MAX_SIMULTANEOUS_VOICES 4
 
 enum SAMPLE
 {
@@ -40,19 +42,23 @@ enum SAMPLE
     SAMPLE_ALIEN_VOICE_02 = 31,
     SAMPLE_ALIEN_VOICE_03 = 32,
     SAMPLE_ALIEN_VOICE_04 = 33,
-
+    SAMPLE_SOS_01 = 40,
+    SAMPLE_SOS_02 = 41,
+    SAMPLE_SOS_03 = 42,
 };
 
 class Sampler
 {
 private:
+    std::queue<SAMPLE> *sampleQueue;
+
     AudioGeneratorWAV *wav[MAX_SIMULTANEOUS_VOICES];
     AudioFileSourcePROGMEM *file[MAX_SIMULTANEOUS_VOICES];
     AudioOutputI2S *out;
     AudioOutputMixer *mixer;
     AudioOutputMixerStub *stub[MAX_SIMULTANEOUS_VOICES];
     bool activeVoices[MAX_SIMULTANEOUS_VOICES];
-    SAMPLE currentSample = SAMPLE_NONE;
+    SAMPLE currentSample[MAX_SIMULTANEOUS_VOICES];
     bool doubleLaser = true;
 
     int8_t getFirstFreeVoiceIndex(void);
@@ -60,9 +66,11 @@ private:
 public:
     Sampler(uint8_t I2S_BCK_PIN, uint8_t I2S_LRCK_PIN, uint8_t I2S_DATA_PIN);
     ~Sampler(void);
-    void play(SAMPLE sample);
-    SAMPLE getRandomSingleLaser(SAMPLE lastSample);
-    SAMPLE getRandomDoubleLaser(SAMPLE lastSample);
+    void queueSample(SAMPLE sample);
+    void playQueue(void);
+    bool play(SAMPLE sample);
+    SAMPLE getRandomSingleLaser();
+    SAMPLE getRandomDoubleLaser();
     void loop(void);
     /*
 
