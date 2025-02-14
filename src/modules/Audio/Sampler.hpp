@@ -10,6 +10,8 @@
 #define SAMPLE_RATE 44100
 #define BITS_PER_SAMPLE 16
 
+#define MAX_SIMULTANEOUS_VOICES 3
+
 enum SAMPLE
 {
     SAMPLE_NONE = 0,
@@ -44,11 +46,11 @@ enum SAMPLE
 class Sampler
 {
 private:
-    AudioGeneratorWAV *wav[2];
-    AudioFileSourcePROGMEM *file[2];
+    AudioGeneratorWAV *wav[MAX_SIMULTANEOUS_VOICES];
+    AudioFileSourcePROGMEM *file[MAX_SIMULTANEOUS_VOICES];
     AudioOutputI2S *out;
     AudioOutputMixer *mixer;
-    AudioOutputMixerStub *stub[2];
+    AudioOutputMixerStub *stub[MAX_SIMULTANEOUS_VOICES];
     SAMPLE currentSample = SAMPLE_NONE;
     bool doubleLaser = true;
 
@@ -59,6 +61,38 @@ public:
     SAMPLE getRandomSingleLaser(SAMPLE lastSample);
     SAMPLE getRandomDoubleLaser(SAMPLE lastSample);
     void loop(void);
+    /*
+
+    #include <stdio.h>
+
+void reverseArray(int* arr, size_t size) {
+    size_t start = 0;
+    size_t end = size - 1;
+
+    while (start < end) {
+        // Intercambiar los elementos
+        int temp = arr[start];
+        arr[start] = arr[end];
+        arr[end] = temp;
+
+        ++start;
+        --end;
+    }
+}
+
+int main() {
+    int arr[] = {1, 2, 3, 4, 5};
+    size_t size = sizeof(arr) / sizeof(arr[0]);
+
+    reverseArray(arr, size);
+
+    for (size_t i = 0; i < size; ++i) {
+        printf("%d ", arr[i]);  // Salida: 5 4 3 2 1
+    }
+
+    return 0;
+}
+    */
 };
 
 #endif // MODULE_SAMPLER

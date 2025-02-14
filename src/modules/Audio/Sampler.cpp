@@ -6,15 +6,21 @@ Sampler::Sampler(uint8_t I2S_BCK_PIN, uint8_t I2S_LRCK_PIN, uint8_t I2S_DATA_PIN
     randomSeed(analogRead(0));
     this->out = new AudioOutputI2S();
     this->mixer = new AudioOutputMixer(32, this->out);
-    this->stub[0] = this->mixer->NewInput();
-    this->stub[0]->SetGain(0.5);
+    for (uint8_t i = 0; i < MAX_SIMULTANEOUS_VOICES; i++)
+    {
+        this->stub[i] = this->mixer->NewInput();
+        this->stub[i]->SetGain(0.5);
+    }
 }
 
 Sampler::~Sampler()
 {
-    delete this->wav[0];
+    for (uint8_t i = 0; i < MAX_SIMULTANEOUS_VOICES; i++)
+    {
+        delete this->wav[i];
+        delete this->stub[i];
+    }
     delete this->mixer;
-    delete this->stub[0];
     delete this->out;
 }
 
