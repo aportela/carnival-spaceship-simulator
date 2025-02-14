@@ -1,7 +1,7 @@
 #include "SimpleTextEffect.hpp"
 #include <string.h>
 
-SimpleTextEffect::SimpleTextEffect(TM1638plus *module, const char *text, bool blink = false, unit16_t blinkTimeout = 0, const uint8_t startIndex = 0, const uint8_t endIndex = 0) : module(module), blink(blink), blinkTimeout(blinkTimeout), startIndex(startIndex), endIndex(endIndex)
+SimpleTextEffect::SimpleTextEffect(TM1638plus *module, const char *text, bool blink, uint16_t blinkTimeout, const uint8_t startIndex, const uint8_t endIndex) : module(module), blink(blink), blinkTimeout(blinkTimeout), startIndex(startIndex), endIndex(endIndex)
 {
     this->lastTimestamp = millis();
     this->currentTextLength = strlen(text);
@@ -45,15 +45,13 @@ void SimpleTextEffect::showText(const char *text)
 
 void SimpleTextEffect::hideText(void)
 {
-    uint8_t currentIndex = this->startIndex;
-    for (uint8_t i = 0; i < currentTextLength; i++)
+    for (uint8_t i = 0; i <= this->endIndex; i++)
     {
-        this->module->displayASCII(currentIndex, ' ');
-        this->currentIndex++;
+        this->module->displayASCII(i, ' ');
     }
 }
 
-SimpleTextEffect::loop(void)
+void SimpleTextEffect::loop(void)
 {
     if (this->blink)
     {
@@ -67,7 +65,7 @@ SimpleTextEffect::loop(void)
             }
             else
             {
-                this->clearText();
+                this->hideText();
             }
             this->visible = !this->visible;
         }

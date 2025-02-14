@@ -12,13 +12,14 @@ private:
     uint16_t blinkTimeout = 0;
     uint64_t lastTimestamp = 0;
     uint8_t startIndex = 0;
+    uint8_t endIndex = 0;
 
     void showText(const char *text);
     void hideText(void);
 
 public:
-    SimpleTextEffect(TM1638plus *module, const char *text, bool blink = false, unit16_t blinkTimeout = 0, const uint8_t startIndex = 0, const uint8_t endIndex = 0);
+    SimpleTextEffect(TM1638plus *module, const char *text, bool blink = false, uint16_t blinkTimeout = 0, const uint8_t startIndex = 0, const uint8_t endIndex = 0);
     ~SimpleTextEffect();
 
     void loop(void);
-}
+};
