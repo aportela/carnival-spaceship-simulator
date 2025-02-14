@@ -172,16 +172,6 @@ bool Sampler::play(SAMPLE sample)
     }
 }
 
-SAMPLE Sampler::getRandomSingleLaser()
-{
-    return ((SAMPLE)random(1, 5));
-}
-
-SAMPLE Sampler::getRandomDoubleLaser()
-{
-    return ((SAMPLE)random(5, 9));
-}
-
 void Sampler::loop(void)
 {
     this->playQueue();
