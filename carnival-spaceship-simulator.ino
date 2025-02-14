@@ -1,4 +1,5 @@
 #include "src/modules/TM1638plus/ModuleTM1638plus.hpp"
+#include "src/modules/TM1638plus/Buttons/TM1638plusButtons.hpp"
 #include "src/modules/Audio/Sampler.hpp"
 #include "src/modules/ExternalButtons/ExternalButtons.hpp"
 
@@ -54,6 +55,29 @@ void loop()
         Serial.println("BUTTON5");
         sampler->queueSample(SAMPLE_SOS_01);
         break;
+    }
+    TM1638plusBUTTON controlPanelPressedButton = controlPanel->checkPressedButton();
+    if (controlPanelPressedButton != TM1638plusBUTTON_NONE)
+    {
+        Serial.println("Control panel button pressed");
+        switch (controlPanelPressedButton)
+        {
+        case TM1638plusBUTTON_S1:
+            controlPanel->toggleLedEffect();
+            break;
+        case TM1638plusBUTTON_S2:
+            controlPanel->toggleLedInverseMode();
+            break;
+        case TM1638plusBUTTON_S3:
+            controlPanel->toggleLedSpeed();
+            break;
+        case TM1638plusBUTTON_S4:
+            controlPanel->toggleSevenSegmentEffect();
+            break;
+        case TM1638plusBUTTON_S5:
+            controlPanel->toggleSevenSegmentSpeed();
+            break;
+        }
     }
     controlPanel->loop();
     sampler->loop();

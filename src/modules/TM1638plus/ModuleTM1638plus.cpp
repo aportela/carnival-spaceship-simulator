@@ -5,7 +5,7 @@ ModuleTM1638plus::ModuleTM1638plus(uint8_t strobePIN, uint8_t clockPIN, uint8_t 
     this->module = new TM1638plus(strobePIN, clockPIN, dioPIN, highFreq);
     this->module->displayBegin();
     this->module->brightness(MAX_BRIGHTNESS);
-    this->buttons = new Buttons(this->module);
+    this->buttons = new TM1638plusButtons(this->module);
     this->toggleLedEffect();
     this->toggleSevenSegmentEffect();
 }
@@ -111,29 +111,36 @@ void ModuleTM1638plus::toggleLedSpeed(void)
     }
 }
 
-bool ModuleTM1638plus::loop()
+TM1638plusBUTTON ModuleTM1638plus::checkPressedButton()
 {
-    uint8_t buttons = this->buttons->loop();
-    if (buttons == BUTTON_S1)
+    uint8_t pressedButtons = this->buttons->loop();
+    TM1638plusBUTTON pressedButton = TM1638plusBUTTON_NONE;
+
+    if (pressedButtons == TM1638plusBUTTON_S1)
     {
-        this->toggleLedEffect();
+        pressedButton = TM1638plusBUTTON_S1;
     }
-    if (buttons == BUTTON_S2)
+    if (pressedButtons == TM1638plusBUTTON_S2)
     {
-        this->toggleLedInverseMode();
+        pressedButton = TM1638plusBUTTON_S2;
     }
-    if (buttons == BUTTON_S3)
+    if (pressedButtons == TM1638plusBUTTON_S3)
     {
-        this->toggleLedSpeed();
+        pressedButton = TM1638plusBUTTON_S3;
     }
-    if (buttons == BUTTON_S4)
+    if (pressedButtons == TM1638plusBUTTON_S4)
     {
-        this->toggleSevenSegmentEffect();
+        pressedButton = TM1638plusBUTTON_S4;
     }
-    if (buttons == BUTTON_S5)
+    if (pressedButtons == TM1638plusBUTTON_S5)
     {
-        this->toggleSevenSegmentSpeed();
+        pressedButton = TM1638plusBUTTON_S5;
     }
+    return (pressedButton);
+}
+
+void ModuleTM1638plus::loop(void)
+{
     if (this->currentLedEffectType != LED_EFFECT_TYPE_NONE && this->ledEffect != nullptr)
     {
         this->ledEffect->loop();
@@ -142,5 +149,4 @@ bool ModuleTM1638plus::loop()
     {
         this->sevenSegmentDisplayEffect->loop();
     }
-    return (false);
 }

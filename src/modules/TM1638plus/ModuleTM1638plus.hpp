@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <TM1638plus.h>
 
-#include "Buttons/Buttons.hpp"
+#include "Buttons/TM1638plusButtons.hpp"
 #include "SevenSegmentDisplay/SevenSegmentDisplayEffect.hpp"
 #include "Leds/ILedEffect.hpp"
 #include "Leds/Effects/ScannerLedEffect.hpp"
@@ -37,11 +37,17 @@ class ModuleTM1638plus
 private:
     TM1638plus *module = nullptr;
 
-    Buttons *buttons = nullptr;
+    TM1638plusButtons *buttons = nullptr;
     ILedEffect *ledEffect = nullptr;
     SevenSegmentDisplayEffect *sevenSegmentDisplayEffect = nullptr;
     LED_EFFECT_TYPE currentLedEffectType = LED_EFFECT_TYPE_NONE;
     SEVEN_SEGMENT_EFFECT_TYPE currentSevenSegmentEffectType = SEVEN_SEGMENT_EFFECT_TYPE_NONE;
+
+public:
+    ModuleTM1638plus(uint8_t strobePIN, uint8_t clockPIN, uint8_t dioPIN, bool highFreq);
+    ~ModuleTM1638plus();
+
+    TM1638plusBUTTON checkPressedButton(void);
 
     void toggleSevenSegmentEffect(void);
     void toggleSevenSegmentSpeed(void);
@@ -50,11 +56,7 @@ private:
     void toggleLedInverseMode(void);
     void toggleLedSpeed(void);
 
-public:
-    ModuleTM1638plus(uint8_t strobePIN, uint8_t clockPIN, uint8_t dioPIN, bool highFreq);
-    ~ModuleTM1638plus();
-
-    bool loop(void);
+    void loop(void);
 };
 
 #endif // MODULE_TM1638_PLUS

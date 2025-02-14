@@ -1,16 +1,16 @@
-#include "Buttons.hpp"
+#include "TM1638plusButtons.hpp"
 #include "Arduino.h"
 
-Buttons::Buttons(TM1638plus *module) : module(module)
+TM1638plusButtons::TM1638plusButtons(TM1638plus *module) : module(module)
 {
 }
 
-Buttons::~Buttons()
+TM1638plusButtons::~TM1638plusButtons()
 {
     this->module = nullptr;
 }
 
-uint8_t Buttons::loop(void)
+uint8_t TM1638plusButtons::loop(void)
 {
     uint64_t timestamp = millis();
     if (timestamp - this->lastTimestamp >= BUTTON_DEBOUNCE_MS)
@@ -31,6 +31,6 @@ uint8_t Buttons::loop(void)
     }
     else
     {
-        return (0);
+        return (TM1638plusBUTTON_NONE);
     }
 }
