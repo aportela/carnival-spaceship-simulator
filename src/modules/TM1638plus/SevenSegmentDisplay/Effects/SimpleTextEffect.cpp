@@ -25,17 +25,21 @@ SimpleTextEffect::~SimpleTextEffect()
 
 void SimpleTextEffect::showText(const char *text)
 {
+    // copy from https://github.com/gavinlyonsrepo/TM1638plus/blob/master/src/TM1638plus.cpp to allow start text from custom index
     uint8_t currentIndex = this->startIndex;
-    for (uint8_t i = 0; i < currentTextLength && currentIndex <= this->endIndex; i++)
+    char c, pos;
+    pos = 0;
+    while ((c = (*text++)) && currentIndex < TM_DISPLAY_SIZE && currentIndex <= this->endIndex)
     {
-        char c = *text[i];
-        this->module->displayASCII(currentIndex, c);
-        this->currentIndex++;
-    }
-    while (currentIndex < this->endIndex)
-    {
-        this->module->displayASCII(currentIndex, ' ');
-        currentIndex++;
+        if (*text == '.' && c != '.')
+        {
+            this->module->displayASCIIwDot(currentIndex++, c);
+            text++;
+        }
+        else
+        {
+            this->module->displayASCII(currentIndex++, c);
+        }
     }
 }
 
