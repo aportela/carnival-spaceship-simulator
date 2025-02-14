@@ -25,3 +25,6 @@
 #include "../../data/samples/alien_voice_02.wav.h"
 #include "../../data/samples/alien_voice_03.wav.h"
 #include "../../data/samples/alien_voice_04.wav.h"
+
+#include "../../data/samples/morse_letter_s.wav.h"
+#include "../../data/samples/morse_letter_o.wav.h"

@@ -52,4 +52,9 @@ extern const uint32_t alien_voice_03_wav_len;
 extern const uint8_t alien_voice_04_wav[];
 extern const uint32_t alien_voice_04_wav_len;
 
+extern const uint8_t morse_letter_s_wav[];
+extern const uint32_t morse_letter_s_wav_len;
+extern const uint8_t morse_letter_o_wav[];
+extern const uint32_t morse_letter_o_wav_len;
+
 #endif // SAMPLES_H
