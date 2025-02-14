@@ -45,9 +45,16 @@ int8_t Sampler::getFirstFreeVoiceIndex(void)
 
 void Sampler::queueSample(SAMPLE sample)
 {
-    // Serial.printf("Push sample %d into queue\n", sample);
-    this->sampleQueue->push(sample);
-    // Serial.printf("New queue size: %d\n", this->sampleQueue->size());
+    if (!(sample == SAMPLE_SOS_01 && this->isPlayingSOSSample)) // only allow 1 SOS sample at time
+    {
+        // Serial.printf("Push sample %d into queue\n", sample);
+        this->sampleQueue->push(sample);
+        // Serial.printf("New queue size: %d\n", this->sampleQueue->size());
+    }
+    else
+    {
+        Serial.println("not queue");
+    }
 }
 
 void Sampler::playQueue(void)
@@ -143,11 +150,14 @@ bool Sampler::play(SAMPLE sample)
             this->file[firstFreeVoiceIndex] = new AudioFileSourcePROGMEM(alien_voice_04_wav, alien_voice_04_wav_len);
             break;
         case SAMPLE_SOS_01:
-        case SAMPLE_SOS_03:
             this->file[firstFreeVoiceIndex] = new AudioFileSourcePROGMEM(morse_letter_s_wav, morse_letter_s_wav_len);
+            this->isPlayingSOSSample = true;
             break;
         case SAMPLE_SOS_02:
             this->file[firstFreeVoiceIndex] = new AudioFileSourcePROGMEM(morse_letter_o_wav, morse_letter_o_wav_len);
+            break;
+        case SAMPLE_SOS_03:
+            this->file[firstFreeVoiceIndex] = new AudioFileSourcePROGMEM(morse_letter_s_wav, morse_letter_s_wav_len);
             break;
         }
         if (sample != SAMPLE_NONE)
@@ -238,8 +248,13 @@ void Sampler::loop(void)
                     break;
                 case SAMPLE_SOS_01:
                     this->queueSample(SAMPLE_SOS_02);
+                    break;
                 case SAMPLE_SOS_02:
                     this->queueSample(SAMPLE_SOS_03);
+                    break;
+                case SAMPLE_SOS_03:
+                    this->isPlayingSOSSample = false;
+                    break;
                 default:
                     break;
                 }

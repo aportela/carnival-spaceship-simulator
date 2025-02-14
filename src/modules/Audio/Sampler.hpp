@@ -59,7 +59,7 @@ private:
     AudioOutputMixerStub *stub[MAX_SIMULTANEOUS_VOICES];
     bool activeVoices[MAX_SIMULTANEOUS_VOICES];
     SAMPLE currentSample[MAX_SIMULTANEOUS_VOICES];
-    bool doubleLaser = true;
+    bool isPlayingSOSSample = false;
 
     int8_t getFirstFreeVoiceIndex(void);
 
