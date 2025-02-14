@@ -10,7 +10,7 @@
 #define SAMPLE_RATE 44100
 #define BITS_PER_SAMPLE 16
 
-#define MAX_SIMULTANEOUS_VOICES 3
+#define MAX_SIMULTANEOUS_VOICES 2
 
 enum SAMPLE
 {
@@ -51,8 +51,11 @@ private:
     AudioOutputI2S *out;
     AudioOutputMixer *mixer;
     AudioOutputMixerStub *stub[MAX_SIMULTANEOUS_VOICES];
+    bool activeVoices[MAX_SIMULTANEOUS_VOICES];
     SAMPLE currentSample = SAMPLE_NONE;
     bool doubleLaser = true;
+
+    int8_t getFirstFreeVoiceIndex(void);
 
 public:
     Sampler(uint8_t I2S_BCK_PIN, uint8_t I2S_LRCK_PIN, uint8_t I2S_DATA_PIN);
