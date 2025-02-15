@@ -18,6 +18,8 @@ Sampler *sampler = nullptr;
 const SAMPLE laserSamples[] = {SAMPLE_LASER1_SINGLE, SAMPLE_LASER2_SINGLE, SAMPLE_LASER3_SINGLE, SAMPLE_LASER4_SINGLE, SAMPLE_LASER1_DOUBLE, SAMPLE_LASER2_DOUBLE, SAMPLE_LASER3_DOUBLE, SAMPLE_LASER4_DOUBLE};
 const uint8_t laserSamplesSize = sizeof(laserSamples) / sizeof(laserSamples[0]);
 
+LED_EFFECT_TYPE currentLedEffectType = LED_EFFECT_TYPE_SCANNER;
+
 void setup()
 {
     const uint8_t BUTTON_PINS[TOTAL_BUTTONS] = {11, 12, 13, 14, 15};
@@ -25,8 +27,10 @@ void setup()
     Serial.begin(9600);
     controlPanel = new ModuleTM1638plus(STROBE_TM, CLOCK_TM, DIO_TM, true);
     sampler = new Sampler(I2S_BCK_PIN, I2S_LRCK_PIN, I2S_DATA_PIN);
-    delay(2000);
+    delay(3000);
     Serial.println("Starting...");
+    controlPanel->setLedEffect(currentLedEffectType, DEFAULT_LED_MS_DELAY);
+    sampler->play(SAMPLE_ALARM_REVERB);
 }
 
 void loop()
@@ -63,19 +67,42 @@ void loop()
         switch (controlPanelPressedButton)
         {
         case TM1638plusBUTTON_S1:
-            controlPanel->toggleLedEffect();
+            switch (currentLedEffectType)
+            {
+            case LED_EFFECT_TYPE_NONE:
+                currentLedEffectType = LED_EFFECT_TYPE_SCANNER;
+                break;
+            case LED_EFFECT_TYPE_SCANNER:
+                currentLedEffectType = LED_EFFECT_TYPE_CHASE;
+                break;
+            case LED_EFFECT_TYPE_CHASE:
+                currentLedEffectType = LED_EFFECT_VUMETER;
+                break;
+            case LED_EFFECT_VUMETER:
+                currentLedEffectType = LED_EFFECT_VUMETER_MIRRORED;
+                break;
+            case LED_EFFECT_VUMETER_MIRRORED:
+                currentLedEffectType = LED_EFFECT_ALTERNATE;
+                break;
+            case LED_EFFECT_ALTERNATE:
+                currentLedEffectType = LED_EFFECT_TYPE_NONE;
+                break;
+            default:
+                currentLedEffectType = LED_EFFECT_TYPE_NONE;
+                break;
+            }
+            controlPanel->setLedEffect(currentLedEffectType, DEFAULT_LED_MS_DELAY);
             break;
         case TM1638plusBUTTON_S2:
             controlPanel->toggleLedInverseMode();
             break;
         case TM1638plusBUTTON_S3:
-            controlPanel->toggleLedSpeed();
             break;
         case TM1638plusBUTTON_S4:
             controlPanel->toggleSevenSegmentEffect();
             break;
         case TM1638plusBUTTON_S5:
-            controlPanel->toggleSevenSegmentSpeed();
+            // controlPanel->toggleSevenSegmentSpeed();
             break;
         }
     }

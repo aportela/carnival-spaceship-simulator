@@ -6,8 +6,8 @@ ModuleTM1638plus::ModuleTM1638plus(uint8_t strobePIN, uint8_t clockPIN, uint8_t 
     this->module->displayBegin();
     this->module->brightness(MAX_BRIGHTNESS);
     this->buttons = new TM1638plusButtons(this->module);
-    this->toggleLedEffect();
-    this->toggleSevenSegmentEffect();
+    // this->toggleLedEffect();
+    //  this->toggleSevenSegmentEffect();
 }
 
 ModuleTM1638plus::~ModuleTM1638plus()
@@ -30,6 +30,7 @@ ModuleTM1638plus::~ModuleTM1638plus()
 
 void ModuleTM1638plus::toggleSevenSegmentEffect(void)
 {
+    /*
     if (this->sevenSegmentDisplayEffect != nullptr)
     {
         delete this->sevenSegmentDisplayEffect;
@@ -47,6 +48,64 @@ void ModuleTM1638plus::toggleSevenSegmentEffect(void)
     default:
         break;
     }
+    */
+    if (this->ef != nullptr)
+    {
+        delete this->ef;
+        this->ef = nullptr;
+    }
+    if (this->mf != nullptr)
+    {
+        delete this->mf;
+        this->mf = nullptr;
+    }
+    // this->ef = new SimpleTextEffect(this->module, "AA BB CC", true, 500, 0, 7);
+    /*
+    const char *frames[] = {
+        "S.O.S.     ",
+        " S.O.S.    ",
+        "  S.O.S.   ",
+        "   S.O.S.  ",
+        "    S.O.S. ",
+        "     S.O.S.",
+        "    S.O.S. ",
+        "   S.O.S.  ",
+        "  S.O.S.   ",
+        " S.O.S.    ",
+        "S.O.S.     ",
+        "CASA    ",
+        " CASA   ",
+        "  CASA  ",
+        "   CASA ",
+        "    CASA",
+        "   CASA ",
+        "  CASA  ",
+        " CASA   ",
+        "CASA    ",
+        "CEAVA5  ",
+        " CEAVA5 ",
+        "  CEAVA5",
+        " CEAVA5 ",
+        "CEAVA5  ",
+        " CEAVA5 ",
+        "  CEAVA5",
+        " CEAVA5 ",
+        "CEAVA5  ",
+    };
+    */
+    const char *frames[] = {
+        "UFO     ",
+        " UFO    ",
+        "  UFO   ",
+        "   UFO  ",
+        "    UFO ",
+        "     UFO",
+        "    UFO ",
+        "   UFO  ",
+        "  UFO   ",
+        " UFO    ",
+    };
+    this->mf = new MultiFrameTextEffect(this->module, frames, sizeof(frames) / sizeof(frames[0]), 200, 0);
 }
 
 void ModuleTM1638plus::toggleSevenSegmentSpeed(void)
@@ -57,7 +116,7 @@ void ModuleTM1638plus::toggleSevenSegmentSpeed(void)
     }
 }
 
-void ModuleTM1638plus::toggleLedEffect(void)
+void ModuleTM1638plus::setLedEffect(LED_EFFECT_TYPE effect, uint16_t msDelay)
 {
     this->module->setLEDs(0);
     if (this->ledEffect != nullptr)
@@ -65,34 +124,27 @@ void ModuleTM1638plus::toggleLedEffect(void)
         delete this->ledEffect;
         this->ledEffect = nullptr;
     }
-    switch (this->currentLedEffectType)
+    switch (effect)
     {
-    case LED_EFFECT_TYPE_NONE:
-        this->currentLedEffectType = LED_EFFECT_TYPE_SCANNER;
-        this->ledEffect = new ScannerLedEffect(this->module);
-        break;
     case LED_EFFECT_TYPE_SCANNER:
-        this->currentLedEffectType = LED_EFFECT_TYPE_CHASE;
-        this->ledEffect = new ChaseLedEffect(this->module);
+        this->ledEffect = new ScannerLedEffect(this->module, msDelay);
         break;
     case LED_EFFECT_TYPE_CHASE:
-        this->currentLedEffectType = LED_EFFECT_VUMETER;
-        this->ledEffect = new VuMeterLedEffect(this->module);
+        this->ledEffect = new ChaseLedEffect(this->module, msDelay);
         break;
     case LED_EFFECT_VUMETER:
-        this->currentLedEffectType = LED_EFFECT_VUMETER_MIRRORED;
-        this->ledEffect = new VuMeterMirroredLedEffect(this->module);
+        this->ledEffect = new VuMeterLedEffect(this->module, msDelay);
         break;
     case LED_EFFECT_VUMETER_MIRRORED:
-        this->currentLedEffectType = LED_EFFECT_ALTERNATE;
-        this->ledEffect = new AlternateLedEffect(this->module);
+        this->ledEffect = new VuMeterMirroredLedEffect(this->module, msDelay);
         break;
     case LED_EFFECT_ALTERNATE:
-        this->currentLedEffectType = LED_EFFECT_TYPE_NONE;
+        this->ledEffect = new AlternateLedEffect(this->module, msDelay);
         break;
     default:
         break;
     }
+    this->currentLedEffectType = effect;
 }
 
 void ModuleTM1638plus::toggleLedInverseMode(void)
@@ -100,14 +152,6 @@ void ModuleTM1638plus::toggleLedInverseMode(void)
     if (this->currentLedEffectType != LED_EFFECT_TYPE_NONE && this->ledEffect != nullptr)
     {
         this->ledEffect->toggleInverse();
-    }
-}
-
-void ModuleTM1638plus::toggleLedSpeed(void)
-{
-    if (this->currentLedEffectType != LED_EFFECT_TYPE_NONE && this->ledEffect != nullptr)
-    {
-        this->ledEffect->toggleCurrentSpeed();
     }
 }
 
@@ -147,6 +191,14 @@ void ModuleTM1638plus::loop(void)
     }
     if (this->currentSevenSegmentEffectType != SEVEN_SEGMENT_EFFECT_TYPE_NONE && this->sevenSegmentDisplayEffect != nullptr)
     {
-        this->sevenSegmentDisplayEffect->loop();
+        // this->sevenSegmentDisplayEffect->loop();
+    }
+    if (this->ef != nullptr)
+    {
+        // this->ef->loop();
+    }
+    if (this->mf != nullptr)
+    {
+        this->mf->loop();
     }
 }

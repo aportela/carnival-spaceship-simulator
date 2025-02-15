@@ -11,7 +11,7 @@ private:
     static const uint16_t individualLedMasks[];
 
 public:
-    VuMeterMirroredLedEffect(TM1638plus *module);
+    VuMeterMirroredLedEffect(TM1638plus *module, uint16_t msDelay = DEFAULT_LED_MS_DELAY);
     ~VuMeterMirroredLedEffect();
 };
 

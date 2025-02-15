@@ -19,7 +19,7 @@ const uint16_t VuMeterLedEffect::individualLedMasks[] = {
     LED_1,
 };
 
-VuMeterLedEffect::VuMeterLedEffect(TM1638plus *module) : LedEffect(module, VuMeterLedEffect::individualLedMasks, sizeof(VuMeterLedEffect::individualLedMasks) / sizeof(VuMeterLedEffect::individualLedMasks[0]))
+VuMeterLedEffect::VuMeterLedEffect(TM1638plus *module, uint16_t msDelay) : LedEffect(module, VuMeterLedEffect::individualLedMasks, sizeof(VuMeterLedEffect::individualLedMasks) / sizeof(VuMeterLedEffect::individualLedMasks[0]), msDelay)
 {
 }
 

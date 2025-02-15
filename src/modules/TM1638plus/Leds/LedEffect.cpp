@@ -1,7 +1,7 @@
 #include "LedEffect.hpp"
 #include "Arduino.h"
 
-LedEffect::LedEffect(TM1638plus *module, const uint16_t *maskedFrames, size_t frameCount) : module(module)
+LedEffect::LedEffect(TM1638plus *module, const uint16_t *maskedFrames, size_t frameCount, uint16_t msDelay) : module(module), msDelay(msDelay)
 {
     this->totalFrames = frameCount;
     this->frames = new uint16_t[frameCount];
@@ -36,21 +36,6 @@ bool LedEffect::toggleInverse(void)
 {
     this->inverse = !this->inverse;
     return (this->inverse);
-}
-
-uint8_t LedEffect::toggleCurrentSpeed(void)
-{
-    if (this->currentSpeed <= MAX_SPEED)
-    {
-        this->currentSpeed *= 2;
-        this->msDelay = this->currentSpeed * DEFAULT_MS_DELAY;
-    }
-    else
-    {
-        this->currentSpeed = 1;
-    }
-    this->msDelay = this->currentSpeed * DEFAULT_MS_DELAY;
-    return (this->currentSpeed);
 }
 
 bool LedEffect::loop(void)

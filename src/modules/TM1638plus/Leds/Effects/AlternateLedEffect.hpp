@@ -11,7 +11,7 @@ private:
     static const uint16_t individualLedMasks[];
 
 public:
-    AlternateLedEffect(TM1638plus *module);
+    AlternateLedEffect(TM1638plus *module, uint16_t msDelay = DEFAULT_LED_MS_DELAY);
     ~AlternateLedEffect();
 };
 

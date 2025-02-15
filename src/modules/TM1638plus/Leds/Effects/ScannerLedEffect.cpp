@@ -17,7 +17,7 @@ const uint16_t ScannerLedEffect::individualLedMasks[] = {
     LED_2,
 };
 
-ScannerLedEffect::ScannerLedEffect(TM1638plus *module) : LedEffect(module, ScannerLedEffect::individualLedMasks, sizeof(ScannerLedEffect::individualLedMasks) / sizeof(ScannerLedEffect::individualLedMasks[0]))
+ScannerLedEffect::ScannerLedEffect(TM1638plus *module, uint16_t msDelay) : LedEffect(module, ScannerLedEffect::individualLedMasks, sizeof(ScannerLedEffect::individualLedMasks) / sizeof(ScannerLedEffect::individualLedMasks[0]), msDelay)
 {
 }
 

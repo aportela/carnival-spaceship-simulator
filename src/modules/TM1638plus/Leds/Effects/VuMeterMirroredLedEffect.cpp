@@ -11,7 +11,7 @@ const uint16_t VuMeterMirroredLedEffect::individualLedMasks[] = {
     LED_4 | LED_5,
 };
 
-VuMeterMirroredLedEffect::VuMeterMirroredLedEffect(TM1638plus *module) : LedEffect(module, VuMeterMirroredLedEffect::individualLedMasks, sizeof(VuMeterMirroredLedEffect::individualLedMasks) / sizeof(VuMeterMirroredLedEffect::individualLedMasks[0]))
+VuMeterMirroredLedEffect::VuMeterMirroredLedEffect(TM1638plus *module, uint16_t msDelay) : LedEffect(module, VuMeterMirroredLedEffect::individualLedMasks, sizeof(VuMeterMirroredLedEffect::individualLedMasks) / sizeof(VuMeterMirroredLedEffect::individualLedMasks[0]), msDelay)
 {
 }
 

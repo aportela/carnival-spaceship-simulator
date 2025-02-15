@@ -14,7 +14,7 @@ const uint16_t ChaseLedEffect::individualLedMasks[] = {
     LED_8,
 };
 
-ChaseLedEffect::ChaseLedEffect(TM1638plus *module) : LedEffect(module, ChaseLedEffect::individualLedMasks, sizeof(ChaseLedEffect::individualLedMasks) / sizeof(ChaseLedEffect::individualLedMasks[0]))
+ChaseLedEffect::ChaseLedEffect(TM1638plus *module, uint16_t msDelay) : LedEffect(module, ChaseLedEffect::individualLedMasks, sizeof(ChaseLedEffect::individualLedMasks) / sizeof(ChaseLedEffect::individualLedMasks[0]), msDelay)
 {
 }
 

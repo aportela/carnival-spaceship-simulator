@@ -13,6 +13,8 @@
 #include "Leds/Effects/VuMeterLedEffect.hpp"
 #include "Leds/Effects/VuMeterMirroredLedEffect.hpp"
 #include "Leds/Effects/AlternateLedEffect.hpp"
+#include "SevenSegmentDisplay/Effects/SimpleTextEffect.hpp"
+#include "SevenSegmentDisplay/Effects/MultiFrameTextEffect.hpp"
 
 #define MAX_BRIGHTNESS 8
 
@@ -38,10 +40,15 @@ private:
     TM1638plus *module = nullptr;
 
     TM1638plusButtons *buttons = nullptr;
+
     ILedEffect *ledEffect = nullptr;
-    SevenSegmentDisplayEffect *sevenSegmentDisplayEffect = nullptr;
     LED_EFFECT_TYPE currentLedEffectType = LED_EFFECT_TYPE_NONE;
+
+    SevenSegmentDisplayEffect *sevenSegmentDisplayEffect = nullptr;
     SEVEN_SEGMENT_EFFECT_TYPE currentSevenSegmentEffectType = SEVEN_SEGMENT_EFFECT_TYPE_NONE;
+
+    SimpleTextEffect *ef = nullptr;
+    MultiFrameTextEffect *mf = nullptr;
 
 public:
     ModuleTM1638plus(uint8_t strobePIN, uint8_t clockPIN, uint8_t dioPIN, bool highFreq);
@@ -52,9 +59,8 @@ public:
     void toggleSevenSegmentEffect(void);
     void toggleSevenSegmentSpeed(void);
 
-    void toggleLedEffect(void);
+    void setLedEffect(LED_EFFECT_TYPE effect, uint16_t msDelay = DEFAULT_LED_MS_DELAY);
     void toggleLedInverseMode(void);
-    void toggleLedSpeed(void);
 
     void loop(void);
 };

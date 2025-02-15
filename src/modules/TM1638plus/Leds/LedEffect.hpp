@@ -17,7 +17,7 @@
 #include "ILedEffect.hpp"
 #include <TM1638plus.h>
 
-#define DEFAULT_MS_DELAY 32
+#define DEFAULT_LED_MS_DELAY 100
 
 class LedEffect : public ILedEffect
 {
@@ -28,16 +28,14 @@ protected:
     uint16_t *frames = nullptr;
     size_t totalFrames = 0;
     size_t currentFrameIndex = 0;
-    uint8_t currentSpeed = 3;
-    uint16_t msDelay = currentSpeed * DEFAULT_MS_DELAY;
+    uint16_t msDelay = 0;
 
 public:
-    LedEffect(TM1638plus *module, const uint16_t *maskedFrames, size_t frameCount);
+    LedEffect(TM1638plus *module, const uint16_t *maskedFrames, size_t frameCount, uint16_t msDelay = DEFAULT_LED_MS_DELAY);
     ~LedEffect();
 
     bool refresh(void);
     bool toggleInverse(void) override;
-    uint8_t toggleCurrentSpeed(void) override;
     bool loop(void);
 };
 

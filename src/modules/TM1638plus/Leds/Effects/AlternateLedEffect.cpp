@@ -5,7 +5,7 @@ const uint16_t AlternateLedEffect::individualLedMasks[] = {
     LED_2 | LED_4 | LED_6 | LED_8,
 };
 
-AlternateLedEffect::AlternateLedEffect(TM1638plus *module) : LedEffect(module, AlternateLedEffect::individualLedMasks, sizeof(AlternateLedEffect::individualLedMasks) / sizeof(AlternateLedEffect::individualLedMasks[0]))
+AlternateLedEffect::AlternateLedEffect(TM1638plus *module, uint16_t msDelay) : LedEffect(module, AlternateLedEffect::individualLedMasks, sizeof(AlternateLedEffect::individualLedMasks) / sizeof(AlternateLedEffect::individualLedMasks[0]), msDelay)
 {
 }
 
