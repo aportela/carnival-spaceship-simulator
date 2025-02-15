@@ -47,6 +47,8 @@ enum SAMPLE
     SAMPLE_SOS_03 = 42,
 };
 
+typedef void (*sampleEventCallback)(SAMPLE);
+
 class Sampler
 {
 private:
@@ -61,10 +63,13 @@ private:
     SAMPLE currentSample[MAX_SIMULTANEOUS_VOICES];
     bool isPlayingSOSSample = false;
 
+    sampleEventCallback onSampleStartPlaying;
+    sampleEventCallback onSampleStopPlaying;
+
     int8_t getFirstFreeVoiceIndex(void);
 
 public:
-    Sampler(uint8_t I2S_BCK_PIN, uint8_t I2S_LRCK_PIN, uint8_t I2S_DATA_PIN);
+    Sampler(uint8_t I2S_BCK_PIN, uint8_t I2S_LRCK_PIN, uint8_t I2S_DATA_PIN, sampleEventCallback onSampleStartPlaying, sampleEventCallback onSampleStopPlaying);
     ~Sampler(void);
     void queueSample(SAMPLE sample);
     void playQueue(void);

@@ -2,7 +2,7 @@
 #include "Sampler.hpp"
 #include "Samples.hpp"
 
-Sampler::Sampler(uint8_t I2S_BCK_PIN, uint8_t I2S_LRCK_PIN, uint8_t I2S_DATA_PIN)
+Sampler::Sampler(uint8_t I2S_BCK_PIN, uint8_t I2S_LRCK_PIN, uint8_t I2S_DATA_PIN, sampleEventCallback onSampleStartPlaying, sampleEventCallback onSampleStopPlaying) : onSampleStartPlaying(onSampleStartPlaying), onSampleStopPlaying(onSampleStopPlaying)
 {
     randomSeed(analogRead(0));
     this->sampleQueue = new std::queue<SAMPLE>();
@@ -168,6 +168,10 @@ bool Sampler::play(SAMPLE sample)
             }
             this->wav[firstFreeVoiceIndex]->begin(this->file[firstFreeVoiceIndex], this->stub[firstFreeVoiceIndex]);
             this->activeVoices[firstFreeVoiceIndex] = true;
+            if (this->onSampleStartPlaying)
+            {
+                this->onSampleStartPlaying(sample);
+            }
             return (true);
         }
         else
@@ -199,6 +203,10 @@ void Sampler::loop(void)
                 this->file[i] = nullptr;
                 this->stub[i]->stop();
                 this->activeVoices[i] = false;
+                if (this->onSampleStopPlaying)
+                {
+                    this->onSampleStopPlaying(this->currentSample[i]);
+                }
                 switch (this->currentSample[i])
                 {
                 case SAMPLE_LASER1_DOUBLE:
