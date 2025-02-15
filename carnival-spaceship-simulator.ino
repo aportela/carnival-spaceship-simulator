@@ -19,8 +19,6 @@ const SAMPLE laserSamples[] = {SAMPLE_LASER1_SINGLE, SAMPLE_LASER2_SINGLE, SAMPL
 const uint8_t laserSamplesSize = sizeof(laserSamples) / sizeof(laserSamples[0]);
 
 LED_EFFECT_TYPE currentLedEffectType = LED_EFFECT_TYPE_SCANNER;
-LED_EFFECT_TYPE previousLedEffectType = LED_EFFECT_TYPE_NONE;
-bool isPlayingLaserSample = false;
 
 uint8_t currentLaserSamplesPlaying = 0;
 uint16_t laserShoots = 0;
@@ -140,14 +138,6 @@ void onSampleStartPlaying(SAMPLE sample)
     default:
         controlPanel->displayTextOnLeft7Segment("    ", false, 0);
         break;
-    }
-    if (currentLaserSamplesPlaying > 0)
-    {
-        if (previousLedEffectType == LED_EFFECT_TYPE_NONE)
-        {
-            previousLedEffectType = currentLedEffectType;
-        }
-        controlPanel->setLedEffect(LED_EFFECT_TYPE_INTERMITENT, 100);
     }
 }
 
