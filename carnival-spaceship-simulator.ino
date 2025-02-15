@@ -20,13 +20,109 @@ const uint8_t laserSamplesSize = sizeof(laserSamples) / sizeof(laserSamples[0]);
 
 LED_EFFECT_TYPE currentLedEffectType = LED_EFFECT_TYPE_SCANNER;
 
+uint16_t laserShoots = 0;
+
+void displayLaserShootCount(uint16_t count)
+{
+    if (count >= 10000) // only 4 digits (right block)
+    {
+        // reset counter
+        laserShoots = 0;
+    }
+    char buffer[5] = {'\0'};
+    snprintf(buffer, sizeof(buffer), "%04d", count);
+    controlPanel->displayTextOnRight7Segment(buffer, false, 0);
+}
+
+void onSampleStartPlaying(SAMPLE sample)
+{
+    switch (sample)
+    {
+    case SAMPLE_LASER1_SINGLE:
+        Serial.println("Started playing SAMPLE_LASER1_SINGLE");
+        displayLaserShootCount(++laserShoots);
+        controlPanel->displayTextOnLeft7Segment("1", true, 200);
+        break;
+    case SAMPLE_LASER2_SINGLE:
+        Serial.println("Started playing SAMPLE_LASER2_SINGLE");
+        displayLaserShootCount(++laserShoots);
+        controlPanel->displayTextOnLeft7Segment("2", true, 200);
+        break;
+    case SAMPLE_LASER3_SINGLE:
+        Serial.println("Started playing SAMPLE_LASER3_SINGLE");
+        displayLaserShootCount(++laserShoots);
+        controlPanel->displayTextOnLeft7Segment("3", true, 200);
+        break;
+    case SAMPLE_LASER4_SINGLE:
+        Serial.println("Started playing SAMPLE_LASER4_SINGLE");
+        displayLaserShootCount(++laserShoots);
+        controlPanel->displayTextOnLeft7Segment("4", true, 200);
+        break;
+    case SAMPLE_LASER1_DOUBLE:
+        Serial.println("Started playing SAMPLE_LASER1_DOUBLE");
+        displayLaserShootCount(laserShoots += 2);
+        controlPanel->displayTextOnLeft7Segment("11", true, 300);
+        break;
+    case SAMPLE_LASER2_DOUBLE:
+        Serial.println("Started playing SAMPLE_LASER2_DOUBLE");
+        displayLaserShootCount(laserShoots += 2);
+        controlPanel->displayTextOnLeft7Segment("22", true, 300);
+        break;
+    case SAMPLE_LASER3_DOUBLE:
+        Serial.println("Started playing SAMPLE_LASER3_DOUBLE");
+        displayLaserShootCount(laserShoots += 2);
+        controlPanel->displayTextOnLeft7Segment("33", true, 300);
+        break;
+    case SAMPLE_LASER4_DOUBLE:
+        Serial.println("Started playing SAMPLE_LASER4_DOUBLE");
+        displayLaserShootCount(laserShoots += 2);
+        controlPanel->displayTextOnLeft7Segment("44", true, 300);
+        break;
+    default:
+        controlPanel->displayTextOnLeft7Segment("    ", false, 0);
+        break;
+    }
+}
+
+void onSampleStopPlaying(SAMPLE sample)
+{
+    switch (sample)
+    {
+    case SAMPLE_LASER1_SINGLE:
+        Serial.println("Stopped playing SAMPLE_LASER1_SINGLE");
+        break;
+    case SAMPLE_LASER2_SINGLE:
+        Serial.println("Stopped playing SAMPLE_LASER2_SINGLE");
+        break;
+    case SAMPLE_LASER3_SINGLE:
+        Serial.println("Stopped playing SAMPLE_LASER3_SINGLE");
+        break;
+    case SAMPLE_LASER4_SINGLE:
+        Serial.println("Stopped playing SAMPLE_LASER4_SINGLE");
+        break;
+    case SAMPLE_LASER1_DOUBLE:
+        Serial.println("Stopped playing SAMPLE_LASER1_DOUBLE");
+        break;
+    case SAMPLE_LASER2_DOUBLE:
+        Serial.println("Stopped playing SAMPLE_LASER2_DOUBLE");
+        break;
+    case SAMPLE_LASER3_DOUBLE:
+        Serial.println("Stopped playing SAMPLE_LASER3_DOUBLE");
+        break;
+    case SAMPLE_LASER4_DOUBLE:
+        Serial.println("Stopped playing SAMPLE_LASER4_DOUBLE");
+        break;
+    }
+    controlPanel->displayTextOnRight7Segment("    ", false, 0);
+}
+
 void setup()
 {
     const uint8_t BUTTON_PINS[TOTAL_BUTTONS] = {11, 12, 13, 14, 15};
     buttons = new ExternalButtons(BUTTON_PINS);
     Serial.begin(9600);
     controlPanel = new ModuleTM1638plus(STROBE_TM, CLOCK_TM, DIO_TM, true);
-    sampler = new Sampler(I2S_BCK_PIN, I2S_LRCK_PIN, I2S_DATA_PIN);
+    sampler = new Sampler(I2S_BCK_PIN, I2S_LRCK_PIN, I2S_DATA_PIN, onSampleStartPlaying, onSampleStopPlaying);
     delay(3000);
     Serial.println("Starting...");
     controlPanel->setLedEffect(currentLedEffectType, DEFAULT_LED_MS_DELAY);
