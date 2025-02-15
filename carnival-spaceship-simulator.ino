@@ -1,27 +1,39 @@
-#include "src/modules/TM1638plus/ModuleTM1638plus.hpp"
-#include "src/modules/TM1638plus/Buttons/TM1638plusButtons.hpp"
-#include "src/modules/Audio/Sampler.hpp"
-#include "src/modules/ExternalButtons/ExternalButtons.hpp"
+#define DEBUG_SERIAL
 
-ExternalButtons *buttons = nullptr;
-ModuleTM1638plus *controlPanel = nullptr;
+#include "src/modules/ExternalButtons/ExternalButtons.hpp"
+#include "src/modules/TM1638plus/ModuleTM1638plus.hpp"
+#include "src/modules/Audio/Sampler.hpp"
+
+// TM1638 (model 1) module PIN SETTINGS
+#define TM1638_STROBE_PIN 4 // strobe
+#define TM1638_CLOCK_PIN 6  // clock
+#define TM1638_DIO_PIN 7    // data
+
+// Stereo DAC module PCM5102A PIN SETTINGS
+#define DAC_I2S_BCK_PIN 26  // bit clock
+#define DAC_I2S_LRCK_PIN 27 // left right clock
+#define DAC_I2S_DATA_PIN 28 // data in
+
+// External button PIN SETTINGS
+
+#define EXTERNAL_BUTTON1_PIN 11
+#define EXTERNAL_BUTTON2_PIN 12
+#define EXTERNAL_BUTTON3_PIN 13
+#define EXTERNAL_BUTTON4_PIN 14
+#define EXTERNAL_BUTTON5_PIN 15
+
+ExternalButtons *externalButtons = nullptr;
+ModuleTM1638plus *tm1638plus = nullptr;
 Sampler *sampler = nullptr;
 
-#define STROBE_TM 4 // strobe
-#define CLOCK_TM 6  // clock
-#define DIO_TM 7    // data
-
-#define I2S_BCK_PIN 26  // Bit Clock
-#define I2S_LRCK_PIN 27 // Left Right Clock
-#define I2S_DATA_PIN 28 // Data In
-
+// available laser samples (for "shuffle" play)
 const SAMPLE laserSamples[] = {SAMPLE_LASER1_SINGLE, SAMPLE_LASER2_SINGLE, SAMPLE_LASER3_SINGLE, SAMPLE_LASER4_SINGLE, SAMPLE_LASER1_DOUBLE, SAMPLE_LASER2_DOUBLE, SAMPLE_LASER3_DOUBLE, SAMPLE_LASER4_DOUBLE};
 const uint8_t laserSamplesSize = sizeof(laserSamples) / sizeof(laserSamples[0]);
-
-LED_EFFECT_TYPE currentLedEffectType = LED_EFFECT_TYPE_SCANNER;
-
 uint8_t currentLaserSamplesPlaying = 0;
 uint16_t laserShoots = 0;
+
+#define START_LED_EFFECT_TYPE LED_EFFECT_TYPE_SCANNER
+LED_EFFECT_TYPE currentLedEffectType = LED_EFFECT_TYPE_NONE;
 
 void displayLaserShootCount(uint16_t count)
 {
@@ -32,7 +44,7 @@ void displayLaserShootCount(uint16_t count)
     }
     char buffer[5] = {'\0'};
     snprintf(buffer, sizeof(buffer), "%04d", count);
-    controlPanel->displayTextOnRight7Segment(buffer, false, 0);
+    tm1638plus->displayTextOnRight7Segment(buffer, false, 0);
 }
 
 void onSampleStartPlaying(SAMPLE sample)
@@ -43,49 +55,49 @@ void onSampleStartPlaying(SAMPLE sample)
         Serial.println("Started playing SAMPLE_LASER1_SINGLE");
         currentLaserSamplesPlaying++;
         displayLaserShootCount(++laserShoots);
-        controlPanel->displayTextOnLeft7Segment("1", true, 200);
+        tm1638plus->displayTextOnLeft7Segment("1", true, 200);
         break;
     case SAMPLE_LASER2_SINGLE:
         Serial.println("Started playing SAMPLE_LASER2_SINGLE");
         currentLaserSamplesPlaying++;
         displayLaserShootCount(++laserShoots);
-        controlPanel->displayTextOnLeft7Segment("2", true, 200);
+        tm1638plus->displayTextOnLeft7Segment("2", true, 200);
         break;
     case SAMPLE_LASER3_SINGLE:
         Serial.println("Started playing SAMPLE_LASER3_SINGLE");
         currentLaserSamplesPlaying++;
         displayLaserShootCount(++laserShoots);
-        controlPanel->displayTextOnLeft7Segment("3", true, 200);
+        tm1638plus->displayTextOnLeft7Segment("3", true, 200);
         break;
     case SAMPLE_LASER4_SINGLE:
         Serial.println("Started playing SAMPLE_LASER4_SINGLE");
         currentLaserSamplesPlaying++;
         displayLaserShootCount(++laserShoots);
-        controlPanel->displayTextOnLeft7Segment("4", true, 200);
+        tm1638plus->displayTextOnLeft7Segment("4", true, 200);
         break;
     case SAMPLE_LASER1_DOUBLE:
         Serial.println("Started playing SAMPLE_LASER1_DOUBLE");
         currentLaserSamplesPlaying++;
         displayLaserShootCount(laserShoots += 2);
-        controlPanel->displayTextOnLeft7Segment("11", true, 300);
+        tm1638plus->displayTextOnLeft7Segment("11", true, 300);
         break;
     case SAMPLE_LASER2_DOUBLE:
         Serial.println("Started playing SAMPLE_LASER2_DOUBLE");
         currentLaserSamplesPlaying++;
         displayLaserShootCount(laserShoots += 2);
-        controlPanel->displayTextOnLeft7Segment("22", true, 300);
+        tm1638plus->displayTextOnLeft7Segment("22", true, 300);
         break;
     case SAMPLE_LASER3_DOUBLE:
         Serial.println("Started playing SAMPLE_LASER3_DOUBLE");
         currentLaserSamplesPlaying++;
         displayLaserShootCount(laserShoots += 2);
-        controlPanel->displayTextOnLeft7Segment("33", true, 300);
+        tm1638plus->displayTextOnLeft7Segment("33", true, 300);
         break;
     case SAMPLE_LASER4_DOUBLE:
         Serial.println("Started playing SAMPLE_LASER4_DOUBLE");
         currentLaserSamplesPlaying++;
         displayLaserShootCount(laserShoots += 2);
-        controlPanel->displayTextOnLeft7Segment("44", true, 300);
+        tm1638plus->displayTextOnLeft7Segment("44", true, 300);
         break;
     case SAMPLE_ALARM_REVERB:
         Serial.println("Started playing SAMPLE_ALARM_REVERB");
@@ -136,7 +148,7 @@ void onSampleStartPlaying(SAMPLE sample)
         Serial.println("Started playing SAMPLE_SOS_03");
         break;
     default:
-        controlPanel->displayTextOnLeft7Segment("    ", false, 0);
+        tm1638plus->displayTextOnLeft7Segment("    ", false, 0);
         break;
     }
 }
@@ -240,57 +252,62 @@ void onSampleStopPlaying(SAMPLE sample)
         Serial.println("Stopped playing SAMPLE_SOS_03");
         break;
     }
-    controlPanel->displayTextOnLeft7Segment("    ", false, 0);
-    controlPanel->displayTextOnRight7Segment("    ", false, 0);
+    tm1638plus->displayTextOnLeft7Segment("    ", false, 0);
+    tm1638plus->displayTextOnRight7Segment("    ", false, 0);
 }
 
 void setup()
 {
-    delay(2000);
-    Serial.println("Starting...");
-    const uint8_t BUTTON_PINS[TOTAL_BUTTONS] = {11, 12, 13, 14, 15};
-    buttons = new ExternalButtons(BUTTON_PINS);
     Serial.begin(9600);
-    controlPanel = new ModuleTM1638plus(STROBE_TM, CLOCK_TM, DIO_TM, true);
-    sampler = new Sampler(I2S_BCK_PIN, I2S_LRCK_PIN, I2S_DATA_PIN, onSampleStartPlaying, onSampleStopPlaying);
-    controlPanel->setLedEffect(currentLedEffectType, DEFAULT_LED_MS_DELAY);
+    const uint8_t BUTTON_PINS[TOTAL_EXTERNAL_BUTTONS] = {EXTERNAL_BUTTON1_PIN, EXTERNAL_BUTTON2_PIN, EXTERNAL_BUTTON3_PIN, EXTERNAL_BUTTON4_PIN, EXTERNAL_BUTTON5_PIN};
+    externalButtons = new ExternalButtons(BUTTON_PINS);
+    tm1638plus = new ModuleTM1638plus(TM1638_STROBE_PIN, TM1638_CLOCK_PIN, TM1638_DIO_PIN, true);
+    tm1638plus->setLedEffect(START_LED_EFFECT_TYPE, DEFAULT_LED_MS_DELAY);
+    sampler = new Sampler(DAC_I2S_BCK_PIN, DAC_I2S_LRCK_PIN, DAC_I2S_DATA_PIN, onSampleStartPlaying, onSampleStopPlaying);
     sampler->play(SAMPLE_ALARM_REVERB);
 }
 
 void loop()
 {
-    switch (buttons->loop())
+    switch (externalButtons->loop())
     {
     case EXTERNAL_BUTTON_1:
-        Serial.println("BUTTON1");
+#ifdef DEBUG_SERIAL
+        Serial.println("External button 1 pressed... enqueue random laser sample");
+#endif
         sampler->queueSample(laserSamples[random(0, laserSamplesSize)]);
         break;
     case EXTERNAL_BUTTON_2:
-        Serial.println("BUTTON2");
+#ifdef DEBUG_SERIAL
+        Serial.println("External button 2 pressed... enqueue random laser sample");
+#endif
         sampler->queueSample(laserSamples[random(0, laserSamplesSize)]);
         break;
     case EXTERNAL_BUTTON_3:
-        Serial.println("BUTTON3");
-        // sampler->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1);
-        sampler->queueSample(SAMPLE_DIRTY_SYREN_1);
+#ifdef DEBUG_SERIAL
+        Serial.println("External button 3 pressed");
+#endif
         break;
     case EXTERNAL_BUTTON_4:
-        Serial.println("BUTTON4");
-        // sampler->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1);
-        sampler->queueSample(SAMPLE_DIRTY_SYREN_2);
+#ifdef DEBUG_SERIAL
+        Serial.println("External button 4 pressed");
+#endif
         break;
     case EXTERNAL_BUTTON_5:
-        Serial.println("BUTTON5");
-        sampler->queueSample(SAMPLE_SOS_01);
+#ifdef DEBUG_SERIAL
+        Serial.println("External button 5 pressed");
+#endif
         break;
     }
-    TM1638plusBUTTON controlPanelPressedButton = controlPanel->checkPressedButton();
-    if (controlPanelPressedButton != TM1638plusBUTTON_NONE)
+    TM1638plusBUTTON tm1638plusPressedButton = tm1638plus->checkPressedButton();
+    if (tm1638plusPressedButton != TM1638plusBUTTON_NONE)
     {
-        Serial.println("Control panel button pressed");
-        switch (controlPanelPressedButton)
+        switch (tm1638plusPressedButton)
         {
         case TM1638plusBUTTON_S1:
+#ifdef DEBUG_SERIAL
+            Serial.println("TM1638plus button 1 pressed");
+#endif
             switch (currentLedEffectType)
             {
             case LED_EFFECT_TYPE_NONE:
@@ -318,27 +335,52 @@ void loop()
                 currentLedEffectType = LED_EFFECT_TYPE_NONE;
                 break;
             }
-            controlPanel->setLedEffect(currentLedEffectType, DEFAULT_LED_MS_DELAY);
+            tm1638plus->setLedEffect(currentLedEffectType, DEFAULT_LED_MS_DELAY);
             break;
         case TM1638plusBUTTON_S2:
-            controlPanel->toggleLedInverseMode();
+#ifdef DEBUG_SERIAL
+            Serial.println("TM1638plus button 2 pressed");
+#endif
+            tm1638plus->toggleLedInverseMode();
             break;
         case TM1638plusBUTTON_S3:
+#ifdef DEBUG_SERIAL
+            Serial.println("TM1638plus button 3 pressed");
+#endif
             break;
         case TM1638plusBUTTON_S4:
-            controlPanel->toggleSevenSegmentEffect();
+#ifdef DEBUG_SERIAL
+            Serial.println("TM1638plus button 4 pressed");
+#endif
+            // tm1638plus->toggleSevenSegmentEffect();
             break;
         case TM1638plusBUTTON_S5:
-            // controlPanel->toggleSevenSegmentSpeed();
+#ifdef DEBUG_SERIAL
+            Serial.println("TM1638plus button 5 pressed");
+#endif
+            // tm1638plus->toggleSevenSegmentSpeed();
+            break;
+        case TM1638plusBUTTON_S6:
+#ifdef DEBUG_SERIAL
+            Serial.println("TM1638plus button 6 pressed");
+#endif
+            // tm1638plus->toggleSevenSegmentSpeed();
             break;
         case TM1638plusBUTTON_S7:
-            sampler->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1);
+#ifdef DEBUG_SERIAL
+            Serial.println("TM1638plus button 6 pressed");
+#endif
+
+            // sampler->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1);
             break;
         case TM1638plusBUTTON_S8:
-            sampler->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1);
+#ifdef DEBUG_SERIAL
+            Serial.println("TM1638plus button 6 pressed");
+#endif
+            // sampler->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1);
             break;
         }
     }
-    controlPanel->loop();
+    tm1638plus->loop();
     sampler->loop();
 }
