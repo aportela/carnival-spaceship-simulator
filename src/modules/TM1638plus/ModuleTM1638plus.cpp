@@ -210,6 +210,18 @@ TM1638plusBUTTON ModuleTM1638plus::checkPressedButton()
     {
         pressedButton = TM1638plusBUTTON_S5;
     }
+    if (pressedButtons == TM1638plusBUTTON_S6)
+    {
+        pressedButton = TM1638plusBUTTON_S6;
+    }
+    if (pressedButtons == TM1638plusBUTTON_S7)
+    {
+        pressedButton = TM1638plusBUTTON_S7;
+    }
+    if (pressedButtons == TM1638plusBUTTON_S8)
+    {
+        pressedButton = TM1638plusBUTTON_S8;
+    }
     return (pressedButton);
 }
 
