@@ -36,6 +36,7 @@ public:
 
     bool refresh(void);
     bool toggleInverse(void) override;
+    void setDelay(uint16_t msDelay);
     bool loop(void) override;
 };
 

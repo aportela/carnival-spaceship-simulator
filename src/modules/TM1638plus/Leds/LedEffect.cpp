@@ -38,6 +38,11 @@ bool LedEffect::toggleInverse(void)
     return (this->inverse);
 }
 
+void LedEffect::setDelay(uint16_t msDelay)
+{
+    this->msDelay = msDelay;
+}
+
 bool LedEffect::loop(void)
 {
     if (this->refresh())
