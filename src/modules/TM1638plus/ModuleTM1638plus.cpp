@@ -141,6 +141,9 @@ void ModuleTM1638plus::setLedEffect(LED_EFFECT_TYPE effect, uint16_t msDelay)
     case LED_EFFECT_ALTERNATE:
         this->ledEffect = new AlternateLedEffect(this->module, msDelay);
         break;
+    case LED_EFFECT_INTERMITENT:
+        this->ledEffect = new IntermitentLedEffect(this->module, msDelay);
+        break;
     default:
         break;
     }

@@ -36,7 +36,7 @@ public:
 
     bool refresh(void);
     bool toggleInverse(void) override;
-    bool loop(void);
+    bool loop(void) override;
 };
 
 #endif // TM1638_PLUS_LED_EFFECT_H

@@ -292,6 +292,9 @@ void loop()
                 currentLedEffectType = LED_EFFECT_ALTERNATE;
                 break;
             case LED_EFFECT_ALTERNATE:
+                currentLedEffectType = LED_EFFECT_INTERMITENT;
+                break;
+            case LED_EFFECT_INTERMITENT:
                 currentLedEffectType = LED_EFFECT_TYPE_NONE;
                 break;
             default:

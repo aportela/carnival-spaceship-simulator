@@ -13,6 +13,7 @@
 #include "Leds/Effects/VuMeterLedEffect.hpp"
 #include "Leds/Effects/VuMeterMirroredLedEffect.hpp"
 #include "Leds/Effects/AlternateLedEffect.hpp"
+#include "Leds/Effects/IntermitentLedEffect.hpp"
 #include "SevenSegmentDisplay/Effects/SimpleTextEffect.hpp"
 #include "SevenSegmentDisplay/Effects/MultiFrameTextEffect.hpp"
 
@@ -26,6 +27,7 @@ enum LED_EFFECT_TYPE
     LED_EFFECT_VUMETER = 3,
     LED_EFFECT_VUMETER_MIRRORED = 4,
     LED_EFFECT_ALTERNATE = 5,
+    LED_EFFECT_INTERMITENT = 6,
 };
 
 enum SEVEN_SEGMENT_EFFECT_TYPE
