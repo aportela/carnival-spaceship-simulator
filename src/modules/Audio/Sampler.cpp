@@ -210,40 +210,40 @@ void Sampler::loop(void)
                 switch (this->currentSample[i])
                 {
                 case SAMPLE_LASER1_DOUBLE:
-                    this->queueSample(SAMPLE_LASER1_SINGLE);
+                    // this->queueSample(SAMPLE_LASER1_SINGLE);
                     break;
                 case SAMPLE_LASER2_DOUBLE:
-                    this->queueSample(SAMPLE_LASER2_SINGLE);
+                    // this->queueSample(SAMPLE_LASER2_SINGLE);
                     break;
                 case SAMPLE_LASER3_DOUBLE:
-                    this->queueSample(SAMPLE_LASER3_SINGLE);
+                    // this->queueSample(SAMPLE_LASER3_SINGLE);
                     break;
                 case SAMPLE_LASER4_DOUBLE:
-                    this->queueSample(SAMPLE_LASER4_SINGLE);
+                    // this->queueSample(SAMPLE_LASER4_SINGLE);
                     break;
                 case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1:
-                    this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2);
+                    // this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2);
                     break;
                 case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2:
-                    this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3);
+                    // this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3);
                     break;
                 case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3:
-                    this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4);
+                    // this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4);
                     break;
                 case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4:
-                    this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5);
+                    // this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5);
                     break;
                 case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1:
-                    this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2);
+                    // this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2);
                     break;
                 case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2:
-                    this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3);
+                    // this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3);
                     break;
                 case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3:
-                    this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4);
+                    // this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4);
                     break;
                 case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4:
-                    this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5);
+                    // this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5);
                     break;
                 case SAMPLE_ALIEN_VOICE_01:
                     this->queueSample(SAMPLE_ALIEN_VOICE_02);
