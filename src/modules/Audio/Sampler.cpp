@@ -255,10 +255,10 @@ void Sampler::loop(void)
                     this->queueSample(SAMPLE_ALIEN_VOICE_04);
                     break;
                 case SAMPLE_SOS_01:
-                    this->queueSample(SAMPLE_SOS_02);
+                    // this->queueSample(SAMPLE_SOS_02);
                     break;
                 case SAMPLE_SOS_02:
-                    this->queueSample(SAMPLE_SOS_03);
+                    // this->queueSample(SAMPLE_SOS_03);
                     break;
                 case SAMPLE_SOS_03:
                     this->isPlayingSOSSample = false;

@@ -117,6 +117,15 @@ void onSampleStartPlaying(SAMPLE sample)
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5:
         Serial.println("Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5");
         break;
+    case SAMPLE_SOS_01:
+        Serial.println("Started playing SAMPLE_SOS_01");
+        break;
+    case SAMPLE_SOS_02:
+        Serial.println("Started playing SAMPLE_SOS_02");
+        break;
+    case SAMPLE_SOS_03:
+        Serial.println("Started playing SAMPLE_SOS_03");
+        break;
     default:
         controlPanel->displayTextOnLeft7Segment("    ", false, 0);
         break;
@@ -202,6 +211,17 @@ void onSampleStopPlaying(SAMPLE sample)
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5:
         Serial.println("Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5");
         break;
+    case SAMPLE_SOS_01:
+        Serial.println("Stopped playing SAMPLE_SOS_01");
+        sampler->queueSample(SAMPLE_SOS_02);
+        break;
+    case SAMPLE_SOS_02:
+        Serial.println("Stopped playing SAMPLE_SOS_02");
+        sampler->queueSample(SAMPLE_SOS_03);
+        break;
+    case SAMPLE_SOS_03:
+        Serial.println("Stopped playing SAMPLE_SOS_03");
+        break;
     }
     controlPanel->displayTextOnLeft7Segment("    ", false, 0);
     controlPanel->displayTextOnRight7Segment("    ", false, 0);
@@ -209,13 +229,13 @@ void onSampleStopPlaying(SAMPLE sample)
 
 void setup()
 {
+    delay(2000);
+    Serial.println("Starting...");
     const uint8_t BUTTON_PINS[TOTAL_BUTTONS] = {11, 12, 13, 14, 15};
     buttons = new ExternalButtons(BUTTON_PINS);
     Serial.begin(9600);
     controlPanel = new ModuleTM1638plus(STROBE_TM, CLOCK_TM, DIO_TM, true);
     sampler = new Sampler(I2S_BCK_PIN, I2S_LRCK_PIN, I2S_DATA_PIN, onSampleStartPlaying, onSampleStopPlaying);
-    delay(3000);
-    Serial.println("Starting...");
     controlPanel->setLedEffect(currentLedEffectType, DEFAULT_LED_MS_DELAY);
     sampler->play(SAMPLE_ALARM_REVERB);
 }
