@@ -118,36 +118,43 @@ void ModuleTM1638plus::toggleSevenSegmentSpeed(void)
 
 void ModuleTM1638plus::setLedEffect(LED_EFFECT_TYPE effect, uint16_t msDelay)
 {
-    this->module->setLEDs(0);
-    if (this->ledEffect != nullptr)
+    if (effect != this->currentLedEffectType)
     {
-        delete this->ledEffect;
-        this->ledEffect = nullptr;
+        this->module->setLEDs(0);
+        if (this->ledEffect != nullptr)
+        {
+            delete this->ledEffect;
+            this->ledEffect = nullptr;
+        }
+        switch (effect)
+        {
+        case LED_EFFECT_TYPE_SCANNER:
+            this->ledEffect = new ScannerLedEffect(this->module, msDelay);
+            break;
+        case LED_EFFECT_TYPE_CHASE:
+            this->ledEffect = new ChaseLedEffect(this->module, msDelay);
+            break;
+        case LED_EFFECT_TYPE_VUMETER:
+            this->ledEffect = new VuMeterLedEffect(this->module, msDelay);
+            break;
+        case LED_EFFECT_TYPE_VUMETER_MIRRORED:
+            this->ledEffect = new VuMeterMirroredLedEffect(this->module, msDelay);
+            break;
+        case LED_EFFECT_TYPE_ALTERNATE:
+            this->ledEffect = new AlternateLedEffect(this->module, msDelay);
+            break;
+        case LED_EFFECT_TYPE_INTERMITENT:
+            this->ledEffect = new IntermitentLedEffect(this->module, msDelay);
+            break;
+        default:
+            break;
+        }
+        this->currentLedEffectType = effect;
     }
-    switch (effect)
+    else
     {
-    case LED_EFFECT_TYPE_SCANNER:
-        this->ledEffect = new ScannerLedEffect(this->module, msDelay);
-        break;
-    case LED_EFFECT_TYPE_CHASE:
-        this->ledEffect = new ChaseLedEffect(this->module, msDelay);
-        break;
-    case LED_EFFECT_TYPE_VUMETER:
-        this->ledEffect = new VuMeterLedEffect(this->module, msDelay);
-        break;
-    case LED_EFFECT_TYPE_VUMETER_MIRRORED:
-        this->ledEffect = new VuMeterMirroredLedEffect(this->module, msDelay);
-        break;
-    case LED_EFFECT_TYPE_ALTERNATE:
-        this->ledEffect = new AlternateLedEffect(this->module, msDelay);
-        break;
-    case LED_EFFECT_TYPE_INTERMITENT:
-        this->ledEffect = new IntermitentLedEffect(this->module, msDelay);
-        break;
-    default:
-        break;
+        this->ledEffect->setDelay(msDelay);
     }
-    this->currentLedEffectType = effect;
 }
 
 void ModuleTM1638plus::toggleLedInverseMode(void)
