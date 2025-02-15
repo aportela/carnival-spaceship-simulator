@@ -19,7 +19,10 @@ const SAMPLE laserSamples[] = {SAMPLE_LASER1_SINGLE, SAMPLE_LASER2_SINGLE, SAMPL
 const uint8_t laserSamplesSize = sizeof(laserSamples) / sizeof(laserSamples[0]);
 
 LED_EFFECT_TYPE currentLedEffectType = LED_EFFECT_TYPE_SCANNER;
+LED_EFFECT_TYPE previousLedEffectType = LED_EFFECT_TYPE_NONE;
+bool isPlayingLaserSample = false;
 
+uint8_t currentLaserSamplesPlaying = 0;
 uint16_t laserShoots = 0;
 
 void displayLaserShootCount(uint16_t count)
@@ -40,41 +43,49 @@ void onSampleStartPlaying(SAMPLE sample)
     {
     case SAMPLE_LASER1_SINGLE:
         Serial.println("Started playing SAMPLE_LASER1_SINGLE");
+        currentLaserSamplesPlaying++;
         displayLaserShootCount(++laserShoots);
         controlPanel->displayTextOnLeft7Segment("1", true, 200);
         break;
     case SAMPLE_LASER2_SINGLE:
         Serial.println("Started playing SAMPLE_LASER2_SINGLE");
+        currentLaserSamplesPlaying++;
         displayLaserShootCount(++laserShoots);
         controlPanel->displayTextOnLeft7Segment("2", true, 200);
         break;
     case SAMPLE_LASER3_SINGLE:
         Serial.println("Started playing SAMPLE_LASER3_SINGLE");
+        currentLaserSamplesPlaying++;
         displayLaserShootCount(++laserShoots);
         controlPanel->displayTextOnLeft7Segment("3", true, 200);
         break;
     case SAMPLE_LASER4_SINGLE:
         Serial.println("Started playing SAMPLE_LASER4_SINGLE");
+        currentLaserSamplesPlaying++;
         displayLaserShootCount(++laserShoots);
         controlPanel->displayTextOnLeft7Segment("4", true, 200);
         break;
     case SAMPLE_LASER1_DOUBLE:
         Serial.println("Started playing SAMPLE_LASER1_DOUBLE");
+        currentLaserSamplesPlaying++;
         displayLaserShootCount(laserShoots += 2);
         controlPanel->displayTextOnLeft7Segment("11", true, 300);
         break;
     case SAMPLE_LASER2_DOUBLE:
         Serial.println("Started playing SAMPLE_LASER2_DOUBLE");
+        currentLaserSamplesPlaying++;
         displayLaserShootCount(laserShoots += 2);
         controlPanel->displayTextOnLeft7Segment("22", true, 300);
         break;
     case SAMPLE_LASER3_DOUBLE:
         Serial.println("Started playing SAMPLE_LASER3_DOUBLE");
+        currentLaserSamplesPlaying++;
         displayLaserShootCount(laserShoots += 2);
         controlPanel->displayTextOnLeft7Segment("33", true, 300);
         break;
     case SAMPLE_LASER4_DOUBLE:
         Serial.println("Started playing SAMPLE_LASER4_DOUBLE");
+        currentLaserSamplesPlaying++;
         displayLaserShootCount(laserShoots += 2);
         controlPanel->displayTextOnLeft7Segment("44", true, 300);
         break;
@@ -130,6 +141,14 @@ void onSampleStartPlaying(SAMPLE sample)
         controlPanel->displayTextOnLeft7Segment("    ", false, 0);
         break;
     }
+    if (currentLaserSamplesPlaying > 0)
+    {
+        if (previousLedEffectType == LED_EFFECT_TYPE_NONE)
+        {
+            previousLedEffectType = currentLedEffectType;
+        }
+        controlPanel->setLedEffect(LED_EFFECT_TYPE_INTERMITENT, 100);
+    }
 }
 
 void onSampleStopPlaying(SAMPLE sample)
@@ -138,30 +157,38 @@ void onSampleStopPlaying(SAMPLE sample)
     {
     case SAMPLE_LASER1_SINGLE:
         Serial.println("Stopped playing SAMPLE_LASER1_SINGLE");
+        currentLaserSamplesPlaying--;
         break;
     case SAMPLE_LASER2_SINGLE:
         Serial.println("Stopped playing SAMPLE_LASER2_SINGLE");
+        currentLaserSamplesPlaying--;
         break;
     case SAMPLE_LASER3_SINGLE:
         Serial.println("Stopped playing SAMPLE_LASER3_SINGLE");
+        currentLaserSamplesPlaying--;
         break;
     case SAMPLE_LASER4_SINGLE:
         Serial.println("Stopped playing SAMPLE_LASER4_SINGLE");
+        currentLaserSamplesPlaying--;
         break;
     case SAMPLE_LASER1_DOUBLE:
         Serial.println("Stopped playing SAMPLE_LASER1_DOUBLE");
+        currentLaserSamplesPlaying--;
         sampler->queueSample(SAMPLE_LASER1_SINGLE);
         break;
     case SAMPLE_LASER2_DOUBLE:
         Serial.println("Stopped playing SAMPLE_LASER2_DOUBLE");
+        currentLaserSamplesPlaying--;
         sampler->queueSample(SAMPLE_LASER2_SINGLE);
         break;
     case SAMPLE_LASER3_DOUBLE:
         Serial.println("Stopped playing SAMPLE_LASER3_DOUBLE");
+        currentLaserSamplesPlaying--;
         sampler->queueSample(SAMPLE_LASER3_SINGLE);
         break;
     case SAMPLE_LASER4_DOUBLE:
         Serial.println("Stopped playing SAMPLE_LASER4_DOUBLE");
+        currentLaserSamplesPlaying--;
         sampler->queueSample(SAMPLE_LASER4_SINGLE);
         break;
     case SAMPLE_ALARM_REVERB:
@@ -283,18 +310,18 @@ void loop()
                 currentLedEffectType = LED_EFFECT_TYPE_CHASE;
                 break;
             case LED_EFFECT_TYPE_CHASE:
-                currentLedEffectType = LED_EFFECT_VUMETER;
+                currentLedEffectType = LED_EFFECT_TYPE_VUMETER;
                 break;
-            case LED_EFFECT_VUMETER:
-                currentLedEffectType = LED_EFFECT_VUMETER_MIRRORED;
+            case LED_EFFECT_TYPE_VUMETER:
+                currentLedEffectType = LED_EFFECT_TYPE_VUMETER_MIRRORED;
                 break;
-            case LED_EFFECT_VUMETER_MIRRORED:
-                currentLedEffectType = LED_EFFECT_ALTERNATE;
+            case LED_EFFECT_TYPE_VUMETER_MIRRORED:
+                currentLedEffectType = LED_EFFECT_TYPE_ALTERNATE;
                 break;
-            case LED_EFFECT_ALTERNATE:
-                currentLedEffectType = LED_EFFECT_INTERMITENT;
+            case LED_EFFECT_TYPE_ALTERNATE:
+                currentLedEffectType = LED_EFFECT_TYPE_INTERMITENT;
                 break;
-            case LED_EFFECT_INTERMITENT:
+            case LED_EFFECT_TYPE_INTERMITENT:
                 currentLedEffectType = LED_EFFECT_TYPE_NONE;
                 break;
             default:

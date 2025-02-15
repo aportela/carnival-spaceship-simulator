@@ -132,16 +132,16 @@ void ModuleTM1638plus::setLedEffect(LED_EFFECT_TYPE effect, uint16_t msDelay)
     case LED_EFFECT_TYPE_CHASE:
         this->ledEffect = new ChaseLedEffect(this->module, msDelay);
         break;
-    case LED_EFFECT_VUMETER:
+    case LED_EFFECT_TYPE_VUMETER:
         this->ledEffect = new VuMeterLedEffect(this->module, msDelay);
         break;
-    case LED_EFFECT_VUMETER_MIRRORED:
+    case LED_EFFECT_TYPE_VUMETER_MIRRORED:
         this->ledEffect = new VuMeterMirroredLedEffect(this->module, msDelay);
         break;
-    case LED_EFFECT_ALTERNATE:
+    case LED_EFFECT_TYPE_ALTERNATE:
         this->ledEffect = new AlternateLedEffect(this->module, msDelay);
         break;
-    case LED_EFFECT_INTERMITENT:
+    case LED_EFFECT_TYPE_INTERMITENT:
         this->ledEffect = new IntermitentLedEffect(this->module, msDelay);
         break;
     default:
