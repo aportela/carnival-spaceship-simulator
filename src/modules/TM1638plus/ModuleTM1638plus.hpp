@@ -1,4 +1,3 @@
-
 #ifndef MODULE_TM1638_PLUS_H
 #define MODULE_TM1638_PLUS_H
 
