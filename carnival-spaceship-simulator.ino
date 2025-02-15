@@ -3,6 +3,7 @@
 #include "src/modules/ExternalButtons/ExternalButtons.hpp"
 #include "src/modules/TM1638plus/ModuleTM1638plus.hpp"
 #include "src/modules/Audio/Sampler.hpp"
+#include "src/Events.hpp"
 
 // TM1638 (model 1) module PIN SETTINGS
 #define TM1638_STROBE_PIN 4 // strobe
@@ -25,6 +26,8 @@
 ExternalButtons *externalButtons = nullptr;
 ModuleTM1638plus *tm1638plus = nullptr;
 Sampler *sampler = nullptr;
+
+Events *events = nullptr;
 
 // available laser samples (for "shuffle" play)
 const SAMPLE laserSamples[] = {SAMPLE_LASER1_SINGLE, SAMPLE_LASER2_SINGLE, SAMPLE_LASER3_SINGLE, SAMPLE_LASER4_SINGLE, SAMPLE_LASER1_DOUBLE, SAMPLE_LASER2_DOUBLE, SAMPLE_LASER3_DOUBLE, SAMPLE_LASER4_DOUBLE};
@@ -261,7 +264,9 @@ void setup()
     delay(2000);
     Serial.begin(9600);
 #ifdef DEBUG_SERIAL
+    Serial.println("########################################");
     Serial.println("Carnival spaceship simulator starting...");
+    Serial.println("########################################");
 #endif
     const uint8_t BUTTON_PINS[TOTAL_EXTERNAL_BUTTONS] = {EXTERNAL_BUTTON1_PIN, EXTERNAL_BUTTON2_PIN, EXTERNAL_BUTTON3_PIN, EXTERNAL_BUTTON4_PIN, EXTERNAL_BUTTON5_PIN};
 #ifdef DEBUG_SERIAL
@@ -281,8 +286,11 @@ void setup()
     sampler = new Sampler(DAC_I2S_BCK_PIN, DAC_I2S_LRCK_PIN, DAC_I2S_DATA_PIN, onSampleStartPlaying, onSampleStopPlaying);
 #ifdef DEBUG_SERIAL
     Serial.println("ok!");
+    Serial.print("Setting global events handler...");
 #endif
+    events = new Events();
 #ifdef DEBUG_SERIAL
+    Serial.println("ok!");
     Serial.println("Playing init sample");
 #endif
     sampler->play(SAMPLE_ALARM_REVERB);
@@ -290,6 +298,7 @@ void setup()
 
 void loop()
 {
+    // events->onExternalButton(externalButtons->loop());
     switch (externalButtons->loop())
     {
     case EXTERNAL_BUTTON_1:
