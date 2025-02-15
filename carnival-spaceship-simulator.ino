@@ -258,12 +258,33 @@ void onSampleStopPlaying(SAMPLE sample)
 
 void setup()
 {
+    delay(2000);
     Serial.begin(9600);
+#ifdef DEBUG_SERIAL
+    Serial.println("Carnival spaceship simulator starting...");
+#endif
     const uint8_t BUTTON_PINS[TOTAL_EXTERNAL_BUTTONS] = {EXTERNAL_BUTTON1_PIN, EXTERNAL_BUTTON2_PIN, EXTERNAL_BUTTON3_PIN, EXTERNAL_BUTTON4_PIN, EXTERNAL_BUTTON5_PIN};
+#ifdef DEBUG_SERIAL
+    Serial.print("Setting external buttons...");
+#endif
     externalButtons = new ExternalButtons(BUTTON_PINS);
+#ifdef DEBUG_SERIAL
+    Serial.println("ok!");
+    Serial.print("Setting TM1638plus module...");
+#endif
     tm1638plus = new ModuleTM1638plus(TM1638_STROBE_PIN, TM1638_CLOCK_PIN, TM1638_DIO_PIN, true);
     tm1638plus->setLedEffect(START_LED_EFFECT_TYPE, DEFAULT_LED_MS_DELAY);
+#ifdef DEBUG_SERIAL
+    Serial.println("ok!");
+    Serial.print("Setting PCM5102A module...");
+#endif
     sampler = new Sampler(DAC_I2S_BCK_PIN, DAC_I2S_LRCK_PIN, DAC_I2S_DATA_PIN, onSampleStartPlaying, onSampleStopPlaying);
+#ifdef DEBUG_SERIAL
+    Serial.println("ok!");
+#endif
+#ifdef DEBUG_SERIAL
+    Serial.println("Playing init sample");
+#endif
     sampler->play(SAMPLE_ALARM_REVERB);
 }
 
