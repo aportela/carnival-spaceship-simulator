@@ -1,6 +1,6 @@
 
-#ifndef MODULE_TM1638_PLUS
-#define MODULE_TM1638_PLUS
+#ifndef MODULE_TM1638_PLUS_H
+#define MODULE_TM1638_PLUS_H
 
 #include <stdint.h>
 #include <TM1638plus.h>
@@ -75,4 +75,4 @@ public:
     void loop(void);
 };
 
-#endif // MODULE_TM1638_PLUS
+#endif // MODULE_TM1638_PLUS_H
