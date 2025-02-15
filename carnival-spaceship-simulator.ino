@@ -298,8 +298,8 @@ void setup()
 
 void loop()
 {
-    // events->onExternalButton(externalButtons->loop());
-    switch (externalButtons->loop())
+    // events->onExternalButton(externalButtons->getPressedButton());
+    switch (externalButtons->getPressedButton())
     {
     case EXTERNAL_BUTTON_1:
 #ifdef DEBUG_SERIAL

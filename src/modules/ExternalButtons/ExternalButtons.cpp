@@ -19,7 +19,7 @@ ExternalButtons::~ExternalButtons()
     }
 }
 
-EXTERNAL_BUTTON ExternalButtons::loop(void)
+EXTERNAL_BUTTON ExternalButtons::getPressedButton(void)
 {
     if (this->pressed)
     {

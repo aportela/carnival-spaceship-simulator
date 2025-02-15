@@ -34,7 +34,7 @@ public:
     ExternalButtons(const uint8_t BUTTON_PINS[TOTAL_EXTERNAL_BUTTONS]);
     ~ExternalButtons();
 
-    EXTERNAL_BUTTON loop(void);
+    EXTERNAL_BUTTON getPressedButton(void);
 };
 
 #endif // EXTERNAL_BUTTONS_H
