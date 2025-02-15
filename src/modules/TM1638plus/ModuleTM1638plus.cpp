@@ -155,6 +155,36 @@ void ModuleTM1638plus::toggleLedInverseMode(void)
     }
 }
 
+void ModuleTM1638plus::displayTextOnLeft7Segment(const char *text, bool blink, uint16_t blinkTimeout)
+{
+    if (this->textEffectLeft != nullptr)
+    {
+        delete this->textEffectLeft;
+        this->textEffectLeft = nullptr;
+    }
+    this->textEffectLeft = new SimpleTextEffect(this->module, text, blink, blinkTimeout, 0, 4);
+}
+
+void ModuleTM1638plus::displayTextOnRight7Segment(const char *text, bool blink, uint16_t blinkTimeout)
+{
+    if (this->textEffectRight != nullptr)
+    {
+        delete this->textEffectRight;
+        this->textEffectRight = nullptr;
+    }
+    this->textEffectRight = new SimpleTextEffect(this->module, text, blink, blinkTimeout, 4, 8);
+}
+
+void ModuleTM1638plus::displayTextOnFull7Segment(const char *text, bool blink, uint16_t blinkTimeout)
+{
+    if (this->textEffectRight != nullptr)
+    {
+        delete this->textEffectRight;
+        this->textEffectRight = nullptr;
+    }
+    this->textEffectRight = new SimpleTextEffect(this->module, text, blink, blinkTimeout, 0, 8);
+}
+
 TM1638plusBUTTON ModuleTM1638plus::checkPressedButton()
 {
     uint8_t pressedButtons = this->buttons->loop();
@@ -200,5 +230,13 @@ void ModuleTM1638plus::loop(void)
     if (this->mf != nullptr)
     {
         this->mf->loop();
+    }
+    if (this->textEffectLeft != nullptr)
+    {
+        this->textEffectLeft->loop();
+    }
+    if (this->textEffectRight != nullptr)
+    {
+        this->textEffectRight->loop();
     }
 }

@@ -43,6 +43,7 @@ bool SevenSegmentDisplayEffect::loop(void)
 {
     if (this->refresh())
     {
+        /*
         const char *words[] = {
             "S.O.S.     ",
             " S.O.S.    ",
@@ -73,6 +74,19 @@ bool SevenSegmentDisplayEffect::loop(void)
             "  CEAVA5",
             " CEAVA5 ",
             "CEAVA5  ",
+        };
+        */
+        const char *words[] = {
+            "PILI DE ",
+            "ILI DE L",
+            "LI DE LE",
+            "I DE LEI",
+            " DE LEIA",
+            "DE LEIAO",
+            " DE LEIA",
+            "I DE LEI",
+            "LI DE LE",
+            "ILI DE L",
         };
         this->totalFrames = sizeof(words) / sizeof(words[0]);
         // this->module->displayText(words[random(0, sizeof(words) / sizeof(words[0]))]);

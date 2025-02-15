@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdlib.h>
 
 class MultiFrameSegmentEffect
 {
@@ -7,4 +8,4 @@ public:
     ~MultiFrameSegmentEffect();
 
     void loop(void);
-}
+};

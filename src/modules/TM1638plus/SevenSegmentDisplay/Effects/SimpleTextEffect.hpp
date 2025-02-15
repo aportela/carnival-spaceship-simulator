@@ -18,7 +18,7 @@ private:
     void hideText(void);
 
 public:
-    SimpleTextEffect(TM1638plus *module, const char *text, bool blink = false, uint16_t blinkTimeout = 0, const uint8_t startIndex = 0, const uint8_t endIndex = 0);
+    SimpleTextEffect(TM1638plus *module, const char *text, bool blink = false, uint16_t blinkTimeout = 0, const uint8_t startIndex = 0, const uint8_t endIndex = TM_DISPLAY_SIZE);
     ~SimpleTextEffect();
 
     void loop(void);

@@ -47,6 +47,10 @@ private:
     SevenSegmentDisplayEffect *sevenSegmentDisplayEffect = nullptr;
     SEVEN_SEGMENT_EFFECT_TYPE currentSevenSegmentEffectType = SEVEN_SEGMENT_EFFECT_TYPE_NONE;
 
+    SimpleTextEffect *textEffectLeft = nullptr;
+    SimpleTextEffect *textEffectRight = nullptr;
+    SimpleTextEffect *textEffectFull = nullptr;
+
     SimpleTextEffect *ef = nullptr;
     MultiFrameTextEffect *mf = nullptr;
 
@@ -61,6 +65,10 @@ public:
 
     void setLedEffect(LED_EFFECT_TYPE effect, uint16_t msDelay = DEFAULT_LED_MS_DELAY);
     void toggleLedInverseMode(void);
+
+    void displayTextOnLeft7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
+    void displayTextOnRight7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
+    void displayTextOnFull7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
 
     void loop(void);
 };

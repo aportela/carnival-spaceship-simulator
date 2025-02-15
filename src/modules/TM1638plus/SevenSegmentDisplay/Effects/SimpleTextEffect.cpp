@@ -5,6 +5,12 @@ SimpleTextEffect::SimpleTextEffect(TM1638plus *module, const char *text, bool bl
 {
     this->lastTimestamp = millis();
     this->currentTextLength = strlen(text);
+    // TODO TRIM
+    /*
+        char trimmedText[5] = {'\0'};
+        strncpy(trimmedText, text, 4);
+        trimmedText[4] = '\0';
+    */
     this->showText(text);
     this->visible = true;
     if (this->blink)
