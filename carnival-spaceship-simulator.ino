@@ -113,6 +113,7 @@ void onSampleStopPlaying(SAMPLE sample)
         Serial.println("Stopped playing SAMPLE_LASER4_DOUBLE");
         break;
     }
+    controlPanel->displayTextOnLeft7Segment("    ", false, 0);
     controlPanel->displayTextOnRight7Segment("    ", false, 0);
 }
 
