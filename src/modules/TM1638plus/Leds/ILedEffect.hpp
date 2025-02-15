@@ -6,7 +6,7 @@ class ILedEffect
 public:
     virtual ~ILedEffect() {}
     virtual bool loop(void) = 0;
-
+    virtual void setDelay(uint16_t msDelay) = 0;
     virtual bool toggleInverse(void) = 0;
 };
 
