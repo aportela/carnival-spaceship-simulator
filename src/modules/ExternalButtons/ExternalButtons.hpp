@@ -17,13 +17,13 @@ enum EXTERNAL_BUTTON
     EXTERNAL_BUTTON_5 = 5,
 };
 
-#define TOTAL_BUTTONS 5
+#define TOTAL_EXTERNAL_BUTTONS 5
 #define DEBOUNCE_TIME 25
 
 class ExternalButtons
 {
 private:
-    Bounce *buttons[TOTAL_BUTTONS];
+    Bounce *buttons[TOTAL_EXTERNAL_BUTTONS];
 #ifndef BUTTON_MODE_INVERSE
     bool pressed = false;
 #else
@@ -31,7 +31,7 @@ private:
 #endif
 
 public:
-    ExternalButtons(const uint8_t BUTTON_PINS[TOTAL_BUTTONS]);
+    ExternalButtons(const uint8_t BUTTON_PINS[TOTAL_EXTERNAL_BUTTONS]);
     ~ExternalButtons();
 
     EXTERNAL_BUTTON loop(void);

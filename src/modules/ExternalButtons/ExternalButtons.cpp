@@ -1,8 +1,8 @@
 #include "ExternalButtons.hpp"
 
-ExternalButtons::ExternalButtons(const uint8_t BUTTON_PINS[TOTAL_BUTTONS])
+ExternalButtons::ExternalButtons(const uint8_t BUTTON_PINS[TOTAL_EXTERNAL_BUTTONS])
 {
-    for (int i = 0; i < TOTAL_BUTTONS; i++)
+    for (int i = 0; i < TOTAL_EXTERNAL_BUTTONS; i++)
     {
         this->buttons[i] = new Bounce();
         this->buttons[i]->attach(BUTTON_PINS[i], INPUT_PULLUP);
@@ -12,7 +12,7 @@ ExternalButtons::ExternalButtons(const uint8_t BUTTON_PINS[TOTAL_BUTTONS])
 
 ExternalButtons::~ExternalButtons()
 {
-    for (int i = 0; i < TOTAL_BUTTONS; i++)
+    for (int i = 0; i < TOTAL_EXTERNAL_BUTTONS; i++)
     {
         delete this->buttons[i];
         this->buttons[i] = nullptr;
@@ -23,7 +23,7 @@ EXTERNAL_BUTTON ExternalButtons::loop(void)
 {
     if (this->pressed)
     {
-        for (int i = 0; i < TOTAL_BUTTONS; i++)
+        for (int i = 0; i < TOTAL_EXTERNAL_BUTTONS; i++)
         {
             this->buttons[i]->update();
 #ifndef BUTTON_MODE_INVERSE
@@ -38,7 +38,7 @@ EXTERNAL_BUTTON ExternalButtons::loop(void)
         }
         return (EXTERNAL_BUTTON_NONE);
     }
-    for (int i = 0; i < TOTAL_BUTTONS; i++)
+    for (int i = 0; i < TOTAL_EXTERNAL_BUTTONS; i++)
     {
         this->buttons[i]->update();
 #ifndef BUTTON_MODE_INVERSE
