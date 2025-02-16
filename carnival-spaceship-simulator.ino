@@ -44,6 +44,8 @@ void displayLaserShootCount(uint16_t count)
 
 void onSampleStartPlaying(SAMPLE sample)
 {
+    samplerPtr->onSampleStartPlaying(sample);
+    /*
     switch (sample)
     {
     case SAMPLE_LASER1_SINGLE:
@@ -194,10 +196,13 @@ void onSampleStartPlaying(SAMPLE sample)
         tm1638plusPtr->displayTextOnLeft7Segment("    ", false, 0);
         break;
     }
+    */
 }
 
 void onSampleStopPlaying(SAMPLE sample)
 {
+    samplerPtr->onSampleStopPlaying(sample);
+    /*
     switch (sample)
     {
     case SAMPLE_LASER1_SINGLE:
@@ -349,6 +354,7 @@ void onSampleStopPlaying(SAMPLE sample)
     }
     tm1638plusPtr->displayTextOnLeft7Segment("    ", false, 0);
     tm1638plusPtr->displayTextOnRight7Segment("    ", false, 0);
+    */
 }
 
 void setup()
@@ -364,13 +370,13 @@ void setup()
     Serial.println("########################################");
     Serial.println("Carnival spaceship simulator starting...");
     Serial.println("########################################");
-    Serial.print("Setting external buttons...");
+    Serial.print("MAIN:: setting external buttons...");
 #endif
     const uint8_t BUTTON_PINS[TOTAL_EXTERNAL_BUTTONS] = {EXTERNAL_BUTTON1_PIN, EXTERNAL_BUTTON2_PIN, EXTERNAL_BUTTON3_PIN, EXTERNAL_BUTTON4_PIN, EXTERNAL_BUTTON5_PIN};
     externalButtonsPtr = new ExternalButtons(BUTTON_PINS);
 #ifdef DEBUG_SERIAL
     Serial.println("ok!");
-    Serial.print("Setting TM1638plus module...");
+    Serial.print("MAIN:: setting TM1638plus module...");
 #endif
     tm1638plusPtr = new ModuleTM1638plus(TM1638_STROBE_PIN, TM1638_CLOCK_PIN, TM1638_DIO_PIN, true);
     if (START_LED_EFFECT_TYPE != LED_EFFECT_TYPE_NONE)
@@ -379,20 +385,21 @@ void setup()
     }
 #ifdef DEBUG_SERIAL
     Serial.println("ok!");
-    Serial.print("Setting PCM5102A module...");
+    Serial.print("MAIN:: setting PCM5102A module...");
 #endif
     samplerPtr = new Sampler(DAC_I2S_BCK_PIN, DAC_I2S_LRCK_PIN, DAC_I2S_DATA_PIN, onSampleStartPlaying, onSampleStopPlaying);
 #ifdef DEBUG_SERIAL
     Serial.println("ok!");
-    Serial.print("Setting global eventsPtr handler...");
+    Serial.print("MAIN:: setting global eventsPtr handler...");
 #endif
     eventsPtr = new Events(externalButtonsPtr, tm1638plusPtr, samplerPtr);
     // samplerPtr->setEvents(eventsPtr->onSampleStarted, eventsPtr->onSampleStopped);
 #ifdef DEBUG_SERIAL
     Serial.println("ok!");
-    Serial.println("Playing init sample");
+    Serial.println("MAIN:: playing init sample");
 #endif
     samplerPtr->play(SAMPLE_ALARM_REVERB);
+    Serial.println("MAIN:: setup end");
 }
 
 void loop()
