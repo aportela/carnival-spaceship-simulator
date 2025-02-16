@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "Sampler.hpp"
 #include "Samples.hpp"
+#include "../../CommonDefines.hpp"
 
 Sampler::Sampler(uint8_t I2S_BCK_PIN, uint8_t I2S_LRCK_PIN, uint8_t I2S_DATA_PIN, sampleEventCallback onSampleStartPlaying, sampleEventCallback onSampleStopPlaying) : onSampleStartPlaying(onSampleStartPlaying), onSampleStopPlaying(onSampleStopPlaying)
 {
@@ -47,13 +48,19 @@ void Sampler::queueSample(SAMPLE sample)
 {
     if (!(sample == SAMPLE_SOS_01 && this->isPlayingSOSSample)) // only allow 1 SOS sample at time
     {
-        // Serial.printf("Push sample %d into queue\n", sample);
+#ifdef DEBUG_SERIAL_MORE_DATA
+        Serial.printf("SAMPLER:: adding sample %d into queue\n", sample);
+#endif
         this->sampleQueue->push(sample);
-        // Serial.printf("New queue size: %d\n", this->sampleQueue->size());
+#ifdef DEBUG_SERIAL_MORE_DATA
+        Serial.printf("SAMPLER:: new queue size: %d\n", this->sampleQueue->size());
+#endif
     }
     else
     {
-        Serial.println("not queue");
+#ifdef DEBUG_SERIAL_MORE_DATA
+        Serial.println("SAMPLER:: SOS Sample not queued");
+#endif
     }
 }
 
@@ -67,10 +74,6 @@ void Sampler::playQueue(void)
             this->sampleQueue->pop();
         }
     }
-    else
-    {
-        // Serial.println("Queue is empty");
-    }
 }
 
 bool Sampler::play(SAMPLE sample)
@@ -78,7 +81,9 @@ bool Sampler::play(SAMPLE sample)
     int8_t firstFreeVoiceIndex = this->getFirstFreeVoiceIndex();
     if (firstFreeVoiceIndex != -1)
     {
-        // Serial.printf("Playing sample %d on index %d\n", sample, firstFreeVoiceIndex);
+#ifdef DEBUG_SERIAL_MORE_DATA
+        Serial.printf("SAMPLER:: playing sample %d on voice index %d\n", sample, firstFreeVoiceIndex);
+#endif
         this->currentSample[firstFreeVoiceIndex] = sample;
         switch (sample)
         {
@@ -176,12 +181,17 @@ bool Sampler::play(SAMPLE sample)
         }
         else
         {
+#ifdef DEBUG_SERIAL_MORE_DATA
+            Serial.printf("SAMPLER:: sample NONE not played\n", sample);
+#endif
             return (true);
         }
     }
     else
     {
-        // Serial.println("All voices are in use");
+#ifdef DEBUG_SERIAL_MORE_DATA
+        Serial.printf("SAMPLER:: can not play sample %d, all voices are in use\n", sample);
+#endif
         return (false);
     }
 }
@@ -195,7 +205,9 @@ void Sampler::loop(void)
         {
             if (!this->wav[i]->loop())
             {
-                // Serial.printf("%d Sample ends (not looping), stopping sample\n", i);
+#ifdef DEBUG_SERIAL_MORE_DATA
+                Serial.printf("SAMPLER:: sample %d playback ended\n", this->currentSample[i]);
+#endif
                 this->wav[i]->stop();
                 delete this->wav[i];
                 this->wav[i] = nullptr;
@@ -206,65 +218,6 @@ void Sampler::loop(void)
                 if (this->onSampleStopPlaying)
                 {
                     this->onSampleStopPlaying(this->currentSample[i]);
-                }
-                switch (this->currentSample[i])
-                {
-                case SAMPLE_LASER1_DOUBLE:
-                    // this->queueSample(SAMPLE_LASER1_SINGLE);
-                    break;
-                case SAMPLE_LASER2_DOUBLE:
-                    // this->queueSample(SAMPLE_LASER2_SINGLE);
-                    break;
-                case SAMPLE_LASER3_DOUBLE:
-                    // this->queueSample(SAMPLE_LASER3_SINGLE);
-                    break;
-                case SAMPLE_LASER4_DOUBLE:
-                    // this->queueSample(SAMPLE_LASER4_SINGLE);
-                    break;
-                case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1:
-                    // this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2);
-                    break;
-                case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2:
-                    // this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3);
-                    break;
-                case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3:
-                    // this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4);
-                    break;
-                case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4:
-                    // this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5);
-                    break;
-                case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1:
-                    // this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2);
-                    break;
-                case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2:
-                    // this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3);
-                    break;
-                case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3:
-                    // this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4);
-                    break;
-                case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4:
-                    // this->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5);
-                    break;
-                case SAMPLE_ALIEN_VOICE_01:
-                    this->queueSample(SAMPLE_ALIEN_VOICE_02);
-                    break;
-                case SAMPLE_ALIEN_VOICE_02:
-                    this->queueSample(SAMPLE_ALIEN_VOICE_03);
-                    break;
-                case SAMPLE_ALIEN_VOICE_03:
-                    this->queueSample(SAMPLE_ALIEN_VOICE_04);
-                    break;
-                case SAMPLE_SOS_01:
-                    // this->queueSample(SAMPLE_SOS_02);
-                    break;
-                case SAMPLE_SOS_02:
-                    // this->queueSample(SAMPLE_SOS_03);
-                    break;
-                case SAMPLE_SOS_03:
-                    this->isPlayingSOSSample = false;
-                    break;
-                default:
-                    break;
                 }
                 this->currentSample[i] = SAMPLE_NONE;
             }

@@ -2,5 +2,6 @@
 #define COMMON_DEFINES_H
 
 #define DEBUG_SERIAL
+#define DEBUG_SERIAL_MORE_DATA
 
 #endif // COMMON_DEFINES_H
