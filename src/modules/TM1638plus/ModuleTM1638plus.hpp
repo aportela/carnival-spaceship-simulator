@@ -65,6 +65,7 @@ public:
     void toggleSevenSegmentSpeed(void);
 
     void toggleLedEffect(uint16_t msDelay = DEFAULT_LED_MS_DELAY);
+    LED_EFFECT_TYPE getCurrentLedEffect(void);
     void setLedEffect(LED_EFFECT_TYPE effect, uint16_t msDelay = DEFAULT_LED_MS_DELAY);
     void toggleLedInverseMode(void);
 

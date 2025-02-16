@@ -148,6 +148,11 @@ void ModuleTM1638plus::toggleLedEffect(uint16_t msDelay)
     }
 }
 
+LED_EFFECT_TYPE ModuleTM1638plus::getCurrentLedEffect(void)
+{
+    return (this->currentLedEffectType);
+}
+
 void ModuleTM1638plus::setLedEffect(LED_EFFECT_TYPE effect, uint16_t msDelay)
 {
     if (effect != this->currentLedEffectType)
