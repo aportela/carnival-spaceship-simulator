@@ -17,21 +17,33 @@ void Events::onExternalButton(EXTERNAL_BUTTON button)
         switch (button)
         {
         case EXTERNAL_BUTTON_1:
-                Serial.println("External button 1 pressed... enqueue random laser sample");
+#ifdef DEBUG_SERIAL
+                Serial.println("EVENTS:: external button 1 pressed... enqueue random laser sample");
+#endif
                 this->samplerPtr->queueSample(laserSamples[random(0, laserSamplesSize)]);
                 break;
         case EXTERNAL_BUTTON_2:
-                Serial.println("External button 2 pressed... enqueue random laser sample");
+#ifdef DEBUG_SERIAL
+                Serial.println("EVENTS:: external button 2 pressed... enqueue random laser sample");
+#endif
                 this->samplerPtr->queueSample(laserSamples[random(0, laserSamplesSize)]);
                 break;
         case EXTERNAL_BUTTON_3:
-                Serial.println("External button 3 pressed");
+#ifdef DEBUG_SERIAL
+                Serial.println("EVENTS:: external button 3 pressed... enqueue tones1 sample");
+#endif
+                this->samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1);
                 break;
         case EXTERNAL_BUTTON_4:
-                Serial.println("External button 4 pressed");
+#ifdef DEBUG_SERIAL
+                Serial.println("EVENTS:: external button 4 pressed... enqueue tones2 sample");
+#endif
+                this->samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1);
                 break;
         case EXTERNAL_BUTTON_5:
-                Serial.println("External button 5 pressed");
+#ifdef DEBUG_SERIAL
+                Serial.println("EVENTS:: external button 5 pressed");
+#endif
                 break;
         }
 }
