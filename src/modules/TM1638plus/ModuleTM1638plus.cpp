@@ -162,37 +162,37 @@ void ModuleTM1638plus::setLedEffect(LED_EFFECT_TYPE effect, uint16_t msDelay)
         {
         case LED_EFFECT_TYPE_SCANNER:
 #ifdef DEBUG_SERIAL
-            Serial.println("Setting TM1638plus effect: SCANNER");
+            Serial.println("TM1638plus:: setting led effect SCANNER");
 #endif
             this->ledEffect = new ScannerLedEffect(this->module, msDelay);
             break;
         case LED_EFFECT_TYPE_CHASE:
 #ifdef DEBUG_SERIAL
-            Serial.println("Setting TM1638plus effect: CHASE");
+            Serial.println("TM1638plus:: setting led effect CHASE");
 #endif
             this->ledEffect = new ChaseLedEffect(this->module, msDelay);
             break;
         case LED_EFFECT_TYPE_VUMETER:
 #ifdef DEBUG_SERIAL
-            Serial.println("Setting TM1638plus effect: VUMETER");
+            Serial.println("TM1638plus:: setting led effect VUMETER");
 #endif
             this->ledEffect = new VuMeterLedEffect(this->module, msDelay);
             break;
         case LED_EFFECT_TYPE_VUMETER_MIRRORED:
 #ifdef DEBUG_SERIAL
-            Serial.println("Setting TM1638plus effect: VUMETER MIRRORED");
+            Serial.println("TM1638plus:: setting led effect VUMETER MIRRORED");
 #endif
             this->ledEffect = new VuMeterMirroredLedEffect(this->module, msDelay);
             break;
         case LED_EFFECT_TYPE_ALTERNATE:
 #ifdef DEBUG_SERIAL
-            Serial.println("Setting TM1638plus effect: ALTERNATE");
+            Serial.println("TM1638plus:: setting led effect ALTERNATE");
 #endif
             this->ledEffect = new AlternateLedEffect(this->module, msDelay);
             break;
         case LED_EFFECT_TYPE_INTERMITENT:
 #ifdef DEBUG_SERIAL
-            Serial.println("Setting TM1638plus effect: INTERMITENT");
+            Serial.println("TM1638plus:: setting led effect INTERMITENT");
 #endif
             this->ledEffect = new IntermitentLedEffect(this->module, msDelay);
             break;
@@ -204,9 +204,8 @@ void ModuleTM1638plus::setLedEffect(LED_EFFECT_TYPE effect, uint16_t msDelay)
     else
     {
 #ifdef DEBUG_SERIAL
-        Serial.printf("Setting TM1638plus current effect msDelay: %d\n", msDelay);
+        Serial.printf("TM1638plus:: setting current effect msDelay: %d\n", msDelay);
 #endif
-
         this->ledEffect->setDelay(msDelay);
     }
 }
