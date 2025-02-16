@@ -88,7 +88,6 @@ void setup()
     Serial.print("MAIN:: setting global eventsPtr handler...");
 #endif
     eventsPtr = new Events(externalButtonsPtr, tm1638plusPtr, samplerPtr);
-    // samplerPtr->setEvents(eventsPtr->onSampleStarted, eventsPtr->onSampleStopped);
 #ifdef DEBUG_SERIAL
     Serial.println("ok!");
     Serial.println("MAIN:: playing init sample");
