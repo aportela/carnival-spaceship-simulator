@@ -44,7 +44,7 @@ void displayLaserShootCount(uint16_t count)
 
 void onSampleStartPlaying(SAMPLE sample)
 {
-    samplerPtr->onSampleStartPlaying(sample);
+    eventsPtr->onSampleStarted(sample);
     /*
     switch (sample)
     {
@@ -201,7 +201,7 @@ void onSampleStartPlaying(SAMPLE sample)
 
 void onSampleStopPlaying(SAMPLE sample)
 {
-    samplerPtr->onSampleStopPlaying(sample);
+    eventsPtr->onSampleStopped(sample);
     /*
     switch (sample)
     {
