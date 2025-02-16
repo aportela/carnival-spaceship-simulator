@@ -49,6 +49,10 @@ enum SAMPLE
 
 typedef void (*sampleEventCallback)(SAMPLE);
 
+// available laser samples (for "shuffle" play)
+const SAMPLE laserSamples[] = {SAMPLE_LASER1_SINGLE, SAMPLE_LASER2_SINGLE, SAMPLE_LASER3_SINGLE, SAMPLE_LASER4_SINGLE, SAMPLE_LASER1_DOUBLE, SAMPLE_LASER2_DOUBLE, SAMPLE_LASER3_DOUBLE, SAMPLE_LASER4_DOUBLE};
+const uint8_t laserSamplesSize = sizeof(laserSamples) / sizeof(laserSamples[0]);
+
 class Sampler
 {
 private:
