@@ -30,7 +30,7 @@ public:
     TM1638plusButtons(TM1638plus *module);
     ~TM1638plusButtons();
 
-    uint8_t loop(void);
+    uint8_t getPressedButtonsMask(void);
 };
 
 #endif // TM1638_PLUS_BUTTONS_H

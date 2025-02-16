@@ -10,7 +10,7 @@ TM1638plusButtons::~TM1638plusButtons()
     this->module = nullptr;
 }
 
-uint8_t TM1638plusButtons::loop(void)
+uint8_t TM1638plusButtons::getPressedButtonsMask(void)
 {
     uint64_t timestamp = millis();
     if (timestamp - this->lastTimestamp >= BUTTON_DEBOUNCE_MS)
