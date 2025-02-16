@@ -3,8 +3,6 @@
 
 #include <Bounce2.h>
 
-#define BUTTON_DEBOUNCE_MS 200
-
 #define BUTTON_MODE_INVERSE
 
 enum EXTERNAL_BUTTON
@@ -23,7 +21,7 @@ enum EXTERNAL_BUTTON
 class ExternalButtons
 {
 private:
-    Bounce *buttons[TOTAL_EXTERNAL_BUTTONS];
+    Bounce *buttons[TOTAL_EXTERNAL_BUTTONS] = {nullptr, nullptr, nullptr, nullptr, nullptr};
 #ifndef BUTTON_MODE_INVERSE
     bool pressed = false;
 #else
