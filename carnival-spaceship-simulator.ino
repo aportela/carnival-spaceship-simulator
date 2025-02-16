@@ -399,7 +399,9 @@ void setup()
     Serial.println("MAIN:: playing init sample");
 #endif
     samplerPtr->play(SAMPLE_ALARM_REVERB);
+#ifdef DEBUG_SERIAL
     Serial.println("MAIN:: setup end");
+#endif
 }
 
 void loop()
