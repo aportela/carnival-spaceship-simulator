@@ -1,4 +1,5 @@
 #include "ModuleTM1638plus.hpp"
+#include "../../CommonDefines.hpp"
 
 ModuleTM1638plus::ModuleTM1638plus(uint8_t strobePIN, uint8_t clockPIN, uint8_t dioPIN, bool highFreq)
 {
@@ -116,6 +117,37 @@ void ModuleTM1638plus::toggleSevenSegmentSpeed(void)
     }
 }
 
+void ModuleTM1638plus::toggleLedEffect(uint16_t msDelay)
+{
+    switch (this->currentLedEffectType)
+    {
+    case LED_EFFECT_TYPE_NONE:
+        this->setLedEffect(LED_EFFECT_TYPE_SCANNER, msDelay);
+        break;
+    case LED_EFFECT_TYPE_SCANNER:
+        this->setLedEffect(LED_EFFECT_TYPE_CHASE, msDelay);
+        break;
+    case LED_EFFECT_TYPE_CHASE:
+        this->setLedEffect(LED_EFFECT_TYPE_VUMETER, msDelay);
+        break;
+    case LED_EFFECT_TYPE_VUMETER:
+        this->setLedEffect(LED_EFFECT_TYPE_VUMETER_MIRRORED, msDelay);
+        break;
+    case LED_EFFECT_TYPE_VUMETER_MIRRORED:
+        this->setLedEffect(LED_EFFECT_TYPE_ALTERNATE, msDelay);
+        break;
+    case LED_EFFECT_TYPE_ALTERNATE:
+        this->setLedEffect(LED_EFFECT_TYPE_INTERMITENT, msDelay);
+        break;
+    case LED_EFFECT_TYPE_INTERMITENT:
+        this->setLedEffect(LED_EFFECT_TYPE_NONE, msDelay);
+        break;
+    default:
+        this->setLedEffect(LED_EFFECT_TYPE_NONE, msDelay);
+        break;
+    }
+}
+
 void ModuleTM1638plus::setLedEffect(LED_EFFECT_TYPE effect, uint16_t msDelay)
 {
     if (effect != this->currentLedEffectType)
@@ -129,21 +161,39 @@ void ModuleTM1638plus::setLedEffect(LED_EFFECT_TYPE effect, uint16_t msDelay)
         switch (effect)
         {
         case LED_EFFECT_TYPE_SCANNER:
+#ifdef DEBUG_SERIAL
+            Serial.println("Setting TM1638plus effect: SCANNER");
+#endif
             this->ledEffect = new ScannerLedEffect(this->module, msDelay);
             break;
         case LED_EFFECT_TYPE_CHASE:
+#ifdef DEBUG_SERIAL
+            Serial.println("Setting TM1638plus effect: CHASE");
+#endif
             this->ledEffect = new ChaseLedEffect(this->module, msDelay);
             break;
         case LED_EFFECT_TYPE_VUMETER:
+#ifdef DEBUG_SERIAL
+            Serial.println("Setting TM1638plus effect: VUMETER");
+#endif
             this->ledEffect = new VuMeterLedEffect(this->module, msDelay);
             break;
         case LED_EFFECT_TYPE_VUMETER_MIRRORED:
+#ifdef DEBUG_SERIAL
+            Serial.println("Setting TM1638plus effect: VUMETER MIRRORED");
+#endif
             this->ledEffect = new VuMeterMirroredLedEffect(this->module, msDelay);
             break;
         case LED_EFFECT_TYPE_ALTERNATE:
+#ifdef DEBUG_SERIAL
+            Serial.println("Setting TM1638plus effect: ALTERNATE");
+#endif
             this->ledEffect = new AlternateLedEffect(this->module, msDelay);
             break;
         case LED_EFFECT_TYPE_INTERMITENT:
+#ifdef DEBUG_SERIAL
+            Serial.println("Setting TM1638plus effect: INTERMITENT");
+#endif
             this->ledEffect = new IntermitentLedEffect(this->module, msDelay);
             break;
         default:
@@ -153,6 +203,10 @@ void ModuleTM1638plus::setLedEffect(LED_EFFECT_TYPE effect, uint16_t msDelay)
     }
     else
     {
+#ifdef DEBUG_SERIAL
+        Serial.printf("Setting TM1638plus current effect msDelay: %d\n", msDelay);
+#endif
+
         this->ledEffect->setDelay(msDelay);
     }
 }
@@ -195,11 +249,10 @@ void ModuleTM1638plus::displayTextOnFull7Segment(const char *text, bool blink, u
     this->textEffectRight = new SimpleTextEffect(this->module, text, blink, blinkTimeout, 0, 8);
 }
 
-TM1638plusBUTTON ModuleTM1638plus::checkPressedButton()
+TM1638plusBUTTON ModuleTM1638plus::getPressedButton()
 {
-    uint8_t pressedButtons = this->buttons->loop();
+    uint8_t pressedButtons = this->buttons->getPressedButtonsMask();
     TM1638plusBUTTON pressedButton = TM1638plusBUTTON_NONE;
-
     if (pressedButtons == TM1638plusBUTTON_S1)
     {
         pressedButton = TM1638plusBUTTON_S1;

@@ -59,11 +59,12 @@ public:
     ModuleTM1638plus(uint8_t strobePIN, uint8_t clockPIN, uint8_t dioPIN, bool highFreq);
     ~ModuleTM1638plus();
 
-    TM1638plusBUTTON checkPressedButton(void);
+    TM1638plusBUTTON getPressedButton(void);
 
     void toggleSevenSegmentEffect(void);
     void toggleSevenSegmentSpeed(void);
 
+    void toggleLedEffect(uint16_t msDelay = DEFAULT_LED_MS_DELAY);
     void setLedEffect(LED_EFFECT_TYPE effect, uint16_t msDelay = DEFAULT_LED_MS_DELAY);
     void toggleLedInverseMode(void);
 
