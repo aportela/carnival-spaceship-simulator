@@ -1,8 +1,10 @@
-#include "CommonDefines.hpp"
-#include "modules/TM1638plus/ModuleTM1638plus.hpp"
-#include "modules/Audio/Sampler.hpp"
+#ifndef EVENTS_H
+#define EVENTS_H
+
 #include "modules/ExternalButtons/ExternalButtons.hpp"
+#include "modules/TM1638plus/ModuleTM1638plus.hpp"
 #include "modules/TM1638plus/Buttons/TM1638plusButtons.hpp"
+#include "modules/Audio/Sampler.hpp"
 
 class Events
 {
@@ -24,3 +26,5 @@ public:
     void onSampleStarted(SAMPLE sample);
     void onSampleStopped(SAMPLE sample);
 };
+
+#endif // EVENTS_H
