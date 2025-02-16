@@ -2,8 +2,7 @@
 #define EXTERNAL_BUTTONS_H
 
 #include <Bounce2.h>
-
-#define BUTTON_MODE_INVERSE
+#include "../../CommonDefines.hpp"
 
 enum EXTERNAL_BUTTON
 {
