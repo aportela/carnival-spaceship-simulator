@@ -260,7 +260,6 @@ void Events::onSampleStarted(SAMPLE sample)
 
 void Events::onSampleStopped(SAMPLE sample)
 {
-    Serial.println("NEW");
     switch (sample)
     {
     case SAMPLE_LASER1_SINGLE:
