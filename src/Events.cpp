@@ -112,65 +112,65 @@ void Events::onSampleStarted(SAMPLE sample)
 #ifdef DEBUG_SERIAL
         Serial.println("Started playing SAMPLE_LASER1_SINGLE");
 #endif
-        // currentLaserSamplesPlaying++;
-        // displayLaserShootCount(++laserShoots);
-        tm1638plusPtr->displayTextOnLeft7Segment("1", true, 200);
+        this->currentLaserSamplesPlaying++;
+        this->laserShoots++;
+        this->startAnimation(ANIMATION_LASER_SHOOT);
         break;
     case SAMPLE_LASER2_SINGLE:
 #ifdef DEBUG_SERIAL
         Serial.println("Started playing SAMPLE_LASER2_SINGLE");
 #endif
-        // currentLaserSamplesPlaying++;
-        // displayLaserShootCount(++laserShoots);
-        tm1638plusPtr->displayTextOnLeft7Segment("2", true, 200);
+        this->currentLaserSamplesPlaying++;
+        this->laserShoots++;
+        this->startAnimation(ANIMATION_LASER_SHOOT);
         break;
     case SAMPLE_LASER3_SINGLE:
 #ifdef DEBUG_SERIAL
         Serial.println("Started playing SAMPLE_LASER3_SINGLE");
 #endif
-        // currentLaserSamplesPlaying++;
-        // displayLaserShootCount(++laserShoots);
-        tm1638plusPtr->displayTextOnLeft7Segment("3", true, 200);
+        this->currentLaserSamplesPlaying++;
+        this->laserShoots++;
+        this->startAnimation(ANIMATION_LASER_SHOOT);
         break;
     case SAMPLE_LASER4_SINGLE:
 #ifdef DEBUG_SERIAL
         Serial.println("Started playing SAMPLE_LASER4_SINGLE");
 #endif
-        // currentLaserSamplesPlaying++;
-        // displayLaserShootCount(++laserShoots);
-        tm1638plusPtr->displayTextOnLeft7Segment("4", true, 200);
+        this->currentLaserSamplesPlaying++;
+        this->laserShoots++;
+        this->startAnimation(ANIMATION_LASER_SHOOT);
         break;
     case SAMPLE_LASER1_DOUBLE:
 #ifdef DEBUG_SERIAL
         Serial.println("Started playing SAMPLE_LASER1_DOUBLE");
 #endif
-        // currentLaserSamplesPlaying++;
-        // displayLaserShootCount(laserShoots += 2);
-        tm1638plusPtr->displayTextOnLeft7Segment("11", true, 300);
+        this->currentLaserSamplesPlaying++;
+        this->laserShoots++;
+        this->startAnimation(ANIMATION_LASER_SHOOT);
         break;
     case SAMPLE_LASER2_DOUBLE:
 #ifdef DEBUG_SERIAL
         Serial.println("Started playing SAMPLE_LASER2_DOUBLE");
 #endif
-        // currentLaserSamplesPlaying++;
-        // displayLaserShootCount(laserShoots += 2);
-        tm1638plusPtr->displayTextOnLeft7Segment("22", true, 300);
+        this->currentLaserSamplesPlaying++;
+        this->laserShoots++;
+        this->startAnimation(ANIMATION_LASER_SHOOT);
         break;
     case SAMPLE_LASER3_DOUBLE:
 #ifdef DEBUG_SERIAL
         Serial.println("Started playing SAMPLE_LASER3_DOUBLE");
 #endif
-        // currentLaserSamplesPlaying++;
-        // displayLaserShootCount(laserShoots += 2);
-        tm1638plusPtr->displayTextOnLeft7Segment("33", true, 300);
+        this->currentLaserSamplesPlaying++;
+        this->laserShoots++;
+        this->startAnimation(ANIMATION_LASER_SHOOT);
         break;
     case SAMPLE_LASER4_DOUBLE:
 #ifdef DEBUG_SERIAL
         Serial.println("Started playing SAMPLE_LASER4_DOUBLE");
 #endif
-        // currentLaserSamplesPlaying++;
-        // displayLaserShootCount(laserShoots += 2);
-        tm1638plusPtr->displayTextOnLeft7Segment("44", true, 300);
+        this->currentLaserSamplesPlaying++;
+        this->laserShoots++;
+        this->startAnimation(ANIMATION_LASER_SHOOT);
         break;
     case SAMPLE_ALARM_REVERB:
 #ifdef DEBUG_SERIAL
@@ -256,6 +256,7 @@ void Events::onSampleStarted(SAMPLE sample)
         tm1638plusPtr->displayTextOnLeft7Segment("    ", false, 0);
         break;
     }
+    Serial.printf("OnStart total: %d\n", this->currentLaserSamplesPlaying);
 }
 
 void Events::onSampleStopped(SAMPLE sample)
@@ -266,52 +267,52 @@ void Events::onSampleStopped(SAMPLE sample)
 #ifdef DEBUG_SERIAL
         Serial.println("Stopped playing SAMPLE_LASER1_SINGLE");
 #endif
-        // currentLaserSamplesPlaying--;
+        this->currentLaserSamplesPlaying--;
         break;
     case SAMPLE_LASER2_SINGLE:
 #ifdef DEBUG_SERIAL
         Serial.println("Stopped playing SAMPLE_LASER2_SINGLE");
 #endif
-        // currentLaserSamplesPlaying--;
+        this->currentLaserSamplesPlaying--;
         break;
     case SAMPLE_LASER3_SINGLE:
 #ifdef DEBUG_SERIAL
         Serial.println("Stopped playing SAMPLE_LASER3_SINGLE");
 #endif
-        // currentLaserSamplesPlaying--;
+        this->currentLaserSamplesPlaying--;
         break;
     case SAMPLE_LASER4_SINGLE:
 #ifdef DEBUG_SERIAL
         Serial.println("Stopped playing SAMPLE_LASER4_SINGLE");
 #endif
-        // currentLaserSamplesPlaying--;
+        this->currentLaserSamplesPlaying--;
         break;
     case SAMPLE_LASER1_DOUBLE:
 #ifdef DEBUG_SERIAL
         Serial.println("Stopped playing SAMPLE_LASER1_DOUBLE");
 #endif
-        // currentLaserSamplesPlaying--;
+        this->currentLaserSamplesPlaying--;
         samplerPtr->queueSample(SAMPLE_LASER1_SINGLE);
         break;
     case SAMPLE_LASER2_DOUBLE:
 #ifdef DEBUG_SERIAL
         Serial.println("Stopped playing SAMPLE_LASER2_DOUBLE");
 #endif
-        // currentLaserSamplesPlaying--;
+        this->currentLaserSamplesPlaying--;
         samplerPtr->queueSample(SAMPLE_LASER2_SINGLE);
         break;
     case SAMPLE_LASER3_DOUBLE:
 #ifdef DEBUG_SERIAL
         Serial.println("Stopped playing SAMPLE_LASER3_DOUBLE");
 #endif
-        // currentLaserSamplesPlaying--;
+        this->currentLaserSamplesPlaying--;
         samplerPtr->queueSample(SAMPLE_LASER3_SINGLE);
         break;
     case SAMPLE_LASER4_DOUBLE:
 #ifdef DEBUG_SERIAL
         Serial.println("Stopped playing SAMPLE_LASER4_DOUBLE");
 #endif
-        // currentLaserSamplesPlaying--;
+        this->currentLaserSamplesPlaying--;
         samplerPtr->queueSample(SAMPLE_LASER4_SINGLE);
         break;
     case SAMPLE_ALARM_REVERB:
@@ -409,10 +410,60 @@ void Events::onSampleStopped(SAMPLE sample)
 #endif
         break;
     }
-    tm1638plusPtr->displayTextOnLeft7Segment("    ", false, 0);
-    tm1638plusPtr->displayTextOnRight7Segment("    ", false, 0);
+    Serial.printf("onStop total: %d\n", this->currentLaserSamplesPlaying);
+    if (this->currentLaserSamplesPlaying <= 0)
+    {
+        this->stopAnimation();
+    }
+    // tm1638plusPtr->displayTextOnLeft7Segment("    ", false, 0);
+    // tm1638plusPtr->displayTextOnRight7Segment("    ", false, 0);
 }
 
-void Events::loop(void)
+void Events::startAnimation(ANIMATION animation)
 {
+    if (animation != currentAnimation)
+    {
+        switch (animation)
+        {
+        case ANIMATION_LASER_SHOOT:
+            currentAnimation = animation;
+            this->previousLedEffect = tm1638plusPtr->getCurrentLedEffect();
+            tm1638plusPtr->setLedEffect(LED_EFFECT_TYPE_INTERMITENT, 80);
+            if (this->laserShoots >= 10000) // only 4 digits (right block)
+            {
+                this->laserShoots = 0;
+            }
+            char buffer[5] = {'\0'};
+            snprintf(buffer, sizeof(buffer), "%04d", this->laserShoots);
+            tm1638plusPtr->displayTextOnRight7Segment(buffer, false, 0);
+            break;
+        }
+    }
+    else
+    {
+        switch (animation)
+        {
+        case ANIMATION_LASER_SHOOT:
+            if (this->laserShoots >= 10000) // only 4 digits (right block)
+            {
+                this->laserShoots = 0;
+            }
+            char buffer[5] = {'\0'};
+            snprintf(buffer, sizeof(buffer), "%04d", this->laserShoots);
+            tm1638plusPtr->displayTextOnRight7Segment(buffer, false, 0);
+            break;
+        }
+    }
+}
+
+void Events::stopAnimation()
+{
+    switch (currentAnimation)
+    {
+    case ANIMATION_LASER_SHOOT:
+        tm1638plusPtr->setLedEffect(this->previousLedEffect);
+        tm1638plusPtr->displayTextOnRight7Segment("    ", false, 0);
+        break;
+    }
+    currentAnimation = ANIMATION_NONE;
 }

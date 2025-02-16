@@ -6,6 +6,12 @@
 #include "modules/TM1638plus/Buttons/TM1638plusButtons.hpp"
 #include "modules/Audio/Sampler.hpp"
 
+enum ANIMATION
+{
+    ANIMATION_NONE = 0,
+    ANIMATION_LASER_SHOOT = 1,
+};
+
 class Events
 {
 private:
@@ -16,7 +22,8 @@ private:
     uint8_t currentLaserSamplesPlaying = 0;
     uint16_t laserShoots = 0;
 
-    void loop(void);
+    LED_EFFECT_TYPE previousLedEffect = LED_EFFECT_TYPE_NONE;
+    ANIMATION currentAnimation = ANIMATION_NONE;
 
 public:
     Events(ExternalButtons *externalButtonsPtr, ModuleTM1638plus *tm1638plusPtr, Sampler *samplerPtr);
@@ -25,6 +32,8 @@ public:
     void onTM1638plusButton(TM1638plusBUTTON button);
     void onSampleStarted(SAMPLE sample);
     void onSampleStopped(SAMPLE sample);
+    void startAnimation(ANIMATION animation);
+    void stopAnimation();
 };
 
 #endif // EVENTS_H
