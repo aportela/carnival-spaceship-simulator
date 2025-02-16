@@ -1,0 +1,6 @@
+#ifndef COMMON_DEFINES_H
+#define COMMON_DEFINES_H
+
+#define DEBUG_SERIAL
+
+#endif // COMMON_DEFINES_H
