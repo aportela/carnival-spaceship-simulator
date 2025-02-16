@@ -1,5 +1,6 @@
-#include "Events.hpp"
 #include <Arduino.h>
+#include "Events.hpp"
+#include "CommonDefines.hpp"
 
 Events::Events(ExternalButtons *externalButtonsPtr, ModuleTM1638plus *tm1638plusPtr, Sampler *samplerPtr) : externalButtonsPtr(externalButtonsPtr), tm1638plusPtr(tm1638plusPtr), samplerPtr(samplerPtr)
 {
@@ -50,34 +51,51 @@ void Events::onExternalButton(EXTERNAL_BUTTON button)
 
 void Events::onTM1638plusButton(TM1638plusBUTTON button)
 {
-        if (button != TM1638plusBUTTON_NONE)
+        if (button != TM1638plusBUTTON_NONE) // TODO: REMOVE ?
         {
                 switch (button)
                 {
                 case TM1638plusBUTTON_S1:
-                        Serial.println("TM1638plus button 1 pressed... toggle led effect");
+#ifdef DEBUG_SERIAL
+                        Serial.println("EVENTS:: TM1638plus button 1 pressed... toggle led effect");
+#endif
                         this->tm1638plusPtr->toggleLedEffect();
                         break;
                 case TM1638plusBUTTON_S2:
-                        Serial.println("TM1638plus button 2 pressed...");
+#ifdef DEBUG_SERIAL
+                        Serial.println("EVENTS:: TM1638plus button 2 pressed...toggle led effect inverse mode");
+#endif
+                        this->tm1638plusPtr->toggleLedInverseMode();
                         break;
                 case TM1638plusBUTTON_S3:
-                        Serial.println("TM1638plus button 3 pressed...");
+#ifdef DEBUG_SERIAL
+                        Serial.println("EVENTS:: TM1638plus button 3 pressed...");
+#endif
                         break;
                 case TM1638plusBUTTON_S4:
-                        Serial.println("TM1638plus button 4 pressed...");
+#ifdef DEBUG_SERIAL
+                        Serial.println("EVENTS:: TM1638plus button 4 pressed...");
+#endif
                         break;
                 case TM1638plusBUTTON_S5:
-                        Serial.println("TM1638plus button 5 pressed...");
+#ifdef DEBUG_SERIAL
+                        Serial.println("EVENTS:: TM1638plus button 5 pressed...");
+#endif
                         break;
                 case TM1638plusBUTTON_S6:
-                        Serial.println("TM1638plus button 6 pressed...");
+#ifdef DEBUG_SERIAL
+                        Serial.println("EVENTS:: TM1638plus button 6 pressed...");
+#endif
                         break;
                 case TM1638plusBUTTON_S7:
-                        Serial.println("TM1638plus button 7 pressed...");
+#ifdef DEBUG_SERIAL
+                        Serial.println("EVENTS:: TM1638plus button 7 pressed...");
+#endif
                         break;
                 case TM1638plusBUTTON_S8:
-                        Serial.println("TM1638plus button 8 pressed...");
+#ifdef DEBUG_SERIAL
+                        Serial.println("EVENTS:: TM1638plus button 8 pressed...");
+#endif
                         break;
                 }
         }
@@ -85,7 +103,6 @@ void Events::onTM1638plusButton(TM1638plusBUTTON button)
 
 void Events::onSampleStarted(SAMPLE sample)
 {
-        Serial.println("NEW");
         switch (sample)
         {
         case SAMPLE_LASER1_SINGLE:
@@ -396,100 +413,4 @@ void Events::onSampleStopped(SAMPLE sample)
 
 void Events::loop(void)
 {
-        if (this->externalButtonsPtr->getPressedButton() != EXTERNAL_BUTTON_NONE)
-        {
-                Serial.println("PULSADO");
-        }
-        // this->onExternalButton(this->externalButtonsPtr->getPressedButton());
-        /*
-        if (this->externalButtonsPtr)
-        {
-                Serial.println();
-        }
-                */
-        //
-        /*
-        TM1638plusBUTTON tm1638plusPressedButton = tm1638plus->getPressedButton();
-        if (tm1638plusPressedButton != TM1638plusBUTTON_NONE)
-        {
-            switch (tm1638plusPressedButton)
-            {
-            case TM1638plusBUTTON_S1:
-    #ifdef DEBUG_SERIAL
-                Serial.println("TM1638plus button 1 pressed");
-    #endif
-                switch (currentLedEffectType)
-                {
-                case LED_EFFECT_TYPE_NONE:
-                    currentLedEffectType = LED_EFFECT_TYPE_SCANNER;
-                    break;
-                case LED_EFFECT_TYPE_SCANNER:
-                    currentLedEffectType = LED_EFFECT_TYPE_CHASE;
-                    break;
-                case LED_EFFECT_TYPE_CHASE:
-                    currentLedEffectType = LED_EFFECT_TYPE_VUMETER;
-                    break;
-                case LED_EFFECT_TYPE_VUMETER:
-                    currentLedEffectType = LED_EFFECT_TYPE_VUMETER_MIRRORED;
-                    break;
-                case LED_EFFECT_TYPE_VUMETER_MIRRORED:
-                    currentLedEffectType = LED_EFFECT_TYPE_ALTERNATE;
-                    break;
-                case LED_EFFECT_TYPE_ALTERNATE:
-                    currentLedEffectType = LED_EFFECT_TYPE_INTERMITENT;
-                    break;
-                case LED_EFFECT_TYPE_INTERMITENT:
-                    currentLedEffectType = LED_EFFECT_TYPE_NONE;
-                    break;
-                default:
-                    currentLedEffectType = LED_EFFECT_TYPE_NONE;
-                    break;
-                }
-                tm1638plus->setLedEffect(currentLedEffectType, DEFAULT_LED_MS_DELAY);
-                break;
-            case TM1638plusBUTTON_S2:
-    #ifdef DEBUG_SERIAL
-                Serial.println("TM1638plus button 2 pressed");
-    #endif
-                tm1638plus->toggleLedInverseMode();
-                break;
-            case TM1638plusBUTTON_S3:
-    #ifdef DEBUG_SERIAL
-                Serial.println("TM1638plus button 3 pressed");
-    #endif
-                break;
-            case TM1638plusBUTTON_S4:
-    #ifdef DEBUG_SERIAL
-                Serial.println("TM1638plus button 4 pressed");
-    #endif
-                // tm1638plus->toggleSevenSegmentEffect();
-                break;
-            case TM1638plusBUTTON_S5:
-    #ifdef DEBUG_SERIAL
-                Serial.println("TM1638plus button 5 pressed");
-    #endif
-                // tm1638plus->toggleSevenSegmentSpeed();
-                break;
-            case TM1638plusBUTTON_S6:
-    #ifdef DEBUG_SERIAL
-                Serial.println("TM1638plus button 6 pressed");
-    #endif
-                // tm1638plus->toggleSevenSegmentSpeed();
-                break;
-            case TM1638plusBUTTON_S7:
-    #ifdef DEBUG_SERIAL
-                Serial.println("TM1638plus button 6 pressed");
-    #endif
-
-                // sampler->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1);
-                break;
-            case TM1638plusBUTTON_S8:
-    #ifdef DEBUG_SERIAL
-                Serial.println("TM1638plus button 6 pressed");
-    #endif
-                // sampler->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1);
-                break;
-            }
-        }
-        */
 }
