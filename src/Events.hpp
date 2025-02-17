@@ -10,6 +10,9 @@ enum ANIMATION
 {
     ANIMATION_NONE = 0,
     ANIMATION_LASER_SHOOT = 1,
+    ANIMATION_SOS_1 = 2,
+    ANIMATION_SOS_2 = 3,
+    ANIMATION_SOS_3 = 4,
 };
 
 class Events

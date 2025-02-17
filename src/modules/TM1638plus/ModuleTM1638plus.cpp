@@ -225,30 +225,55 @@ void ModuleTM1638plus::toggleLedInverseMode(void)
     }
 }
 
-void ModuleTM1638plus::freeSevenSegmentLeftBlock(void)
+void ModuleTM1638plus::freeSevenSegmentLeftBlock(bool clear)
 {
     if (this->SevenSegmentLeftBlock != nullptr)
     {
         delete this->SevenSegmentLeftBlock;
         this->SevenSegmentLeftBlock = nullptr;
     }
+    if (clear)
+    {
+        this->module->displayASCII(0, ' ');
+        this->module->displayASCII(1, ' ');
+        this->module->displayASCII(2, ' ');
+        this->module->displayASCII(3, ' ');
+    }
 }
 
-void ModuleTM1638plus::freeSevenSegmentRightBlock(void)
+void ModuleTM1638plus::freeSevenSegmentRightBlock(bool clear)
 {
     if (this->SevenSegmentRightBlock != nullptr)
     {
         delete this->SevenSegmentRightBlock;
         this->SevenSegmentRightBlock = nullptr;
     }
+    if (clear)
+    {
+        this->module->displayASCII(4, ' ');
+        this->module->displayASCII(5, ' ');
+        this->module->displayASCII(6, ' ');
+        this->module->displayASCII(7, ' ');
+    }
 }
 
-void ModuleTM1638plus::freeSevenSegmentBothBlocks(void)
+void ModuleTM1638plus::freeSevenSegmentBothBlocks(bool clear)
 {
     if (this->SevenSegmentBothBlocks != nullptr)
     {
         delete this->SevenSegmentBothBlocks;
         this->SevenSegmentBothBlocks = nullptr;
+    }
+    if (clear)
+    {
+        this->module->displayASCII(0, ' ');
+        this->module->displayASCII(1, ' ');
+        this->module->displayASCII(2, ' ');
+        this->module->displayASCII(3, ' ');
+        this->module->displayASCII(4, ' ');
+        this->module->displayASCII(5, ' ');
+        this->module->displayASCII(6, ' ');
+        this->module->displayASCII(7, ' ');
     }
 }
 
@@ -271,7 +296,7 @@ void ModuleTM1638plus::displayTextOnFull7Segment(const char *text, bool blink, u
     this->freeSevenSegmentBothBlocks();
     this->freeSevenSegmentLeftBlock();
     this->freeSevenSegmentRightBlock();
-    this->SevenSegmentBothBlocks = new SimpleTextEffect(this->module, text, blink, blinkTimeout, 4, 8);
+    this->SevenSegmentBothBlocks = new SimpleTextEffect(this->module, text, blink, blinkTimeout, 0, 8);
 }
 
 void ModuleTM1638plus::refreshTextOnLeft7Segment(const char *text, bool blink, uint16_t blinkTimeout)
@@ -299,6 +324,14 @@ void ModuleTM1638plus::refreshTextOnFull7Segment(const char *text, bool blink, u
         SimpleTextEffect *effect = static_cast<SimpleTextEffect *>(this->SevenSegmentBothBlocks);
         effect->setText(text, blink, blinkTimeout);
     }
+}
+
+void ModuleTM1638plus::displayMultiFrameTextEffect(const char *frames[], size_t frameCount, uint16_t frameTimeout, const uint8_t startIndex)
+{
+    this->freeSevenSegmentBothBlocks();
+    this->freeSevenSegmentLeftBlock();
+    this->freeSevenSegmentRightBlock();
+    this->SevenSegmentBothBlocks = new MultiFrameTextEffect(this->module, frames, frameCount, frameTimeout, startIndex);
 }
 
 TM1638plusBUTTON ModuleTM1638plus::getPressedButton()

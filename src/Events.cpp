@@ -45,8 +45,9 @@ void Events::onExternalButton(EXTERNAL_BUTTON button)
             break;
         case EXTERNAL_BUTTON_5:
 #ifdef DEBUG_SERIAL
-            Serial.println("EVENTS:: external button 5 pressed");
+            Serial.println("EVENTS:: external button 5 pressed ... enqueue SOS sample");
 #endif
+            this->samplerPtr->queueSample(SAMPLE_SOS_01);
             break;
         }
     }
@@ -239,16 +240,19 @@ void Events::onSampleStarted(SAMPLE sample)
 #ifdef DEBUG_SERIAL
         Serial.println("Started playing SAMPLE_SOS_01");
 #endif
+        this->startAnimation(ANIMATION_SOS_1);
         break;
     case SAMPLE_SOS_02:
 #ifdef DEBUG_SERIAL
         Serial.println("Started playing SAMPLE_SOS_02");
 #endif
+        this->startAnimation(ANIMATION_SOS_2);
         break;
     case SAMPLE_SOS_03:
 #ifdef DEBUG_SERIAL
         Serial.println("Started playing SAMPLE_SOS_03");
 #endif
+        this->startAnimation(ANIMATION_SOS_3);
         break;
     default:
 #ifdef DEBUG_SERIAL
@@ -404,6 +408,7 @@ void Events::onSampleStopped(SAMPLE sample)
 #ifdef DEBUG_SERIAL
         Serial.println("Stopped playing SAMPLE_SOS_03");
 #endif
+        this->stopAnimation();
         break;
     default:
 #ifdef DEBUG_SERIAL
@@ -413,27 +418,77 @@ void Events::onSampleStopped(SAMPLE sample)
     Serial.printf("onStop total: %d\n", this->currentLaserSamplesPlaying);
     if (this->currentLaserSamplesPlaying <= 0)
     {
+        // TODO: conflict with another animations ?
         this->stopAnimation();
     }
 }
 
 void Events::startAnimation(ANIMATION animation)
 {
+    char buffer[5] = {'\0'};
+    const char *textFrames_SOS1[] = {
+        "S.O.S.     ",
+        " S.O.S.    ",
+        "  S.O.S.   ",
+        "   S.O.S.  ",
+        "    S.O.S. ",
+        "     S.O.S.",
+        "    S.O.S. ",
+        "   S.O.S.  ",
+        "  S.O.S.   ",
+        " S.O.S.    ",
+        "S.O.S.     ",
+    };
+    const char *textFrames_SOS2[] = {
+        "CASA    ",
+        " CASA   ",
+        "  CASA  ",
+        "   CASA ",
+        "    CASA",
+        "   CASA ",
+        "  CASA  ",
+        " CASA   ",
+        "CASA    ",
+    };
+
+    const char *textFrames_SOS3[] = {
+        "CEAVA5  ",
+        " CEAVA5 ",
+        "  CEAVA5",
+        " CEAVA5 ",
+        "CEAVA5  ",
+        " CEAVA5 ",
+        "  CEAVA5",
+        " CEAVA5 ",
+        "CEAVA5  ",
+    };
+
     if (animation != currentAnimation)
     {
+        currentAnimation = animation;
         switch (animation)
         {
         case ANIMATION_LASER_SHOOT:
-            currentAnimation = animation;
             this->previousLedEffect = tm1638plusPtr->getCurrentLedEffect();
             tm1638plusPtr->setLedEffect(LED_EFFECT_TYPE_INTERMITENT, 80);
             if (this->laserShoots >= 10000) // only 4 digits (right block)
             {
                 this->laserShoots = 0;
             }
-            char buffer[5] = {'\0'};
             snprintf(buffer, sizeof(buffer), "%04d", this->laserShoots);
             tm1638plusPtr->displayTextOnRight7Segment(buffer, false, 0);
+            break;
+        case ANIMATION_SOS_1:
+            tm1638plusPtr->displayTextOnFull7Segment("S.O.S.  S.O.S.", true, 100);
+            // tm1638plusPtr->displayMultiFrameTextEffect(textFrames_SOS1, (sizeof(textFrames_SOS1) / sizeof(textFrames_SOS1[0])), 60, 0);
+            break;
+        case ANIMATION_SOS_2:
+            tm1638plusPtr->displayTextOnFull7Segment("  CASA  ", true, 95);
+            // tm1638plusPtr->displayMultiFrameTextEffect(textFrames_SOS2, (sizeof(textFrames_SOS2) / sizeof(textFrames_SOS2[0])), 60, 0);
+            break;
+        case ANIMATION_SOS_3:
+            tm1638plusPtr->displayTextOnFull7Segment(" CEAVA5 ", true, 90);
+            // tm1638plusPtr->displayMultiFrameTextEffect(textFrames_SOS3, (sizeof(textFrames_SOS3) / sizeof(textFrames_SOS3[0])), 60, 0);
             break;
         }
     }
@@ -446,9 +501,13 @@ void Events::startAnimation(ANIMATION animation)
             {
                 this->laserShoots = 0;
             }
-            char buffer[5] = {'\0'};
+            // char buffer[5] = {'\0'};
             snprintf(buffer, sizeof(buffer), "%04d", this->laserShoots);
             tm1638plusPtr->refreshTextOnRight7Segment(buffer, false, 0);
+            break;
+        case ANIMATION_SOS_1:
+        case ANIMATION_SOS_2:
+        case ANIMATION_SOS_3:
             break;
         }
     }
@@ -460,8 +519,12 @@ void Events::stopAnimation()
     {
     case ANIMATION_LASER_SHOOT:
         tm1638plusPtr->setLedEffect(this->previousLedEffect);
-        tm1638plusPtr->refreshTextOnRight7Segment("    ", false, 0);
-        tm1638plusPtr->freeSevenSegmentRightBlock();
+        tm1638plusPtr->freeSevenSegmentRightBlock(true);
+        break;
+    case ANIMATION_SOS_1:
+    case ANIMATION_SOS_2:
+    case ANIMATION_SOS_3:
+        tm1638plusPtr->freeSevenSegmentBothBlocks(true);
         break;
     }
     currentAnimation = ANIMATION_NONE;

@@ -15,7 +15,7 @@
 #include "Leds/Effects/AlternateLedEffect.hpp"
 #include "Leds/Effects/IntermitentLedEffect.hpp"
 #include "SevenSegmentDisplay/Effects/SimpleTextEffect.hpp"
-//  #include "SevenSegmentDisplay/Effects/MultiFrameTextEffect.hpp"
+#include "SevenSegmentDisplay/Effects/MultiFrameTextEffect.hpp"
 
 #define MAX_BRIGHTNESS 8
 
@@ -57,9 +57,9 @@ public:
     void setLedEffect(LED_EFFECT_TYPE effect, uint16_t msDelay = DEFAULT_LED_MS_DELAY);
     void toggleLedInverseMode(void);
 
-    void freeSevenSegmentLeftBlock(void);
-    void freeSevenSegmentRightBlock(void);
-    void freeSevenSegmentBothBlocks(void);
+    void freeSevenSegmentLeftBlock(bool clear = true);
+    void freeSevenSegmentRightBlock(bool clear = true);
+    void freeSevenSegmentBothBlocks(bool clear = true);
 
     void displayTextOnLeft7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
     void displayTextOnRight7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
@@ -67,6 +67,8 @@ public:
     void refreshTextOnLeft7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
     void refreshTextOnRight7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
     void refreshTextOnFull7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
+
+    void displayMultiFrameTextEffect(const char *frames[], size_t frameCount, uint16_t frameTimeout = 0, const uint8_t startIndex = 0);
 
     void loop(void);
 };
