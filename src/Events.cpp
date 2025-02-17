@@ -479,15 +479,15 @@ void Events::startAnimation(ANIMATION animation)
             tm1638plusPtr->displayTextOnRight7Segment(buffer, false, 0);
             break;
         case ANIMATION_SOS_1:
-            tm1638plusPtr->displayTextOnFull7Segment("S.O.S.  S.O.S.", true, 100);
+            tm1638plusPtr->displayTextOnFull7Segment("S.O.S.  S.O.S.", true, 105);
             // tm1638plusPtr->displayMultiFrameTextEffect(textFrames_SOS1, (sizeof(textFrames_SOS1) / sizeof(textFrames_SOS1[0])), 60, 0);
             break;
         case ANIMATION_SOS_2:
-            tm1638plusPtr->displayTextOnFull7Segment("  CASA  ", true, 95);
+            tm1638plusPtr->displayTextOnFull7Segment("  CASA  ", true, 140);
             // tm1638plusPtr->displayMultiFrameTextEffect(textFrames_SOS2, (sizeof(textFrames_SOS2) / sizeof(textFrames_SOS2[0])), 60, 0);
             break;
         case ANIMATION_SOS_3:
-            tm1638plusPtr->displayTextOnFull7Segment(" CEAVA5 ", true, 90);
+            tm1638plusPtr->displayTextOnFull7Segment(" CEAVA5 ", true, 105);
             // tm1638plusPtr->displayMultiFrameTextEffect(textFrames_SOS3, (sizeof(textFrames_SOS3) / sizeof(textFrames_SOS3[0])), 60, 0);
             break;
         }
