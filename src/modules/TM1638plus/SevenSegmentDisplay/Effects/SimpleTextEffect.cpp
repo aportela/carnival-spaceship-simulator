@@ -2,9 +2,8 @@
 #include <string.h>
 
 SimpleTextEffect::SimpleTextEffect(TM1638plus *module, const char *text, bool blink, uint16_t blinkTimeout, const uint8_t startIndex, const uint8_t endIndex)
-    : SevenSegmentDisplayEffect(module),
+    : SevenSegmentDisplayEffect(module, blinkTimeout),
       blink(blink),
-      blinkTimeout(blinkTimeout),
       startIndex(startIndex),
       endIndex(endIndex)
 {
@@ -50,7 +49,6 @@ void SimpleTextEffect::hideText(void)
 
 void SimpleTextEffect::setText(const char *text, bool blink, uint16_t blinkTimeout)
 {
-    this->blinkTimeout = blinkTimeout;
     this->currentTextLength = strlen(text);
     // TODO TRIM
     /*

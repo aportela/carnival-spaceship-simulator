@@ -11,7 +11,6 @@ private:
     uint8_t currentTextLength = 0;
     bool blink = false;
     bool visible = false;
-    uint16_t blinkTimeout = 0;
     uint8_t startIndex = 0;
     uint8_t endIndex = 0;
 
