@@ -6,7 +6,7 @@
 
 #include "Buttons/TM1638plusButtons.hpp"
 #include "SevenSegmentDisplay/ISevenSegmentDisplayEffect.hpp"
-#include "SevenSegmentDisplay/SevenSegmentDisplayEffect.hpp"
+// #include "SevenSegmentDisplay/SevenSegmentDisplayEffect.hpp"
 #include "Leds/ILedEffect.hpp"
 #include "Leds/Effects/ScannerLedEffect.hpp"
 #include "Leds/Effects/ChaseLedEffect.hpp"
@@ -15,7 +15,7 @@
 #include "Leds/Effects/AlternateLedEffect.hpp"
 #include "Leds/Effects/IntermitentLedEffect.hpp"
 #include "SevenSegmentDisplay/Effects/SimpleTextEffect.hpp"
-#include "SevenSegmentDisplay/Effects/MultiFrameTextEffect.hpp"
+//  #include "SevenSegmentDisplay/Effects/MultiFrameTextEffect.hpp"
 
 #define MAX_BRIGHTNESS 8
 
@@ -40,16 +40,6 @@ private:
     ILedEffect *ledEffect = nullptr;
     LED_EFFECT_TYPE currentLedEffectType = LED_EFFECT_TYPE_NONE;
 
-    SevenSegmentDisplayEffect *sevenSegmentDisplayEffect = nullptr;
-    // SEVEN_SEGMENT_EFFECT_TYPE currentSevenSegmentEffectType = SEVEN_SEGMENT_EFFECT_TYPE_NONE;
-
-    SimpleTextEffect *textEffectLeft = nullptr;
-    SimpleTextEffect *textEffectRight = nullptr;
-    SimpleTextEffect *textEffectFull = nullptr;
-
-    SimpleTextEffect *ef = nullptr;
-    MultiFrameTextEffect *mf = nullptr;
-
     ISevenSegmentDisplayEffect *SevenSegmentLeftBlock = nullptr;  // first 4 seven segments
     ISevenSegmentDisplayEffect *SevenSegmentRightBlock = nullptr; // last 4 seven segments
     ISevenSegmentDisplayEffect *SevenSegmentBothBlocks = nullptr; // all 8 (4 left + 4 right) seven segments
@@ -61,16 +51,22 @@ public:
     TM1638plusBUTTON getPressedButton(void);
 
     void toggleSevenSegmentEffect(void);
-    void toggleSevenSegmentSpeed(void);
 
     void toggleLedEffect(uint16_t msDelay = DEFAULT_LED_MS_DELAY);
     LED_EFFECT_TYPE getCurrentLedEffect(void);
     void setLedEffect(LED_EFFECT_TYPE effect, uint16_t msDelay = DEFAULT_LED_MS_DELAY);
     void toggleLedInverseMode(void);
 
+    void freeSevenSegmentLeftBlock(void);
+    void freeSevenSegmentRightBlock(void);
+    void freeSevenSegmentBothBlocks(void);
+
     void displayTextOnLeft7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
     void displayTextOnRight7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
     void displayTextOnFull7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
+    void refreshTextOnLeft7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
+    void refreshTextOnRight7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
+    void refreshTextOnFull7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
 
     void loop(void);
 };

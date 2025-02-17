@@ -415,8 +415,6 @@ void Events::onSampleStopped(SAMPLE sample)
     {
         this->stopAnimation();
     }
-    // tm1638plusPtr->displayTextOnLeft7Segment("    ", false, 0);
-    // tm1638plusPtr->displayTextOnRight7Segment("    ", false, 0);
 }
 
 void Events::startAnimation(ANIMATION animation)
@@ -450,7 +448,7 @@ void Events::startAnimation(ANIMATION animation)
             }
             char buffer[5] = {'\0'};
             snprintf(buffer, sizeof(buffer), "%04d", this->laserShoots);
-            tm1638plusPtr->displayTextOnRight7Segment(buffer, false, 0);
+            tm1638plusPtr->refreshTextOnRight7Segment(buffer, false, 0);
             break;
         }
     }
@@ -462,7 +460,8 @@ void Events::stopAnimation()
     {
     case ANIMATION_LASER_SHOOT:
         tm1638plusPtr->setLedEffect(this->previousLedEffect);
-        tm1638plusPtr->displayTextOnRight7Segment("    ", false, 0);
+        tm1638plusPtr->refreshTextOnRight7Segment("    ", false, 0);
+        tm1638plusPtr->freeSevenSegmentRightBlock();
         break;
     }
     currentAnimation = ANIMATION_NONE;

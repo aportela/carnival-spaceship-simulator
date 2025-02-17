@@ -7,21 +7,29 @@ ModuleTM1638plus::ModuleTM1638plus(uint8_t strobePIN, uint8_t clockPIN, uint8_t 
     this->module->displayBegin();
     this->module->brightness(MAX_BRIGHTNESS);
     this->buttons = new TM1638plusButtons(this->module);
-    // this->toggleLedEffect();
-    //  this->toggleSevenSegmentEffect();
 }
 
 ModuleTM1638plus::~ModuleTM1638plus()
 {
-    if (this->sevenSegmentDisplayEffect != nullptr)
-    {
-        delete this->sevenSegmentDisplayEffect;
-        this->sevenSegmentDisplayEffect = nullptr;
-    }
     if (this->ledEffect != nullptr)
     {
         delete this->ledEffect;
         this->ledEffect = nullptr;
+    }
+    if (this->SevenSegmentLeftBlock != nullptr)
+    {
+        delete this->SevenSegmentLeftBlock;
+        this->SevenSegmentLeftBlock = nullptr;
+    }
+    if (this->SevenSegmentRightBlock != nullptr)
+    {
+        delete this->SevenSegmentRightBlock;
+        this->SevenSegmentRightBlock = nullptr;
+    }
+    if (this->SevenSegmentBothBlocks != nullptr)
+    {
+        delete this->SevenSegmentBothBlocks;
+        this->SevenSegmentBothBlocks = nullptr;
     }
     delete this->buttons;
     this->buttons = nullptr;
@@ -50,16 +58,18 @@ void ModuleTM1638plus::toggleSevenSegmentEffect(void)
         break;
     }
     */
-    if (this->ef != nullptr)
-    {
-        delete this->ef;
-        this->ef = nullptr;
-    }
-    if (this->mf != nullptr)
-    {
-        delete this->mf;
-        this->mf = nullptr;
-    }
+    /*
+     if (this->ef != nullptr)
+     {
+         delete this->ef;
+         this->ef = nullptr;
+     }
+     if (this->mf != nullptr)
+     {
+         delete this->mf;
+         this->mf = nullptr;
+     }
+         */
     // this->ef = new SimpleTextEffect(this->module, "AA BB CC", true, 500, 0, 7);
     /*
     const char *frames[] = {
@@ -93,7 +103,6 @@ void ModuleTM1638plus::toggleSevenSegmentEffect(void)
         " CEAVA5 ",
         "CEAVA5  ",
     };
-    */
     const char *frames[] = {
         "UFO     ",
         " UFO    ",
@@ -107,15 +116,6 @@ void ModuleTM1638plus::toggleSevenSegmentEffect(void)
         " UFO    ",
     };
     this->mf = new MultiFrameTextEffect(this->module, frames, sizeof(frames) / sizeof(frames[0]), 200, 0);
-}
-
-void ModuleTM1638plus::toggleSevenSegmentSpeed(void)
-{
-    /*
-    if (this->currentSevenSegmentEffectType != SEVEN_SEGMENT_EFFECT_TYPE_NONE)
-    {
-        this->sevenSegmentDisplayEffect->toggleCurrentSpeed();
-    }
         */
 }
 
@@ -225,34 +225,80 @@ void ModuleTM1638plus::toggleLedInverseMode(void)
     }
 }
 
+void ModuleTM1638plus::freeSevenSegmentLeftBlock(void)
+{
+    if (this->SevenSegmentLeftBlock != nullptr)
+    {
+        delete this->SevenSegmentLeftBlock;
+        this->SevenSegmentLeftBlock = nullptr;
+    }
+}
+
+void ModuleTM1638plus::freeSevenSegmentRightBlock(void)
+{
+    if (this->SevenSegmentRightBlock != nullptr)
+    {
+        delete this->SevenSegmentRightBlock;
+        this->SevenSegmentRightBlock = nullptr;
+    }
+}
+
+void ModuleTM1638plus::freeSevenSegmentBothBlocks(void)
+{
+    if (this->SevenSegmentBothBlocks != nullptr)
+    {
+        delete this->SevenSegmentBothBlocks;
+        this->SevenSegmentBothBlocks = nullptr;
+    }
+}
+
 void ModuleTM1638plus::displayTextOnLeft7Segment(const char *text, bool blink, uint16_t blinkTimeout)
 {
-    if (this->textEffectLeft != nullptr)
-    {
-        delete this->textEffectLeft;
-        this->textEffectLeft = nullptr;
-    }
-    this->textEffectLeft = new SimpleTextEffect(this->module, text, blink, blinkTimeout, 0, 4);
+    this->freeSevenSegmentBothBlocks();
+    this->freeSevenSegmentLeftBlock();
+    this->SevenSegmentLeftBlock = new SimpleTextEffect(this->module, text, blink, blinkTimeout, 0, 4);
 }
 
 void ModuleTM1638plus::displayTextOnRight7Segment(const char *text, bool blink, uint16_t blinkTimeout)
 {
-    if (this->textEffectRight != nullptr)
-    {
-        delete this->textEffectRight;
-        this->textEffectRight = nullptr;
-    }
-    this->textEffectRight = new SimpleTextEffect(this->module, text, blink, blinkTimeout, 4, 8);
+    this->freeSevenSegmentBothBlocks();
+    this->freeSevenSegmentRightBlock();
+    this->SevenSegmentRightBlock = new SimpleTextEffect(this->module, text, blink, blinkTimeout, 4, 8);
 }
 
 void ModuleTM1638plus::displayTextOnFull7Segment(const char *text, bool blink, uint16_t blinkTimeout)
 {
-    if (this->textEffectRight != nullptr)
+    this->freeSevenSegmentBothBlocks();
+    this->freeSevenSegmentLeftBlock();
+    this->freeSevenSegmentRightBlock();
+    this->SevenSegmentBothBlocks = new SimpleTextEffect(this->module, text, blink, blinkTimeout, 4, 8);
+}
+
+void ModuleTM1638plus::refreshTextOnLeft7Segment(const char *text, bool blink, uint16_t blinkTimeout)
+{
+    if (this->SevenSegmentLeftBlock != nullptr && this->SevenSegmentLeftBlock->isSimpleTextEffect())
     {
-        delete this->textEffectRight;
-        this->textEffectRight = nullptr;
+        SimpleTextEffect *effect = static_cast<SimpleTextEffect *>(this->SevenSegmentLeftBlock);
+        effect->setText(text, blink, blinkTimeout);
     }
-    this->textEffectRight = new SimpleTextEffect(this->module, text, blink, blinkTimeout, 0, 8);
+}
+
+void ModuleTM1638plus::refreshTextOnRight7Segment(const char *text, bool blink, uint16_t blinkTimeout)
+{
+    if (this->SevenSegmentRightBlock != nullptr && this->SevenSegmentRightBlock->isSimpleTextEffect())
+    {
+        SimpleTextEffect *effect = static_cast<SimpleTextEffect *>(this->SevenSegmentRightBlock);
+        effect->setText(text, blink, blinkTimeout);
+    }
+}
+
+void ModuleTM1638plus::refreshTextOnFull7Segment(const char *text, bool blink, uint16_t blinkTimeout)
+{
+    if (this->SevenSegmentBothBlocks != nullptr && this->SevenSegmentBothBlocks->isSimpleTextEffect())
+    {
+        SimpleTextEffect *effect = static_cast<SimpleTextEffect *>(this->SevenSegmentBothBlocks);
+        effect->setText(text, blink, blinkTimeout);
+    }
 }
 
 TM1638plusBUTTON ModuleTM1638plus::getPressedButton()
@@ -300,28 +346,6 @@ void ModuleTM1638plus::loop(void)
     {
         this->ledEffect->loop();
     }
-    /*
-    if (this->currentSevenSegmentEffectType != SEVEN_SEGMENT_EFFECT_TYPE_NONE && this->sevenSegmentDisplayEffect != nullptr)
-    {
-        // this->sevenSegmentDisplayEffect->loop();
-    }
-    if (this->ef != nullptr)
-    {
-        // this->ef->loop();
-    }
-    if (this->mf != nullptr)
-    {
-        this->mf->loop();
-    }
-    if (this->textEffectLeft != nullptr)
-    {
-        this->textEffectLeft->loop();
-    }
-    if (this->textEffectRight != nullptr)
-    {
-        this->textEffectRight->loop();
-    }
-        */
     // full 7 segment animation
     if (this->SevenSegmentBothBlocks != nullptr)
     {
@@ -332,12 +356,12 @@ void ModuleTM1638plus::loop(void)
         // left side 7 segment animation
         if (this->SevenSegmentLeftBlock != nullptr)
         {
-            this->SevenSegmentBothBlocks->loop();
+            this->SevenSegmentLeftBlock->loop();
         }
         // right side 7 segment animation
         if (this->SevenSegmentRightBlock != nullptr)
         {
-            this->SevenSegmentBothBlocks->loop();
+            this->SevenSegmentRightBlock->loop();
         }
     }
 }
