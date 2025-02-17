@@ -1,8 +1,7 @@
 #include "MultiFrameTextEffect.hpp"
 
-MultiFrameTextEffect::MultiFrameTextEffect(TM1638plus *module, const char *frames[], size_t frameCount, uint16_t frameTimeout, const uint8_t startIndex) : module(module), frameCount(frameCount), frameTimeout(frameTimeout), startIndex(startIndex)
+MultiFrameTextEffect::MultiFrameTextEffect(TM1638plus *module, const char *frames[], size_t frameCount, uint16_t msDelay, const uint8_t startIndex) : SevenSegmentDisplayEffect(module, msDelay), frameCount(frameCount), startIndex(startIndex)
 {
-    this->lastTimestamp = millis();
     if (frames != nullptr && frameCount > 0)
     {
         this->frames = new const char *[frameCount];
@@ -32,10 +31,8 @@ void MultiFrameTextEffect::loop(void)
 {
     if (this->frames && this->frameCount > 0)
     {
-        uint64_t currentMillis = millis();
-        if (currentMillis - this->lastTimestamp > this->frameTimeout)
+        if (this->refresh())
         {
-            this->lastTimestamp = currentMillis;
             this->module->displayText(this->frames[this->currentFrameIndex]);
             this->currentFrameIndex++;
             if (this->currentFrameIndex >= this->frameCount)
