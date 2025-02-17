@@ -14,6 +14,7 @@
 #include "Leds/Effects/VuMeterMirroredLedEffect.hpp"
 #include "Leds/Effects/AlternateLedEffect.hpp"
 #include "Leds/Effects/IntermitentLedEffect.hpp"
+#include "Leds/Effects/MorseLedEffect.hpp"
 #include "SevenSegmentDisplay/Effects/SimpleTextEffect.hpp"
 #include "SevenSegmentDisplay/Effects/MultiFrameTextEffect.hpp"
 
@@ -28,6 +29,8 @@ enum LED_EFFECT_TYPE
     LED_EFFECT_TYPE_VUMETER_MIRRORED = 4,
     LED_EFFECT_TYPE_ALTERNATE = 5,
     LED_EFFECT_TYPE_INTERMITENT = 6,
+    LED_EFFECT_TYPE_MORSE_LETTER_S = 7,
+    LED_EFFECT_TYPE_MORSE_LETTER_O = 8,
 };
 
 class ModuleTM1638plus

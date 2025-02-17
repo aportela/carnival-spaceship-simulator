@@ -203,6 +203,18 @@ void ModuleTM1638plus::setLedEffect(LED_EFFECT_TYPE effect, uint16_t msDelay)
 #endif
             this->ledEffect = new IntermitentLedEffect(this->module, msDelay);
             break;
+        case LED_EFFECT_TYPE_MORSE_LETTER_S:
+#ifdef DEBUG_SERIAL
+            Serial.println("TM1638plus:: setting led effect morse letter S");
+#endif
+            this->ledEffect = new MorseLedEffect(this->module, msDelay, 'S');
+            break;
+        case LED_EFFECT_TYPE_MORSE_LETTER_O:
+#ifdef DEBUG_SERIAL
+            Serial.println("TM1638plus:: setting led effect morse letter O");
+#endif
+            this->ledEffect = new MorseLedEffect(this->module, msDelay, 'O');
+            break;
         default:
             break;
         }

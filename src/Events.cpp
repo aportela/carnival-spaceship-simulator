@@ -426,42 +426,6 @@ void Events::onSampleStopped(SAMPLE sample)
 void Events::startAnimation(ANIMATION animation)
 {
     char buffer[5] = {'\0'};
-    const char *textFrames_SOS1[] = {
-        "S.O.S.     ",
-        " S.O.S.    ",
-        "  S.O.S.   ",
-        "   S.O.S.  ",
-        "    S.O.S. ",
-        "     S.O.S.",
-        "    S.O.S. ",
-        "   S.O.S.  ",
-        "  S.O.S.   ",
-        " S.O.S.    ",
-        "S.O.S.     ",
-    };
-    const char *textFrames_SOS2[] = {
-        "CASA    ",
-        " CASA   ",
-        "  CASA  ",
-        "   CASA ",
-        "    CASA",
-        "   CASA ",
-        "  CASA  ",
-        " CASA   ",
-        "CASA    ",
-    };
-
-    const char *textFrames_SOS3[] = {
-        "CEAVA5  ",
-        " CEAVA5 ",
-        "  CEAVA5",
-        " CEAVA5 ",
-        "CEAVA5  ",
-        " CEAVA5 ",
-        "  CEAVA5",
-        " CEAVA5 ",
-        "CEAVA5  ",
-    };
 
     if (animation != currentAnimation)
     {
@@ -479,16 +443,19 @@ void Events::startAnimation(ANIMATION animation)
             tm1638plusPtr->displayTextOnRight7Segment(buffer, false, 0);
             break;
         case ANIMATION_SOS_1:
+            this->previousLedEffect = tm1638plusPtr->getCurrentLedEffect();
+            tm1638plusPtr->setLedEffect(LED_EFFECT_TYPE_MORSE_LETTER_S, 105);
             tm1638plusPtr->displayTextOnFull7Segment("S.O.S.  S.O.S.", true, 105);
-            // tm1638plusPtr->displayMultiFrameTextEffect(textFrames_SOS1, (sizeof(textFrames_SOS1) / sizeof(textFrames_SOS1[0])), 60, 0);
             break;
         case ANIMATION_SOS_2:
+            this->previousLedEffect = tm1638plusPtr->getCurrentLedEffect();
+            tm1638plusPtr->setLedEffect(LED_EFFECT_TYPE_MORSE_LETTER_O, 140);
             tm1638plusPtr->displayTextOnFull7Segment("  CASA  ", true, 140);
-            // tm1638plusPtr->displayMultiFrameTextEffect(textFrames_SOS2, (sizeof(textFrames_SOS2) / sizeof(textFrames_SOS2[0])), 60, 0);
             break;
         case ANIMATION_SOS_3:
+            this->previousLedEffect = tm1638plusPtr->getCurrentLedEffect();
+            tm1638plusPtr->setLedEffect(LED_EFFECT_TYPE_MORSE_LETTER_S, 105);
             tm1638plusPtr->displayTextOnFull7Segment(" CEAVA5 ", true, 105);
-            // tm1638plusPtr->displayMultiFrameTextEffect(textFrames_SOS3, (sizeof(textFrames_SOS3) / sizeof(textFrames_SOS3[0])), 60, 0);
             break;
         }
     }
@@ -524,6 +491,7 @@ void Events::stopAnimation()
     case ANIMATION_SOS_1:
     case ANIMATION_SOS_2:
     case ANIMATION_SOS_3:
+        tm1638plusPtr->setLedEffect(this->previousLedEffect);
         tm1638plusPtr->freeSevenSegmentBothBlocks(true);
         break;
     }
