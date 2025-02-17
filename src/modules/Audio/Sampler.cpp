@@ -215,6 +215,10 @@ void Sampler::loop(void)
                 this->file[i] = nullptr;
                 this->stub[i]->stop();
                 this->activeVoices[i] = false;
+                if (this->currentSample[i] == SAMPLE_SOS_03)
+                {
+                    this->isPlayingSOSSample = false;
+                }
                 if (this->onSampleStopPlaying)
                 {
                     this->onSampleStopPlaying(this->currentSample[i]);
