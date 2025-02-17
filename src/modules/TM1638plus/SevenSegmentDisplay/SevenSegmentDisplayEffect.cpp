@@ -3,6 +3,7 @@
 
 SevenSegmentDisplayEffect::SevenSegmentDisplayEffect(TM1638plus *module) : module(module)
 {
+    this->lastTimestamp = millis();
 }
 
 SevenSegmentDisplayEffect::~SevenSegmentDisplayEffect()
@@ -24,6 +25,7 @@ bool SevenSegmentDisplayEffect::refresh(void)
     }
 }
 
+/*
 uint8_t SevenSegmentDisplayEffect::toggleCurrentSpeed(void)
 {
     if (this->currentSpeed <= MAX_SPEED)
@@ -38,56 +40,55 @@ uint8_t SevenSegmentDisplayEffect::toggleCurrentSpeed(void)
     this->msDelay = this->currentSpeed * DEFAULT_MS_DELAY;
     return (this->currentSpeed);
 }
+    */
 
-bool SevenSegmentDisplayEffect::loop(void)
-{
-    if (this->refresh())
-    {
-        /*
+/*
+
         const char *words[] = {
-            "S.O.S.     ",
-            " S.O.S.    ",
-            "  S.O.S.   ",
-            "   S.O.S.  ",
-            "    S.O.S. ",
-            "     S.O.S.",
-            "    S.O.S. ",
-            "   S.O.S.  ",
-            "  S.O.S.   ",
-            " S.O.S.    ",
-            "S.O.S.     ",
-            "CASA    ",
-            " CASA   ",
-            "  CASA  ",
-            "   CASA ",
-            "    CASA",
-            "   CASA ",
-            "  CASA  ",
-            " CASA   ",
-            "CASA    ",
-            "CEAVA5  ",
-            " CEAVA5 ",
-            "  CEAVA5",
-            " CEAVA5 ",
-            "CEAVA5  ",
-            " CEAVA5 ",
-            "  CEAVA5",
-            " CEAVA5 ",
-            "CEAVA5  ",
-        };
-        */
-        const char *words[] = {
-            "PILI DE ",
-            "ILI DE L",
-            "LI DE LE",
-            "I DE LEI",
-            " DE LEIA",
-            "DE LEIAO",
-            " DE LEIA",
-            "I DE LEI",
-            "LI DE LE",
-            "ILI DE L",
-        };
+        "S.O.S.     ",
+        " S.O.S.    ",
+        "  S.O.S.   ",
+        "   S.O.S.  ",
+        "    S.O.S. ",
+        "     S.O.S.",
+        "    S.O.S. ",
+        "   S.O.S.  ",
+        "  S.O.S.   ",
+        " S.O.S.    ",
+        "S.O.S.     ",
+        "CASA    ",
+        " CASA   ",
+        "  CASA  ",
+        "   CASA ",
+        "    CASA",
+        "   CASA ",
+        "  CASA  ",
+        " CASA   ",
+        "CASA    ",
+        "CEAVA5  ",
+        " CEAVA5 ",
+        "  CEAVA5",
+        " CEAVA5 ",
+        "CEAVA5  ",
+        " CEAVA5 ",
+        "  CEAVA5",
+        " CEAVA5 ",
+        "CEAVA5  ",
+    };
+
+const char *words[] = {
+    "PILI DE ",
+    "ILI DE L",
+    "LI DE LE",
+    "I DE LEI",
+    " DE LEIA",
+    "DE LEIAO",
+    " DE LEIA",
+    "I DE LEI",
+    "LI DE LE",
+    "ILI DE L",
+};
+
         this->totalFrames = sizeof(words) / sizeof(words[0]);
         // this->module->displayText(words[random(0, sizeof(words) / sizeof(words[0]))]);
         this->module->displayText(words[this->currentFrameIndex]);
@@ -113,11 +114,5 @@ bool SevenSegmentDisplayEffect::loop(void)
         this->module->display7Seg(6, seq[this->currentFrameIndex]);
         this->module->display7Seg(7, seq[this->currentFrameIndex]);
         this->currentFrameIndex++;
-        */
-        return (true);
-    }
-    else
-    {
-        return (false);
-    }
-}
+
+*/
