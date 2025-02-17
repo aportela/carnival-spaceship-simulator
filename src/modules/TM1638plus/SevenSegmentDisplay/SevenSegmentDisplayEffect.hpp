@@ -7,7 +7,7 @@
 #include <TM1638plus.h>
 #include "ISevenSegmentDisplayEffect.hpp"
 
-#define DEFAULT_MS_DELAY 32
+#define DEFAULT_MS_DELAY 100
 
 /*
 
@@ -47,13 +47,14 @@ protected:
     bool refresh(void);
 
 public:
-    SevenSegmentDisplayEffect(TM1638plus *module);
+    SevenSegmentDisplayEffect(TM1638plus *module, uint16_t msDelay = DEFAULT_MS_DELAY);
     ~SevenSegmentDisplayEffect();
 
     // uint8_t toggleCurrentSpeed(void);
     virtual void loop(void) = 0;
 
     virtual bool isSimpleTextEffect() { return false; }
+    virtual bool isMultiFrameTextEffect() { return false; }
 };
 
 #endif // TM1638_PLUS_SEVEN_SEGMENT_DISPLAY_EFFECT_H

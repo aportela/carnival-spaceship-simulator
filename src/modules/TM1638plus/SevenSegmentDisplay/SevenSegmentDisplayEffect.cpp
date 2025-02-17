@@ -1,7 +1,7 @@
 #include "SevenSegmentDisplayEffect.hpp"
 #include "Arduino.h"
 
-SevenSegmentDisplayEffect::SevenSegmentDisplayEffect(TM1638plus *module) : module(module)
+SevenSegmentDisplayEffect::SevenSegmentDisplayEffect(TM1638plus *module, uint16_t msDelay) : module(module), msDelay(msDelay)
 {
     this->lastTimestamp = millis();
 }
