@@ -5,6 +5,7 @@
 #include <TM1638plus.h>
 
 #include "Buttons/TM1638plusButtons.hpp"
+#include "SevenSegmentDisplay/ISevenSegmentDisplayEffect.hpp"
 #include "SevenSegmentDisplay/SevenSegmentDisplayEffect.hpp"
 #include "Leds/ILedEffect.hpp"
 #include "Leds/Effects/ScannerLedEffect.hpp"
@@ -29,12 +30,6 @@ enum LED_EFFECT_TYPE
     LED_EFFECT_TYPE_INTERMITENT = 6,
 };
 
-enum SEVEN_SEGMENT_EFFECT_TYPE
-{
-    SEVEN_SEGMENT_EFFECT_TYPE_NONE = 0,
-    SEVEN_SEGMENT_EFFECT_TYPE_RANDOM_WORDS = 1
-};
-
 class ModuleTM1638plus
 {
 private:
@@ -46,7 +41,7 @@ private:
     LED_EFFECT_TYPE currentLedEffectType = LED_EFFECT_TYPE_NONE;
 
     SevenSegmentDisplayEffect *sevenSegmentDisplayEffect = nullptr;
-    SEVEN_SEGMENT_EFFECT_TYPE currentSevenSegmentEffectType = SEVEN_SEGMENT_EFFECT_TYPE_NONE;
+    // SEVEN_SEGMENT_EFFECT_TYPE currentSevenSegmentEffectType = SEVEN_SEGMENT_EFFECT_TYPE_NONE;
 
     SimpleTextEffect *textEffectLeft = nullptr;
     SimpleTextEffect *textEffectRight = nullptr;
@@ -54,6 +49,10 @@ private:
 
     SimpleTextEffect *ef = nullptr;
     MultiFrameTextEffect *mf = nullptr;
+
+    ISevenSegmentDisplayEffect *SevenSegmentLeftBlock = nullptr;  // first 4 seven segments
+    ISevenSegmentDisplayEffect *SevenSegmentRightBlock = nullptr; // last 4 seven segments
+    ISevenSegmentDisplayEffect *SevenSegmentBothBlocks = nullptr; // all 8 (4 left + 4 right) seven segments
 
 public:
     ModuleTM1638plus(uint8_t strobePIN, uint8_t clockPIN, uint8_t dioPIN, bool highFreq);

@@ -111,10 +111,12 @@ void ModuleTM1638plus::toggleSevenSegmentEffect(void)
 
 void ModuleTM1638plus::toggleSevenSegmentSpeed(void)
 {
+    /*
     if (this->currentSevenSegmentEffectType != SEVEN_SEGMENT_EFFECT_TYPE_NONE)
     {
         this->sevenSegmentDisplayEffect->toggleCurrentSpeed();
     }
+        */
 }
 
 void ModuleTM1638plus::toggleLedEffect(uint16_t msDelay)
@@ -298,6 +300,7 @@ void ModuleTM1638plus::loop(void)
     {
         this->ledEffect->loop();
     }
+    /*
     if (this->currentSevenSegmentEffectType != SEVEN_SEGMENT_EFFECT_TYPE_NONE && this->sevenSegmentDisplayEffect != nullptr)
     {
         // this->sevenSegmentDisplayEffect->loop();
@@ -317,5 +320,24 @@ void ModuleTM1638plus::loop(void)
     if (this->textEffectRight != nullptr)
     {
         this->textEffectRight->loop();
+    }
+        */
+    // full 7 segment animation
+    if (this->SevenSegmentBothBlocks != nullptr)
+    {
+        this->SevenSegmentBothBlocks->loop();
+    }
+    else
+    {
+        // left side 7 segment animation
+        if (this->SevenSegmentLeftBlock != nullptr)
+        {
+            this->SevenSegmentBothBlocks->loop();
+        }
+        // right side 7 segment animation
+        if (this->SevenSegmentRightBlock != nullptr)
+        {
+            this->SevenSegmentBothBlocks->loop();
+        }
     }
 }
