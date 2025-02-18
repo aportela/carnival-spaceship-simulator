@@ -105,7 +105,8 @@ void setup()
     // tm1638plusPtr->displayMultiFrameTextEffect(textFrames, sizeof(textFrames) / sizeof(textFrames[0]), 300, 0);
     //  tm1638plusPtr->displayTextOnFull7Segment("LEI80 12", true, DEFAULT_LED_MS_DELAY);
     // const uint8_t seq[] = {SEGMENT_A, SEGMENT_B, SEGMENT_G, SEGMENT_E, SEGMENT_D, SEGMENT_C, SEGMENT_G, SEGMENT_F}; // A, B, G, E, D, C, G, F
-    const uint8_t seq[] = {SEGMENT_A, SEGMENT_B, SEGMENT_C, SEGMENT_D, SEGMENT_E, SEGMENT_F}; // A, B, G, E, D, C, G, F
+    // const uint8_t seq[] = {SEGMENT_A, SEGMENT_B, SEGMENT_C, SEGMENT_D, SEGMENT_E, SEGMENT_F}; // A, B, G, E, D, C, G, F
+    const uint8_t seq[] = {SEGMENT_A | SEGMENT_D, SEGMENT_F | SEGMENT_E | SEGMENT_B | SEGMENT_C, SEGMENT_G};
     tm1638plusPtr->displayMultiFrameSevenSegmentEffect(seq, sizeof(seq) / sizeof(seq[0]), 300, 0, 7);
 
 #ifdef DEBUG_SERIAL
