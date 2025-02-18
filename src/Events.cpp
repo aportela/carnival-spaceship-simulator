@@ -1,3 +1,4 @@
+#include <cstring>
 #include <Arduino.h>
 #include "Events.hpp"
 #include "CommonDefines.hpp"
@@ -423,6 +424,35 @@ void Events::onSampleStopped(SAMPLE sample)
     }
 }
 
+void Events::display7SegmentLaserAnimation(void)
+{
+    tm1638plusPtr->clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCK_BOTH);
+    char buffer[5] = {'\0'};
+    // led block
+    tm1638plusPtr->setLedEffect(LED_EFFECT_TYPE_INTERMITENT, 80);
+    // seven segment right block
+    if (this->laserShoots >= 10000) // only 4 digits (right block)
+    {
+        this->laserShoots = 0;
+    }
+    snprintf(buffer, sizeof(buffer), "%04d", this->laserShoots);
+    tm1638plusPtr->displayTextOnRight7Segment(buffer, false, 0);
+    // seven segment left block
+    size_t frameCount = 5;
+    size_t frameAffectedSegmentCount = 4;
+    uint8_t **seq = new uint8_t *[frameCount];
+    for (size_t i = 0; i < frameCount; ++i)
+    {
+        seq[i] = new uint8_t[frameAffectedSegmentCount];
+    }
+    std::memcpy(seq[0], (uint8_t[]){SEGMENT_NONE, SEGMENT_G, SEGMENT_G, SEGMENT_NONE}, frameAffectedSegmentCount * sizeof(uint8_t));
+    std::memcpy(seq[1], (uint8_t[]){SEGMENT_G, SEGMENT_G, SEGMENT_G, SEGMENT_G}, frameAffectedSegmentCount * sizeof(uint8_t));
+    std::memcpy(seq[2], (uint8_t[]){SEGMENT_F | SEGMENT_G | SEGMENT_E, SEGMENT_G, SEGMENT_G, SEGMENT_B | SEGMENT_G | SEGMENT_C}, frameAffectedSegmentCount * sizeof(uint8_t));
+    std::memcpy(seq[3], (uint8_t[]){SEGMENT_A | SEGMENT_F | SEGMENT_G | SEGMENT_E | SEGMENT_D, SEGMENT_G, SEGMENT_G, SEGMENT_A | SEGMENT_B | SEGMENT_G | SEGMENT_C | SEGMENT_D}, frameAffectedSegmentCount * sizeof(uint8_t));
+    std::memcpy(seq[4], (uint8_t[]){SEGMENT_A | SEGMENT_F | SEGMENT_E | SEGMENT_D, SEGMENT_A | SEGMENT_D, SEGMENT_A | SEGMENT_D, SEGMENT_A | SEGMENT_B | SEGMENT_C | SEGMENT_D}, frameAffectedSegmentCount * sizeof(uint8_t));
+    tm1638plusPtr->displayMultiFrameIndividualSevenSegmentEffect(seq, frameCount, frameAffectedSegmentCount, 60, 0, 3);
+}
+
 void Events::startAnimation(ANIMATION animation)
 {
     char buffer[5] = {'\0'};
@@ -434,13 +464,7 @@ void Events::startAnimation(ANIMATION animation)
         {
         case ANIMATION_LASER_SHOOT:
             this->previousLedEffect = tm1638plusPtr->getCurrentLedEffect();
-            tm1638plusPtr->setLedEffect(LED_EFFECT_TYPE_INTERMITENT, 80);
-            if (this->laserShoots >= 10000) // only 4 digits (right block)
-            {
-                this->laserShoots = 0;
-            }
-            snprintf(buffer, sizeof(buffer), "%04d", this->laserShoots);
-            tm1638plusPtr->displayTextOnRight7Segment(buffer, false, 0);
+            this->display7SegmentLaserAnimation();
             break;
         case ANIMATION_SOS_1:
             this->previousLedEffect = tm1638plusPtr->getCurrentLedEffect();
@@ -486,13 +510,17 @@ void Events::stopAnimation()
     {
     case ANIMATION_LASER_SHOOT:
         tm1638plusPtr->setLedEffect(this->previousLedEffect);
-        tm1638plusPtr->freeSevenSegmentRightBlock(true);
+        tm1638plusPtr->freeSevenSegmentLeftBlock();
+        tm1638plusPtr->freeSevenSegmentRightBlock();
+        tm1638plusPtr->freeSevenSegmentBothBlocks();
+        tm1638plusPtr->clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCK_BOTH);
         break;
     case ANIMATION_SOS_1:
     case ANIMATION_SOS_2:
     case ANIMATION_SOS_3:
         tm1638plusPtr->setLedEffect(this->previousLedEffect);
-        tm1638plusPtr->freeSevenSegmentBothBlocks(true);
+        tm1638plusPtr->freeSevenSegmentBothBlocks();
+        tm1638plusPtr->clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCK_BOTH);
         break;
     }
     currentAnimation = ANIMATION_NONE;

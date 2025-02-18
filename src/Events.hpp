@@ -28,6 +28,8 @@ private:
     LED_EFFECT_TYPE previousLedEffect = LED_EFFECT_TYPE_NONE;
     ANIMATION currentAnimation = ANIMATION_NONE;
 
+    void display7SegmentLaserAnimation(void);
+
 public:
     Events(ExternalButtons *externalButtonsPtr, ModuleTM1638plus *tm1638plusPtr, Sampler *samplerPtr);
     ~Events();
