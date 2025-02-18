@@ -5,10 +5,7 @@ MultiFrameSegmentEffect::MultiFrameSegmentEffect(TM1638plus *module, const uint8
     if (frames != nullptr && frameCount > 0)
     {
         this->frames = new uint8_t[frameCount];
-        for (size_t i = 0; i < frameCount; ++i)
-        {
-            memcpy(this->frames, frames, frameCount * sizeof(uint8_t));
-        }
+        memcpy(this->frames, frames, frameCount * sizeof(uint8_t));
     }
 }
 
