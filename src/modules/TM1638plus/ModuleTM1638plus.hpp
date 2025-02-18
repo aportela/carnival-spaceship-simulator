@@ -17,6 +17,7 @@
 #include "Leds/Effects/MorseLedEffect.hpp"
 #include "SevenSegmentDisplay/Effects/SimpleTextEffect.hpp"
 #include "SevenSegmentDisplay/Effects/MultiFrameTextEffect.hpp"
+#include "SevenSegmentDisplay/Effects/MultiFrameSegmentEffect.hpp"
 
 #define MAX_BRIGHTNESS 8
 
@@ -72,6 +73,7 @@ public:
     void refreshTextOnFull7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
 
     void displayMultiFrameTextEffect(const char *frames[], size_t frameCount, uint16_t frameTimeout = 0, const uint8_t startIndex = 0);
+    void displayMultiFrameSevenSegmentEffect(const uint8_t frames[], size_t frameCount, uint16_t frameTimeout = 0, const uint8_t startIndex = 0, const uint8_t endIndex = 7);
 
     void loop(void);
 };

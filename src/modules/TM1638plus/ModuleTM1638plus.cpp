@@ -346,6 +346,14 @@ void ModuleTM1638plus::displayMultiFrameTextEffect(const char *frames[], size_t 
     this->SevenSegmentBothBlocks = new MultiFrameTextEffect(this->module, frames, frameCount, frameTimeout, startIndex);
 }
 
+void ModuleTM1638plus::displayMultiFrameSevenSegmentEffect(const uint8_t frames[], size_t frameCount, uint16_t frameTimeout, const uint8_t startIndex, const uint8_t endIndex)
+{
+    this->freeSevenSegmentBothBlocks();
+    this->freeSevenSegmentLeftBlock();
+    this->freeSevenSegmentRightBlock();
+    this->SevenSegmentBothBlocks = new MultiFrameSegmentEffect(this->module, frames, frameCount, frameTimeout, startIndex, endIndex);
+}
+
 TM1638plusBUTTON ModuleTM1638plus::getPressedButton()
 {
     uint8_t pressedButtons = this->buttons->getPressedButtonsMask();
