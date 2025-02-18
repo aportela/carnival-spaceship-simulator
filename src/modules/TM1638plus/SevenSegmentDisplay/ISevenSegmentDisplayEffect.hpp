@@ -9,6 +9,7 @@ public:
     virtual bool isSimpleTextEffect() { return false; }
     virtual bool isMultiFrameTextEffect() { return false; }
     virtual bool isMultiFrameSegmentEffect() { return false; }
+    virtual bool isMultiFrameIndividualSegmentEffect() { return false; }
 };
 
 #endif // TM1638_PLUS_SEVEN_SEGMENT_DISPLAY_EFFECT_INTERFACE_H
