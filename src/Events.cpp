@@ -36,13 +36,38 @@ void Events::onExternalButton(EXTERNAL_BUTTON button)
 #ifdef DEBUG_SERIAL
             Serial.println("EVENTS:: external button 3 pressed... enqueue tones1 sample");
 #endif
-            this->samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1);
+            switch (random(0, 2))
+            {
+            case 0:
+                this->samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1);
+                break;
+            case 1:
+                this->samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1);
+                break;
+            }
             break;
         case EXTERNAL_BUTTON_4:
 #ifdef DEBUG_SERIAL
             Serial.println("EVENTS:: external button 4 pressed... enqueue tones2 sample");
 #endif
-            this->samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1);
+            switch (random(0, 4))
+            {
+            case 0:
+                this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_01);
+                break;
+
+            case 1:
+                this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_02);
+                break;
+
+            case 2:
+                this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_03);
+                break;
+
+            case 3:
+                this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_04);
+                break;
+            }
             break;
         case EXTERNAL_BUTTON_5:
 #ifdef DEBUG_SERIAL
@@ -101,6 +126,7 @@ void Events::onTM1638plusButton(TM1638plusBUTTON button)
 #ifdef DEBUG_SERIAL
             Serial.println("EVENTS:: TM1638plus button 8 pressed...");
 #endif
+            this->tm1638plusPtr->displayOscilloscopeEffect();
             break;
         }
     }
@@ -190,49 +216,59 @@ void Events::onSampleStarted(SAMPLE sample)
 #endif
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1:
+        tm1638plusPtr->setLedEffect(LED_EFFECT_TYPE_ALTERNATE, 80);
 #ifdef DEBUG_SERIAL
         Serial.println("Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1");
 #endif
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2:
+        tm1638plusPtr->setLedEffect(LED_EFFECT_TYPE_ALTERNATE, 80);
 #ifdef DEBUG_SERIAL
         Serial.println("Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2");
 #endif
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3:
+        tm1638plusPtr->setLedEffect(LED_EFFECT_TYPE_ALTERNATE, 80);
 #ifdef DEBUG_SERIAL
         Serial.println("Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3");
 #endif
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4:
+        tm1638plusPtr->setLedEffect(LED_EFFECT_TYPE_ALTERNATE, 80);
 #ifdef DEBUG_SERIAL
         Serial.println("Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4");
 #endif
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5:
+        tm1638plusPtr->setLedEffect(LED_EFFECT_TYPE_ALTERNATE, 80);
         Serial.println("Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5");
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1:
+        tm1638plusPtr->setLedEffect(LED_EFFECT_TYPE_ALTERNATE, 80);
 #ifdef DEBUG_SERIAL
         Serial.println("Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1");
 #endif
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2:
+        tm1638plusPtr->setLedEffect(LED_EFFECT_TYPE_ALTERNATE, 80);
 #ifdef DEBUG_SERIAL
         Serial.println("Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2");
 #endif
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3:
+        tm1638plusPtr->setLedEffect(LED_EFFECT_TYPE_ALTERNATE, 80);
 #ifdef DEBUG_SERIAL
         Serial.println("Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3");
 #endif
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4:
+        tm1638plusPtr->setLedEffect(LED_EFFECT_TYPE_ALTERNATE, 80);
 #ifdef DEBUG_SERIAL
         Serial.println("Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4");
 #endif
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5:
+        tm1638plusPtr->setLedEffect(LED_EFFECT_TYPE_ALTERNATE, 80);
 #ifdef DEBUG_SERIAL
         Serial.println("Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5");
 #endif
@@ -254,6 +290,30 @@ void Events::onSampleStarted(SAMPLE sample)
         Serial.println("Started playing SAMPLE_SOS_03");
 #endif
         this->startAnimation(ANIMATION_SOS_3);
+        break;
+    case SAMPLE_ALIEN_VOICE_01:
+#ifdef DEBUG_SERIAL
+        Serial.println("Started playing SAMPLE_ALIEN_VOICE_01");
+#endif
+        this->startAnimation(ANIMATION_ALIEN_VOICE_1);
+        break;
+    case SAMPLE_ALIEN_VOICE_02:
+#ifdef DEBUG_SERIAL
+        Serial.println("Started playing SAMPLE_ALIEN_VOICE_02");
+#endif
+        this->startAnimation(ANIMATION_ALIEN_VOICE_2);
+        break;
+    case SAMPLE_ALIEN_VOICE_03:
+#ifdef DEBUG_SERIAL
+        Serial.println("Started playing SAMPLE_ALIEN_VOICE_03");
+#endif
+        this->startAnimation(ANIMATION_ALIEN_VOICE_3);
+        break;
+    case SAMPLE_ALIEN_VOICE_04:
+#ifdef DEBUG_SERIAL
+        Serial.println("Started playing SAMPLE_ALIEN_VOICE_04");
+#endif
+        this->startAnimation(ANIMATION_ALIEN_VOICE_4);
         break;
     default:
 #ifdef DEBUG_SERIAL
@@ -417,7 +477,7 @@ void Events::onSampleStopped(SAMPLE sample)
         break;
     }
     Serial.printf("onStop total: %d\n", this->currentLaserSamplesPlaying);
-    if (this->currentLaserSamplesPlaying <= 0)
+    if (true || this->currentLaserSamplesPlaying <= 0)
     {
         // TODO: conflict with another animations ?
         this->stopAnimation();
@@ -463,6 +523,7 @@ void Events::startAnimation(ANIMATION animation)
         switch (animation)
         {
         case ANIMATION_LASER_SHOOT:
+            Serial.println("AA");
             this->previousLedEffect = tm1638plusPtr->getCurrentLedEffect();
             this->display7SegmentLaserAnimation();
             break;
@@ -480,6 +541,13 @@ void Events::startAnimation(ANIMATION animation)
             this->previousLedEffect = tm1638plusPtr->getCurrentLedEffect();
             tm1638plusPtr->setLedEffect(LED_EFFECT_TYPE_MORSE_LETTER_S, 105);
             tm1638plusPtr->displayTextOnFull7Segment(" CEAVA5 ", true, 105);
+            break;
+        case ANIMATION_ALIEN_VOICE_1:
+        case ANIMATION_ALIEN_VOICE_2:
+        case ANIMATION_ALIEN_VOICE_3:
+        case ANIMATION_ALIEN_VOICE_4:
+            this->previousLedEffect = tm1638plusPtr->getCurrentLedEffect();
+            tm1638plusPtr->setLedEffect(LED_EFFECT_TYPE_VUMETER_MIRRORED, random(50, 100));
             break;
         }
     }
@@ -506,7 +574,8 @@ void Events::startAnimation(ANIMATION animation)
 
 void Events::stopAnimation()
 {
-    switch (currentAnimation)
+    this->previousLedEffect = LED_EFFECT_TYPE_SCANNER;
+    switch (this->currentAnimation)
     {
     case ANIMATION_LASER_SHOOT:
         tm1638plusPtr->setLedEffect(this->previousLedEffect);
@@ -522,6 +591,36 @@ void Events::stopAnimation()
         tm1638plusPtr->freeSevenSegmentBothBlocks();
         tm1638plusPtr->clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCK_BOTH);
         break;
+    case ANIMATION_ALIEN_VOICE_1:
+    case ANIMATION_ALIEN_VOICE_2:
+    case ANIMATION_ALIEN_VOICE_3:
+    case ANIMATION_ALIEN_VOICE_4:
+        tm1638plusPtr->setLedEffect(this->previousLedEffect);
+        break;
+        this->currentAnimation = ANIMATION_NONE;
     }
-    currentAnimation = ANIMATION_NONE;
+    const char *textFrames[] = {
+        "       P",
+        "      PI",
+        "     PIL",
+        "    PILI",
+        "   PILI ",
+        "  PILI D",
+        " PILI DE",
+        "PILI DE ",
+        "ILI DE L",
+        "LI DE LE",
+        "I DE LEI",
+        " DE LEIA",
+        "DE LEIAO",
+        "E LEIAO ",
+        " LEIAO  ",
+        "LEIAO   ",
+        "EIAO    ",
+        "IAO     ",
+        "AO      ",
+        "O       ",
+        "        ",
+    };
+    tm1638plusPtr->displayMultiFrameTextEffect(textFrames, sizeof(textFrames) / sizeof(textFrames[0]), 300, 0);
 }
