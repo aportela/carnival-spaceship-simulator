@@ -1,7 +1,8 @@
 #ifndef MODULE_TM1638_PLUS_H
 #define MODULE_TM1638_PLUS_H
 
-#include <stdint.h>
+#include <cstdint>
+#include <cstring>
 #include <TM1638plus.h>
 
 #include "Buttons/TM1638plusButtons.hpp"
@@ -85,6 +86,8 @@ public:
     void displayMultiFrameTextEffect(const char *frames[], size_t frameCount, uint16_t frameTimeout = 0, const uint8_t startIndex = 0);
     void displayMultiFrameSevenSegmentEffect(const uint8_t frames[], size_t frameCount, uint16_t frameTimeout = 0, const uint8_t startIndex = 0, const uint8_t endIndex = 7);
     void displayMultiFrameIndividualSevenSegmentEffect(uint8_t **frames, size_t frameCount, size_t frameAffectedSegmentCount, uint16_t frameTimeout = 0, const uint8_t startIndex = 0, const uint8_t endIndex = 7);
+
+    void displayOscilloscopeEffect(void);
 
     void loop(void);
 };

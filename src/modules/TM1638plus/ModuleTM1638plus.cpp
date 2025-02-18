@@ -239,7 +239,6 @@ void ModuleTM1638plus::toggleLedInverseMode(void)
 
 void ModuleTM1638plus::clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCKS block)
 {
-
     if (block == SEVEN_SEGMENT_BLOCK_LEFT || SEVEN_SEGMENT_BLOCK_BOTH)
     {
         this->module->displayASCII(0, ' ');
@@ -354,6 +353,25 @@ void ModuleTM1638plus::displayMultiFrameIndividualSevenSegmentEffect(uint8_t **f
     // this->freeSevenSegmentLeftBlock();
     // this->freeSevenSegmentRightBlock();
     this->SevenSegmentBothBlocks = new MultiFrameIndividualSegmentEffect(this->module, frames, frameCount, frameAffectedSegmentCount, frameTimeout, startIndex, endIndex);
+}
+
+void ModuleTM1638plus::displayOscilloscopeEffect(void)
+{
+    this->freeSevenSegmentBothBlocks();
+    this->freeSevenSegmentLeftBlock();
+    this->freeSevenSegmentRightBlock();
+    size_t frameCount = 4;
+    size_t frameAffectedSegmentCount = 8;
+    uint8_t **seq = new uint8_t *[frameCount];
+    for (size_t i = 0; i < frameCount; ++i)
+    {
+        seq[i] = new uint8_t[frameAffectedSegmentCount];
+    }
+    std::memcpy(seq[0], (uint8_t[]){SEGMENT_D, SEGMENT_G | SEGMENT_E | SEGMENT_F, SEGMENT_A | SEGMENT_B | SEGMENT_C, SEGMENT_G | SEGMENT_E | SEGMENT_F, SEGMENT_D, SEGMENT_NONE, SEGMENT_NONE, SEGMENT_NONE}, frameAffectedSegmentCount * sizeof(uint8_t));
+    std::memcpy(seq[1], (uint8_t[]){SEGMENT_NONE, SEGMENT_D, SEGMENT_G | SEGMENT_E | SEGMENT_F, SEGMENT_A | SEGMENT_B | SEGMENT_C, SEGMENT_G | SEGMENT_E | SEGMENT_F, SEGMENT_D, SEGMENT_NONE, SEGMENT_NONE}, frameAffectedSegmentCount * sizeof(uint8_t));
+    std::memcpy(seq[2], (uint8_t[]){SEGMENT_NONE, SEGMENT_NONE, SEGMENT_D, SEGMENT_G | SEGMENT_E | SEGMENT_F, SEGMENT_A | SEGMENT_B | SEGMENT_C, SEGMENT_G | SEGMENT_E | SEGMENT_F, SEGMENT_D, SEGMENT_NONE}, frameAffectedSegmentCount * sizeof(uint8_t));
+    std::memcpy(seq[3], (uint8_t[]){SEGMENT_NONE, SEGMENT_NONE, SEGMENT_NONE, SEGMENT_D, SEGMENT_G | SEGMENT_E | SEGMENT_F, SEGMENT_A | SEGMENT_B | SEGMENT_C, SEGMENT_G | SEGMENT_E | SEGMENT_F, SEGMENT_D}, frameAffectedSegmentCount * sizeof(uint8_t));
+    this->displayMultiFrameIndividualSevenSegmentEffect(seq, frameCount, frameAffectedSegmentCount, 300, 0, 3);
 }
 
 TM1638plusBUTTON ModuleTM1638plus::getPressedButton()
