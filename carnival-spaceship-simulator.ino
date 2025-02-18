@@ -1,3 +1,4 @@
+#include <cstring>
 #include "src/modules/ExternalButtons/ExternalButtons.hpp"
 #include "src/modules/TM1638plus/ModuleTM1638plus.hpp"
 #include "src/modules/Audio/Sampler.hpp"
@@ -79,6 +80,7 @@ void setup()
     {
         tm1638plusPtr->setLedEffect(START_LED_EFFECT_TYPE, DEFAULT_LED_MS_DELAY);
     }
+    /*
     const char *textFrames[] = {
         "       P",
         "      PI",
@@ -106,9 +108,9 @@ void setup()
     //  tm1638plusPtr->displayTextOnFull7Segment("LEI80 12", true, DEFAULT_LED_MS_DELAY);
     // const uint8_t seq[] = {SEGMENT_A, SEGMENT_B, SEGMENT_G, SEGMENT_E, SEGMENT_D, SEGMENT_C, SEGMENT_G, SEGMENT_F}; // A, B, G, E, D, C, G, F
     // const uint8_t seq[] = {SEGMENT_A, SEGMENT_B, SEGMENT_C, SEGMENT_D, SEGMENT_E, SEGMENT_F}; // A, B, G, E, D, C, G, F
+    */
     const uint8_t seq[] = {SEGMENT_A | SEGMENT_D, SEGMENT_F | SEGMENT_E | SEGMENT_B | SEGMENT_C, SEGMENT_G};
     tm1638plusPtr->displayMultiFrameSevenSegmentEffect(seq, sizeof(seq) / sizeof(seq[0]), 300, 0, 7);
-
 #ifdef DEBUG_SERIAL
     Serial.println("MAIN:: end setting TM1638plus module");
     Serial.println("MAIN:: begin setting PCM5102A module");
