@@ -237,55 +237,49 @@ void ModuleTM1638plus::toggleLedInverseMode(void)
     }
 }
 
-void ModuleTM1638plus::freeSevenSegmentLeftBlock(bool clear)
+void ModuleTM1638plus::clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCKS block)
+{
+
+    if (block == SEVEN_SEGMENT_BLOCK_LEFT || SEVEN_SEGMENT_BLOCK_BOTH)
+    {
+        this->module->displayASCII(0, ' ');
+        this->module->displayASCII(1, ' ');
+        this->module->displayASCII(2, ' ');
+        this->module->displayASCII(3, ' ');
+    }
+    if (block == SEVEN_SEGMENT_BLOCK_RIGHT || SEVEN_SEGMENT_BLOCK_BOTH)
+    {
+        this->module->displayASCII(4, ' ');
+        this->module->displayASCII(5, ' ');
+        this->module->displayASCII(6, ' ');
+        this->module->displayASCII(7, ' ');
+    }
+}
+
+void ModuleTM1638plus::freeSevenSegmentLeftBlock()
 {
     if (this->SevenSegmentLeftBlock != nullptr)
     {
         delete this->SevenSegmentLeftBlock;
         this->SevenSegmentLeftBlock = nullptr;
     }
-    if (clear)
-    {
-        this->module->displayASCII(0, ' ');
-        this->module->displayASCII(1, ' ');
-        this->module->displayASCII(2, ' ');
-        this->module->displayASCII(3, ' ');
-    }
 }
 
-void ModuleTM1638plus::freeSevenSegmentRightBlock(bool clear)
+void ModuleTM1638plus::freeSevenSegmentRightBlock()
 {
     if (this->SevenSegmentRightBlock != nullptr)
     {
         delete this->SevenSegmentRightBlock;
         this->SevenSegmentRightBlock = nullptr;
     }
-    if (clear)
-    {
-        this->module->displayASCII(4, ' ');
-        this->module->displayASCII(5, ' ');
-        this->module->displayASCII(6, ' ');
-        this->module->displayASCII(7, ' ');
-    }
 }
 
-void ModuleTM1638plus::freeSevenSegmentBothBlocks(bool clear)
+void ModuleTM1638plus::freeSevenSegmentBothBlocks()
 {
     if (this->SevenSegmentBothBlocks != nullptr)
     {
         delete this->SevenSegmentBothBlocks;
         this->SevenSegmentBothBlocks = nullptr;
-    }
-    if (clear)
-    {
-        this->module->displayASCII(0, ' ');
-        this->module->displayASCII(1, ' ');
-        this->module->displayASCII(2, ' ');
-        this->module->displayASCII(3, ' ');
-        this->module->displayASCII(4, ' ');
-        this->module->displayASCII(5, ' ');
-        this->module->displayASCII(6, ' ');
-        this->module->displayASCII(7, ' ');
     }
 }
 
@@ -352,6 +346,14 @@ void ModuleTM1638plus::displayMultiFrameSevenSegmentEffect(const uint8_t frames[
     this->freeSevenSegmentLeftBlock();
     this->freeSevenSegmentRightBlock();
     this->SevenSegmentBothBlocks = new MultiFrameSegmentEffect(this->module, frames, frameCount, frameTimeout, startIndex, endIndex);
+}
+
+void ModuleTM1638plus::displayMultiFrameIndividualSevenSegmentEffect(uint8_t **frames, size_t frameCount, size_t frameAffectedSegmentCount, uint16_t frameTimeout, const uint8_t startIndex, const uint8_t endIndex)
+{
+    // this->freeSevenSegmentBothBlocks();
+    // this->freeSevenSegmentLeftBlock();
+    // this->freeSevenSegmentRightBlock();
+    this->SevenSegmentBothBlocks = new MultiFrameIndividualSegmentEffect(this->module, frames, frameCount, frameAffectedSegmentCount, frameTimeout, startIndex, endIndex);
 }
 
 TM1638plusBUTTON ModuleTM1638plus::getPressedButton()

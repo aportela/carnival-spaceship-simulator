@@ -18,6 +18,7 @@
 #include "SevenSegmentDisplay/Effects/SimpleTextEffect.hpp"
 #include "SevenSegmentDisplay/Effects/MultiFrameTextEffect.hpp"
 #include "SevenSegmentDisplay/Effects/MultiFrameSegmentEffect.hpp"
+#include "SevenSegmentDisplay/Effects/MultiFrameIndividualSegmentEffect.hpp"
 
 #define MAX_BRIGHTNESS 8
 
@@ -32,6 +33,13 @@ enum LED_EFFECT_TYPE
     LED_EFFECT_TYPE_INTERMITENT = 6,
     LED_EFFECT_TYPE_MORSE_LETTER_S = 7,
     LED_EFFECT_TYPE_MORSE_LETTER_O = 8,
+};
+
+enum SEVEN_SEGMENT_BLOCKS
+{
+    SEVEN_SEGMENT_BLOCK_LEFT = 1,
+    SEVEN_SEGMENT_BLOCK_RIGHT = 2,
+    SEVEN_SEGMENT_BLOCK_BOTH = 3,
 };
 
 class ModuleTM1638plus
@@ -61,9 +69,11 @@ public:
     void setLedEffect(LED_EFFECT_TYPE effect, uint16_t msDelay = DEFAULT_LED_MS_DELAY);
     void toggleLedInverseMode(void);
 
-    void freeSevenSegmentLeftBlock(bool clear = true);
-    void freeSevenSegmentRightBlock(bool clear = true);
-    void freeSevenSegmentBothBlocks(bool clear = true);
+    void clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCKS block);
+
+    void freeSevenSegmentLeftBlock();
+    void freeSevenSegmentRightBlock();
+    void freeSevenSegmentBothBlocks();
 
     void displayTextOnLeft7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
     void displayTextOnRight7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
@@ -74,6 +84,7 @@ public:
 
     void displayMultiFrameTextEffect(const char *frames[], size_t frameCount, uint16_t frameTimeout = 0, const uint8_t startIndex = 0);
     void displayMultiFrameSevenSegmentEffect(const uint8_t frames[], size_t frameCount, uint16_t frameTimeout = 0, const uint8_t startIndex = 0, const uint8_t endIndex = 7);
+    void displayMultiFrameIndividualSevenSegmentEffect(uint8_t **frames, size_t frameCount, size_t frameAffectedSegmentCount, uint16_t frameTimeout = 0, const uint8_t startIndex = 0, const uint8_t endIndex = 7);
 
     void loop(void);
 };
