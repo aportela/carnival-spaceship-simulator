@@ -126,7 +126,7 @@ void Events::onTM1638plusButton(TM1638plusBUTTON button)
 #ifdef DEBUG_SERIAL
             Serial.println("EVENTS:: TM1638plus button 8 pressed...");
 #endif
-            this->tm1638plusPtr->displayOscilloscopeEffect();
+            this->tm1638plusPtr->toggleSevenSegmentAnimation();
             break;
         }
     }
@@ -604,28 +604,4 @@ void Events::stopAnimation()
         break;
         this->currentAnimation = ANIMATION_NONE;
     }
-    const char *textFrames[] = {
-        "       P",
-        "      PI",
-        "     PIL",
-        "    PILI",
-        "   PILI ",
-        "  PILI D",
-        " PILI DE",
-        "PILI DE ",
-        "ILI DE L",
-        "LI DE LE",
-        "I DE LEI",
-        " DE LEIA",
-        "DE LEIAO",
-        "E LEIAO ",
-        " LEIAO  ",
-        "LEIAO   ",
-        "EIAO    ",
-        "IAO     ",
-        "AO      ",
-        "O       ",
-        "        ",
-    };
-    tm1638plusPtr->displayMultiFrameTextEffect(textFrames, sizeof(textFrames) / sizeof(textFrames[0]), 300, 0);
 }
