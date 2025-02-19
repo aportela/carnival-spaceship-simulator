@@ -416,6 +416,24 @@ void ModuleTM1638plus::setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE ani
             // laser count on seven segment right block
             this->SevenSegmentRightBlockPtr = new SimpleTextEffect(this->modulePtr, buffer, false, 0, 4, 8);
             break;
+        case SEVEN_SEGMENT_ANIMATION_TYPE_SOS_1:
+#ifdef DEBUG_SERIAL
+            Serial.printf("TM1638plus:: set seven segment animation => SOS morse letter S (delay %i ms)\n", msDelay);
+            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, "S.O.S.  S.O.S.", true, 105, 0, 7);
+#endif
+            break;
+        case SEVEN_SEGMENT_ANIMATION_TYPE_SOS_2:
+#ifdef DEBUG_SERIAL
+            Serial.printf("TM1638plus:: set seven segment animation => SOS morse letter O (delay %i ms)\n", msDelay);
+            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, "  CASA  ", true, 140, 0, 7);
+#endif
+            break;
+        case SEVEN_SEGMENT_ANIMATION_TYPE_SOS_3:
+#ifdef DEBUG_SERIAL
+            Serial.printf("TM1638plus:: set seven segment animation => SOS morse letter S (delay %i ms)\n", msDelay);
+            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " CEAVA5 ", true, 105, 0, 7);
+#endif
+            break;
         case SEVEN_SEGMENT_ANIMATION_TYPE_NONE:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set seven segment animation => NONE (delay %i ms)\n", msDelay);
