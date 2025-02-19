@@ -119,45 +119,45 @@ void ModuleTM1638plus::toggleSevenSegmentEffect(void)
         */
 }
 
-void ModuleTM1638plus::toggleLedEffect(uint16_t msDelay)
+void ModuleTM1638plus::toggleLedAnimation(uint16_t msDelay)
 {
     switch (this->currentLedEffectType)
     {
     case LED_ANIMATION_TYPE_NONE:
-        this->setLedEffect(LED_ANIMATION_TYPE_SCANNER, msDelay);
+        this->setLedAnimation(LED_ANIMATION_TYPE_SCANNER, msDelay);
         break;
     case LED_ANIMATION_TYPE_SCANNER:
-        this->setLedEffect(LED_ANIMATION_TYPE_CHASE, msDelay);
+        this->setLedAnimation(LED_ANIMATION_TYPE_CHASE, msDelay);
         break;
     case LED_ANIMATION_TYPE_CHASE:
-        this->setLedEffect(LED_ANIMATION_TYPE_VUMETER, msDelay);
+        this->setLedAnimation(LED_ANIMATION_TYPE_VUMETER, msDelay);
         break;
     case LED_ANIMATION_TYPE_VUMETER:
-        this->setLedEffect(LED_ANIMATION_TYPE_VUMETER_MIRRORED, msDelay);
+        this->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, msDelay);
         break;
     case LED_ANIMATION_TYPE_VUMETER_MIRRORED:
-        this->setLedEffect(LED_ANIMATION_TYPE_ALTERNATE, msDelay);
+        this->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, msDelay);
         break;
     case LED_ANIMATION_TYPE_ALTERNATE:
-        this->setLedEffect(LED_ANIMATION_TYPE_INTERMITENT, msDelay);
+        this->setLedAnimation(LED_ANIMATION_TYPE_INTERMITENT, msDelay);
         break;
     case LED_ANIMATION_TYPE_INTERMITENT:
-        this->setLedEffect(LED_ANIMATION_TYPE_NONE, msDelay);
+        this->setLedAnimation(LED_ANIMATION_TYPE_NONE, msDelay);
         break;
     default:
-        this->setLedEffect(LED_ANIMATION_TYPE_NONE, msDelay);
+        this->setLedAnimation(LED_ANIMATION_TYPE_NONE, msDelay);
         break;
     }
 }
 
-LED_ANIMATION_TYPE ModuleTM1638plus::getCurrentLedEffect(void)
+LED_ANIMATION_TYPE ModuleTM1638plus::getCurrentLedAnimation(void)
 {
     return (this->currentLedEffectType);
 }
 
-void ModuleTM1638plus::setLedEffect(LED_ANIMATION_TYPE effect, uint16_t msDelay)
+void ModuleTM1638plus::setLedAnimation(LED_ANIMATION_TYPE animation, uint16_t msDelay)
 {
-    if (effect != this->currentLedEffectType)
+    if (animation != this->currentLedEffectType)
     {
         this->module->setLEDs(0);
         if (this->ledEffect != nullptr)
@@ -165,71 +165,71 @@ void ModuleTM1638plus::setLedEffect(LED_ANIMATION_TYPE effect, uint16_t msDelay)
             delete this->ledEffect;
             this->ledEffect = nullptr;
         }
-        switch (effect)
+        switch (animation)
         {
         case LED_ANIMATION_TYPE_SCANNER:
 #ifdef DEBUG_SERIAL
-            Serial.println("TM1638plus:: setting led effect SCANNER");
+            Serial.printf("TM1638plus:: set led animation => SCANNER (delay %f ms)", msDelay);
 #endif
             this->ledEffect = new ScannerLedEffect(this->module, msDelay);
             break;
         case LED_ANIMATION_TYPE_CHASE:
 #ifdef DEBUG_SERIAL
-            Serial.println("TM1638plus:: setting led effect CHASE");
+            Serial.printf("TM1638plus:: set led animation => CHASE (delay %f ms)", msDelay);
 #endif
             this->ledEffect = new ChaseLedEffect(this->module, msDelay);
             break;
         case LED_ANIMATION_TYPE_VUMETER:
 #ifdef DEBUG_SERIAL
-            Serial.println("TM1638plus:: setting led effect VUMETER");
+            Serial.printf("TM1638plus:: set led animation => VUMETER (delay %f ms)", msDelay);
 #endif
             this->ledEffect = new VuMeterLedEffect(this->module, msDelay);
             break;
         case LED_ANIMATION_TYPE_VUMETER_MIRRORED:
 #ifdef DEBUG_SERIAL
-            Serial.println("TM1638plus:: setting led effect VUMETER MIRRORED");
+            Serial.printf("TM1638plus:: set led animation => VUMETER MIRRORED (delay %f ms)", msDelay);
 #endif
             this->ledEffect = new VuMeterMirroredLedEffect(this->module, msDelay);
             break;
         case LED_ANIMATION_TYPE_ALTERNATE:
 #ifdef DEBUG_SERIAL
-            Serial.println("TM1638plus:: setting led effect ALTERNATE");
+            Serial.printf("TM1638plus:: set led animation => ALTERNATE (delay %f ms)", msDelay);
 #endif
             this->ledEffect = new AlternateLedEffect(this->module, msDelay);
             break;
         case LED_ANIMATION_TYPE_INTERMITENT:
 #ifdef DEBUG_SERIAL
-            Serial.println("TM1638plus:: setting led effect INTERMITENT");
+            Serial.printf("TM1638plus:: set led animation => INTERMITENT (delay %f ms)", msDelay);
 #endif
             this->ledEffect = new IntermitentLedEffect(this->module, msDelay);
             break;
         case LED_ANIMATION_TYPE_MORSE_LETTER_S:
 #ifdef DEBUG_SERIAL
-            Serial.println("TM1638plus:: setting led effect morse letter S");
+            Serial.printf("TM1638plus:: set led animation => morse letter S (delay %f ms)", msDelay);
 #endif
             this->ledEffect = new MorseLedEffect(this->module, msDelay, 'S');
             break;
         case LED_ANIMATION_TYPE_MORSE_LETTER_O:
 #ifdef DEBUG_SERIAL
-            Serial.println("TM1638plus:: setting led effect morse letter O");
+            Serial.printf("TM1638plus:: set led animation => morse letter O (delay %f ms)", msDelay);
 #endif
             this->ledEffect = new MorseLedEffect(this->module, msDelay, 'O');
             break;
         default:
             break;
         }
-        this->currentLedEffectType = effect;
+        this->currentLedEffectType = animation;
     }
     else
     {
 #ifdef DEBUG_SERIAL
-        Serial.printf("TM1638plus:: setting current effect msDelay: %d\n", msDelay);
+        Serial.printf("TM1638plus:: setting current led animation msDelay: %d\n", msDelay);
 #endif
         this->ledEffect->setDelay(msDelay);
     }
 }
 
-void ModuleTM1638plus::toggleLedInverseMode(void)
+void ModuleTM1638plus::toggleLedAnimationInverseMode(void)
 {
     if (this->currentLedEffectType != LED_ANIMATION_TYPE_NONE && this->ledEffect != nullptr)
     {

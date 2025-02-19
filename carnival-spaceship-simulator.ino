@@ -82,7 +82,7 @@ void setup()
     tm1638plusPtr = new ModuleTM1638plus(TM1638_STROBE_PIN, TM1638_CLOCK_PIN, TM1638_DIO_PIN, true);
     if (START_LED_ANIMATION_TYPE != LED_ANIMATION_TYPE_NONE)
     {
-        tm1638plusPtr->setLedEffect(START_LED_ANIMATION_TYPE, DEFAULT_LED_MS_DELAY);
+        tm1638plusPtr->setLedAnimation(START_LED_ANIMATION_TYPE, DEFAULT_LED_MS_DELAY);
     }
     /*
     const char *textFrames[] = {

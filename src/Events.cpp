@@ -89,13 +89,13 @@ void Events::onTM1638plusButton(TM1638plusBUTTON button)
 #ifdef DEBUG_SERIAL
             Serial.println("EVENTS:: TM1638plus button 1 pressed... toggle led effect");
 #endif
-            this->tm1638plusPtr->toggleLedEffect();
+            this->tm1638plusPtr->toggleLedAnimation();
             break;
         case TM1638plusBUTTON_S2:
 #ifdef DEBUG_SERIAL
             Serial.println("EVENTS:: TM1638plus button 2 pressed...toggle led effect inverse mode");
 #endif
-            this->tm1638plusPtr->toggleLedInverseMode();
+            this->tm1638plusPtr->toggleLedAnimationInverseMode();
             break;
         case TM1638plusBUTTON_S3:
 #ifdef DEBUG_SERIAL
@@ -216,61 +216,61 @@ void Events::onSampleStarted(SAMPLE sample)
 #endif
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1:
-        tm1638plusPtr->setLedEffect(LED_ANIMATION_TYPE_ALTERNATE, 80);
+        tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, 80);
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1");
 #endif
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2:
-        tm1638plusPtr->setLedEffect(LED_ANIMATION_TYPE_ALTERNATE, 80);
+        tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, 80);
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2");
 #endif
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3:
-        tm1638plusPtr->setLedEffect(LED_ANIMATION_TYPE_ALTERNATE, 80);
+        tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, 80);
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3");
 #endif
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4:
-        tm1638plusPtr->setLedEffect(LED_ANIMATION_TYPE_ALTERNATE, 80);
+        tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, 80);
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4");
 #endif
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5:
-        tm1638plusPtr->setLedEffect(LED_ANIMATION_TYPE_ALTERNATE, 80);
+        tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, 80);
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5");
 #endif
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1:
-        tm1638plusPtr->setLedEffect(LED_ANIMATION_TYPE_ALTERNATE, 80);
+        tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, 80);
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1");
 #endif
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2:
-        tm1638plusPtr->setLedEffect(LED_ANIMATION_TYPE_ALTERNATE, 80);
+        tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, 80);
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2");
 #endif
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3:
-        tm1638plusPtr->setLedEffect(LED_ANIMATION_TYPE_ALTERNATE, 80);
+        tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, 80);
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3");
 #endif
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4:
-        tm1638plusPtr->setLedEffect(LED_ANIMATION_TYPE_ALTERNATE, 80);
+        tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, 80);
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4");
 #endif
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5:
-        tm1638plusPtr->setLedEffect(LED_ANIMATION_TYPE_ALTERNATE, 80);
+        tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, 80);
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5");
 #endif
@@ -495,7 +495,7 @@ void Events::display7SegmentLaserAnimation(void)
     tm1638plusPtr->clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCK_BOTH);
     char buffer[5] = {'\0'};
     // led block
-    tm1638plusPtr->setLedEffect(LED_ANIMATION_TYPE_INTERMITENT, 80);
+    tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_INTERMITENT, 80);
     // seven segment right block
     if (this->laserShoots >= 10000) // only 4 digits (right block)
     {
@@ -529,30 +529,30 @@ void Events::startAnimation(ANIMATION animation)
         switch (animation)
         {
         case ANIMATION_LASER_SHOOT:
-            this->previousLedEffect = tm1638plusPtr->getCurrentLedEffect();
+            this->previousLedEffect = tm1638plusPtr->getCurrentLedAnimation();
             this->display7SegmentLaserAnimation();
             break;
         case ANIMATION_SOS_1:
-            this->previousLedEffect = tm1638plusPtr->getCurrentLedEffect();
-            tm1638plusPtr->setLedEffect(LED_ANIMATION_TYPE_MORSE_LETTER_S, 105);
+            this->previousLedEffect = tm1638plusPtr->getCurrentLedAnimation();
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_MORSE_LETTER_S, 105);
             tm1638plusPtr->displayTextOnFull7Segment("S.O.S.  S.O.S.", true, 105);
             break;
         case ANIMATION_SOS_2:
-            this->previousLedEffect = tm1638plusPtr->getCurrentLedEffect();
-            tm1638plusPtr->setLedEffect(LED_ANIMATION_TYPE_MORSE_LETTER_O, 140);
+            this->previousLedEffect = tm1638plusPtr->getCurrentLedAnimation();
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_MORSE_LETTER_O, 140);
             tm1638plusPtr->displayTextOnFull7Segment("  CASA  ", true, 140);
             break;
         case ANIMATION_SOS_3:
-            this->previousLedEffect = tm1638plusPtr->getCurrentLedEffect();
-            tm1638plusPtr->setLedEffect(LED_ANIMATION_TYPE_MORSE_LETTER_S, 105);
+            this->previousLedEffect = tm1638plusPtr->getCurrentLedAnimation();
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_MORSE_LETTER_S, 105);
             tm1638plusPtr->displayTextOnFull7Segment(" CEAVA5 ", true, 105);
             break;
         case ANIMATION_ALIEN_VOICE_1:
         case ANIMATION_ALIEN_VOICE_2:
         case ANIMATION_ALIEN_VOICE_3:
         case ANIMATION_ALIEN_VOICE_4:
-            this->previousLedEffect = tm1638plusPtr->getCurrentLedEffect();
-            tm1638plusPtr->setLedEffect(LED_ANIMATION_TYPE_VUMETER_MIRRORED, random(50, 100));
+            this->previousLedEffect = tm1638plusPtr->getCurrentLedAnimation();
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, random(50, 100));
             break;
         }
     }
@@ -583,7 +583,7 @@ void Events::stopAnimation()
     switch (this->currentAnimation)
     {
     case ANIMATION_LASER_SHOOT:
-        tm1638plusPtr->setLedEffect(this->previousLedEffect);
+        tm1638plusPtr->setLedAnimation(this->previousLedEffect);
         tm1638plusPtr->freeSevenSegmentLeftBlock();
         tm1638plusPtr->freeSevenSegmentRightBlock();
         tm1638plusPtr->freeSevenSegmentBothBlocks();
@@ -592,7 +592,7 @@ void Events::stopAnimation()
     case ANIMATION_SOS_1:
     case ANIMATION_SOS_2:
     case ANIMATION_SOS_3:
-        tm1638plusPtr->setLedEffect(this->previousLedEffect);
+        tm1638plusPtr->setLedAnimation(this->previousLedEffect);
         tm1638plusPtr->freeSevenSegmentBothBlocks();
         tm1638plusPtr->clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCK_BOTH);
         break;
@@ -600,7 +600,7 @@ void Events::stopAnimation()
     case ANIMATION_ALIEN_VOICE_2:
     case ANIMATION_ALIEN_VOICE_3:
     case ANIMATION_ALIEN_VOICE_4:
-        tm1638plusPtr->setLedEffect(this->previousLedEffect);
+        tm1638plusPtr->setLedAnimation(this->previousLedEffect);
         break;
         this->currentAnimation = ANIMATION_NONE;
     }

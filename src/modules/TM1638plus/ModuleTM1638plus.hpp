@@ -73,10 +73,10 @@ public:
 
     void toggleSevenSegmentEffect(void);
 
-    void toggleLedEffect(uint16_t msDelay = DEFAULT_LED_MS_DELAY);
-    LED_ANIMATION_TYPE getCurrentLedEffect(void);
-    void setLedEffect(LED_ANIMATION_TYPE effect, uint16_t msDelay = DEFAULT_LED_MS_DELAY);
-    void toggleLedInverseMode(void);
+    void toggleLedAnimation(uint16_t msDelay = DEFAULT_LED_MS_DELAY);
+    LED_ANIMATION_TYPE getCurrentLedAnimation(void);
+    void setLedAnimation(LED_ANIMATION_TYPE animation, uint16_t msDelay = DEFAULT_LED_MS_DELAY);
+    void toggleLedAnimationInverseMode(void);
 
     void clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCKS block);
 
