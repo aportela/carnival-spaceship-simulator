@@ -14,7 +14,7 @@ private:
     uint8_t currentFrameIndex = 0;
 
 public:
-    MultiFrameTextEffect(TM1638plus *module, const char *frames[], size_t frameCount, uint16_t msDelay = 0, const uint8_t startIndex = 0);
+    MultiFrameTextEffect(TM1638plus *module, const char *frames[], size_t frameCount, uint16_t msDelay = 0, const uint8_t startIndex = 0, const uint8_t startFrameIndex = 0);
     ~MultiFrameTextEffect();
 
     void loop(void);
