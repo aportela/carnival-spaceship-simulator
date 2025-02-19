@@ -81,6 +81,9 @@ private:
     // void freeSevenSegmentRightBlock(void);
     // void freeSevenSegmentBothBlocks(void);
 
+    void setSevenSegmentLaserAnimation(uint16_t laserShoots);
+    void updateSevenSegmentLaserCountAnimationText(uint16_t laserShoots);
+
 public:
     ModuleTM1638plus(uint8_t strobePIN, uint8_t clockPIN, uint8_t dioPIN, bool highFreq);
     ~ModuleTM1638plus();
