@@ -320,7 +320,7 @@ void ModuleTM1638plus::toggleSevenSegmentAnimation()
     }
 }
 
-void ModuleTM1638plus::setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE animation, uint16_t msDelay)
+void ModuleTM1638plus::setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE animation, uint16_t msDelay, uint16_t extraData)
 {
     if (animation != this->currentSevenSegmentAnimationType)
     {
@@ -366,6 +366,19 @@ void ModuleTM1638plus::setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE ani
         const uint8_t seq1[] = {SEGMENT_A, SEGMENT_B, SEGMENT_G, SEGMENT_E, SEGMENT_D, SEGMENT_C, SEGMENT_G, SEGMENT_F};
         const uint8_t seq2[] = {SEGMENT_A, SEGMENT_B, SEGMENT_C, SEGMENT_D, SEGMENT_E, SEGMENT_F};
         const uint8_t seq3[] = {SEGMENT_A | SEGMENT_D, SEGMENT_F | SEGMENT_E | SEGMENT_B | SEGMENT_C, SEGMENT_G};
+        char buffer[5] = {'\0'};
+        size_t frameCount = 5;
+        size_t frameAffectedSegmentCount = 4;
+        uint8_t **seqLaser = new uint8_t *[frameCount];
+        for (size_t i = 0; i < frameCount; ++i)
+        {
+            seqLaser[i] = new uint8_t[frameAffectedSegmentCount];
+        }
+        std::memcpy(seqLaser[0], (uint8_t[]){SEGMENT_NONE, SEGMENT_G, SEGMENT_G, SEGMENT_NONE}, frameAffectedSegmentCount * sizeof(uint8_t));
+        std::memcpy(seqLaser[1], (uint8_t[]){SEGMENT_G, SEGMENT_G, SEGMENT_G, SEGMENT_G}, frameAffectedSegmentCount * sizeof(uint8_t));
+        std::memcpy(seqLaser[2], (uint8_t[]){SEGMENT_F | SEGMENT_G | SEGMENT_E, SEGMENT_G, SEGMENT_G, SEGMENT_B | SEGMENT_G | SEGMENT_C}, frameAffectedSegmentCount * sizeof(uint8_t));
+        std::memcpy(seqLaser[3], (uint8_t[]){SEGMENT_A | SEGMENT_F | SEGMENT_G | SEGMENT_E | SEGMENT_D, SEGMENT_G, SEGMENT_G, SEGMENT_A | SEGMENT_B | SEGMENT_G | SEGMENT_C | SEGMENT_D}, frameAffectedSegmentCount * sizeof(uint8_t));
+        std::memcpy(seqLaser[4], (uint8_t[]){SEGMENT_A | SEGMENT_F | SEGMENT_E | SEGMENT_D, SEGMENT_A | SEGMENT_D, SEGMENT_A | SEGMENT_D, SEGMENT_A | SEGMENT_B | SEGMENT_C | SEGMENT_D}, frameAffectedSegmentCount * sizeof(uint8_t));
 
         switch (animation)
         {
@@ -392,6 +405,16 @@ void ModuleTM1638plus::setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE ani
             Serial.printf("TM1638plus:: set seven segment animation => Message 1 (delay %i ms)\n", msDelay);
 #endif
             this->SevenSegmentBothBlocksPtr = new MultiFrameTextEffect(this->modulePtr, textFrames, sizeof(textFrames) / sizeof(textFrames[0]), msDelay, 0);
+            break;
+        case SEVEN_SEGMENT_ANIMATION_TYPE_LASER:
+#ifdef DEBUG_SERIAL
+            Serial.printf("TM1638plus:: set seven segment animation => Laser (delay %i ms)\n", msDelay);
+#endif
+            // animation on seven segment left block
+            snprintf(buffer, sizeof(buffer), "%04d", extraData);
+            this->SevenSegmentLeftBlockPtr = new MultiFrameIndividualSegmentEffect(this->modulePtr, seqLaser, frameCount, frameAffectedSegmentCount, msDelay, 0, 3);
+            // laser count on seven segment right block
+            this->SevenSegmentRightBlockPtr = new SimpleTextEffect(this->modulePtr, buffer, false, 0, 4, 8);
             break;
         case SEVEN_SEGMENT_ANIMATION_TYPE_NONE:
 #ifdef DEBUG_SERIAL
