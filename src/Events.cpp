@@ -492,7 +492,7 @@ void Events::onSampleStopped(SAMPLE sample)
 
 void Events::display7SegmentLaserAnimation(void)
 {
-    tm1638plusPtr->clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCK_BOTH);
+    // tm1638plusPtr->clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCK_BOTH);
     char buffer[5] = {'\0'};
     // led block
     tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_INTERMITENT, 80);
@@ -584,17 +584,17 @@ void Events::stopAnimation()
     {
     case ANIMATION_LASER_SHOOT:
         tm1638plusPtr->setLedAnimation(this->previousLedEffect);
-        tm1638plusPtr->freeSevenSegmentLeftBlock();
-        tm1638plusPtr->freeSevenSegmentRightBlock();
-        tm1638plusPtr->freeSevenSegmentBothBlocks();
-        tm1638plusPtr->clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCK_BOTH);
+        // tm1638plusPtr->freeSevenSegmentLeftBlock();
+        // tm1638plusPtr->freeSevenSegmentRightBlock();
+        // tm1638plusPtr->freeSevenSegmentBothBlocks();
+        // tm1638plusPtr->clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCK_BOTH);
         break;
     case ANIMATION_SOS_1:
     case ANIMATION_SOS_2:
     case ANIMATION_SOS_3:
         tm1638plusPtr->setLedAnimation(this->previousLedEffect);
-        tm1638plusPtr->freeSevenSegmentBothBlocks();
-        tm1638plusPtr->clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCK_BOTH);
+        // tm1638plusPtr->freeSevenSegmentBothBlocks();
+        // tm1638plusPtr->clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCK_BOTH);
         break;
     case ANIMATION_ALIEN_VOICE_1:
     case ANIMATION_ALIEN_VOICE_2:

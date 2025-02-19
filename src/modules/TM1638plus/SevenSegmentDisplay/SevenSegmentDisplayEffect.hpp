@@ -7,7 +7,8 @@
 #include <TM1638plus.h>
 #include "ISevenSegmentDisplayEffect.hpp"
 
-#define DEFAULT_7SEGMENT_MS_DELAY 100
+#define DEFAULT_SEVEN_SEGMENT_MS_DELAY 100
+#define DEFAULT_7SEGMENT_MS_DELAY 100 // TODO: REMOVE
 
 /*
 

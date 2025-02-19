@@ -119,6 +119,11 @@ void ModuleTM1638plus::toggleSevenSegmentEffect(void)
         */
 }
 
+LED_ANIMATION_TYPE ModuleTM1638plus::getCurrentLedAnimation(void)
+{
+    return (this->currentLedAnimationType);
+}
+
 void ModuleTM1638plus::toggleLedAnimation(uint16_t msDelay)
 {
     switch (this->currentLedAnimationType)
@@ -150,9 +155,23 @@ void ModuleTM1638plus::toggleLedAnimation(uint16_t msDelay)
     }
 }
 
-LED_ANIMATION_TYPE ModuleTM1638plus::getCurrentLedAnimation(void)
+void ModuleTM1638plus::toggleLedAnimationInverseMode(void)
 {
-    return (this->currentLedAnimationType);
+    if (this->currentLedAnimationType != LED_ANIMATION_TYPE_NONE && this->currentLedAnimationPtr != nullptr)
+    {
+        if (this->currentLedAnimationPtr->toggleInverse())
+        {
+#ifdef DEBUG_SERIAL
+            Serial.println("TM1638plus:: led animation inverse mode enabled");
+#endif
+        }
+        else
+        {
+#ifdef DEBUG_SERIAL
+            Serial.println("TM1638plus:: led animation inverse mode disabled");
+#endif
+        }
+    }
 }
 
 void ModuleTM1638plus::setLedAnimation(LED_ANIMATION_TYPE animation, uint16_t msDelay)
@@ -232,35 +251,16 @@ void ModuleTM1638plus::setLedAnimation(LED_ANIMATION_TYPE animation, uint16_t ms
     }
 }
 
-void ModuleTM1638plus::toggleLedAnimationInverseMode(void)
-{
-    if (this->currentLedAnimationType != LED_ANIMATION_TYPE_NONE && this->currentLedAnimationPtr != nullptr)
-    {
-        if (this->currentLedAnimationPtr->toggleInverse())
-        {
-#ifdef DEBUG_SERIAL
-            Serial.println("TM1638plus:: led animation inverse mode enabled");
-#endif
-        }
-        else
-        {
-#ifdef DEBUG_SERIAL
-            Serial.println("TM1638plus:: led animation inverse mode disabled");
-#endif
-        }
-    }
-}
-
 void ModuleTM1638plus::clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCKS block)
 {
-    if (block == SEVEN_SEGMENT_BLOCK_LEFT || SEVEN_SEGMENT_BLOCK_BOTH)
+    if (block == SEVEN_SEGMENT_BLOCK_LEFT || block == SEVEN_SEGMENT_BLOCK_BOTH)
     {
         this->modulePtr->displayASCII(0, ' ');
         this->modulePtr->displayASCII(1, ' ');
         this->modulePtr->displayASCII(2, ' ');
         this->modulePtr->displayASCII(3, ' ');
     }
-    if (block == SEVEN_SEGMENT_BLOCK_RIGHT || SEVEN_SEGMENT_BLOCK_BOTH)
+    if (block == SEVEN_SEGMENT_BLOCK_RIGHT || block == SEVEN_SEGMENT_BLOCK_BOTH)
     {
         this->modulePtr->displayASCII(4, ' ');
         this->modulePtr->displayASCII(5, ' ');
@@ -269,6 +269,7 @@ void ModuleTM1638plus::clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCKS block)
     }
 }
 
+/*
 void ModuleTM1638plus::freeSevenSegmentLeftBlock()
 {
     if (this->SevenSegmentLeftBlock != nullptr)
@@ -296,25 +297,67 @@ void ModuleTM1638plus::freeSevenSegmentBothBlocks()
     }
 }
 
+*/
+void ModuleTM1638plus::toggleSevenSegmentAnimation(uint16_t msDelay)
+{
+    switch (this->currentSevenSegmentAnimationType)
+    {
+    case SEVEN_SEGMENT_ANIMATION_TYPE_NONE:
+        this->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_MESSAGE_1, msDelay);
+        break;
+    case SEVEN_SEGMENT_ANIMATION_TYPE_MESSAGE_1:
+        this->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_NONE, msDelay);
+        break;
+    }
+}
+
+void ModuleTM1638plus::setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE animation, uint16_t msDelay)
+{
+    if (animation != this->currentSevenSegmentAnimationType)
+    {
+        if (animation != this->currentSevenSegmentAnimationType)
+        {
+            if (this->SevenSegmentLeftBlock != nullptr)
+            {
+                delete this->SevenSegmentLeftBlock;
+                this->SevenSegmentLeftBlock = nullptr;
+            }
+            if (this->SevenSegmentRightBlock != nullptr)
+            {
+                delete this->SevenSegmentRightBlock;
+                this->SevenSegmentRightBlock = nullptr;
+            }
+            if (this->SevenSegmentBothBlocks != nullptr)
+            {
+                delete this->SevenSegmentBothBlocks;
+                this->SevenSegmentBothBlocks = nullptr;
+            }
+        }
+        else
+        {
+        }
+    }
+}
+
 void ModuleTM1638plus::displayTextOnLeft7Segment(const char *text, bool blink, uint16_t blinkTimeout)
 {
-    this->freeSevenSegmentBothBlocks();
-    this->freeSevenSegmentLeftBlock();
+    // this->freeSevenSegmentBothBlocks();
+    // this->freeSevenSegmentLeftBlock();
     this->SevenSegmentLeftBlock = new SimpleTextEffect(this->modulePtr, text, blink, blinkTimeout, 0, 4);
 }
 
 void ModuleTM1638plus::displayTextOnRight7Segment(const char *text, bool blink, uint16_t blinkTimeout)
 {
-    this->freeSevenSegmentBothBlocks();
-    this->freeSevenSegmentRightBlock();
+    // this->freeSevenSegmentBothBlocks();
+    // this->freeSevenSegmentRightBlock();
     this->SevenSegmentRightBlock = new SimpleTextEffect(this->modulePtr, text, blink, blinkTimeout, 4, 8);
 }
 
 void ModuleTM1638plus::displayTextOnFull7Segment(const char *text, bool blink, uint16_t blinkTimeout)
 {
-    this->freeSevenSegmentBothBlocks();
-    this->freeSevenSegmentLeftBlock();
-    this->freeSevenSegmentRightBlock();
+    // this->freeSevenSegmentBothBlocks();
+    // this->freeSevenSegmentLeftBlock();
+    // this->freeSevenSegmentRightBlock();
     this->SevenSegmentBothBlocks = new SimpleTextEffect(this->modulePtr, text, blink, blinkTimeout, 0, 8);
 }
 
@@ -347,17 +390,17 @@ void ModuleTM1638plus::refreshTextOnFull7Segment(const char *text, bool blink, u
 
 void ModuleTM1638plus::displayMultiFrameTextEffect(const char *frames[], size_t frameCount, uint16_t frameTimeout, const uint8_t startIndex)
 {
-    this->freeSevenSegmentBothBlocks();
-    this->freeSevenSegmentLeftBlock();
-    this->freeSevenSegmentRightBlock();
+    // this->freeSevenSegmentBothBlocks();
+    // this->freeSevenSegmentLeftBlock();
+    // this->freeSevenSegmentRightBlock();
     this->SevenSegmentBothBlocks = new MultiFrameTextEffect(this->modulePtr, frames, frameCount, frameTimeout, startIndex);
 }
 
 void ModuleTM1638plus::displayMultiFrameSevenSegmentEffect(const uint8_t frames[], size_t frameCount, uint16_t frameTimeout, const uint8_t startIndex, const uint8_t endIndex)
 {
-    this->freeSevenSegmentBothBlocks();
-    this->freeSevenSegmentLeftBlock();
-    this->freeSevenSegmentRightBlock();
+    // this->freeSevenSegmentBothBlocks();
+    // this->freeSevenSegmentLeftBlock();
+    // this->freeSevenSegmentRightBlock();
     this->SevenSegmentBothBlocks = new MultiFrameSegmentEffect(this->modulePtr, frames, frameCount, frameTimeout, startIndex, endIndex);
 }
 
@@ -371,9 +414,9 @@ void ModuleTM1638plus::displayMultiFrameIndividualSevenSegmentEffect(uint8_t **f
 
 void ModuleTM1638plus::displayOscilloscopeEffect(void)
 {
-    this->freeSevenSegmentBothBlocks();
-    this->freeSevenSegmentLeftBlock();
-    this->freeSevenSegmentRightBlock();
+    // this->freeSevenSegmentBothBlocks();
+    // this->freeSevenSegmentLeftBlock();
+    // this->freeSevenSegmentRightBlock();
     size_t frameCount = 4;
     size_t frameAffectedSegmentCount = 8;
     uint8_t **seq = new uint8_t *[frameCount];

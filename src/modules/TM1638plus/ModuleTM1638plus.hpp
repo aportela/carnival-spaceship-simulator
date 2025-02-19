@@ -31,6 +31,7 @@ enum LED_ANIMATION_TYPE
     LED_ANIMATION_TYPE_VUMETER_MIRRORED = 4,
     LED_ANIMATION_TYPE_ALTERNATE = 5,
     LED_ANIMATION_TYPE_INTERMITENT = 6,
+    // CUSTOM SAMPLE LED ANIMATIONS
     LED_ANIMATION_TYPE_MORSE_LETTER_S = 7,
     LED_ANIMATION_TYPE_MORSE_LETTER_O = 8,
 };
@@ -61,9 +62,18 @@ private:
     ILedEffect *currentLedAnimationPtr = nullptr;
     LED_ANIMATION_TYPE currentLedAnimationType = LED_ANIMATION_TYPE_NONE;
 
+    SEVEN_SEGMENT_ANIMATION_TYPE currentSevenSegmentAnimationType = SEVEN_SEGMENT_ANIMATION_TYPE_NONE;
+
     ISevenSegmentDisplayEffect *SevenSegmentLeftBlock = nullptr;  // first 4 seven segments
     ISevenSegmentDisplayEffect *SevenSegmentRightBlock = nullptr; // last 4 seven segments
     ISevenSegmentDisplayEffect *SevenSegmentBothBlocks = nullptr; // all 8 (4 left + 4 right) seven segments
+
+    void clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCKS block);
+
+    // TODO: remove ?
+    // void freeSevenSegmentLeftBlock(void);
+    // void freeSevenSegmentRightBlock(void);
+    // void freeSevenSegmentBothBlocks(void);
 
 public:
     ModuleTM1638plus(uint8_t strobePIN, uint8_t clockPIN, uint8_t dioPIN, bool highFreq);
@@ -71,20 +81,15 @@ public:
 
     TM1638plusBUTTON getPressedButton(void);
 
-    void toggleSevenSegmentEffect(void);
-
-    void toggleLedAnimation(uint16_t msDelay = DEFAULT_LED_MS_DELAY);
     LED_ANIMATION_TYPE getCurrentLedAnimation(void);
-    void setLedAnimation(LED_ANIMATION_TYPE animation, uint16_t msDelay = DEFAULT_LED_MS_DELAY);
+    void toggleLedAnimation(uint16_t msDelay = DEFAULT_LED_MS_DELAY);
     void toggleLedAnimationInverseMode(void);
+    void setLedAnimation(LED_ANIMATION_TYPE animation, uint16_t msDelay = DEFAULT_LED_MS_DELAY);
 
-    void setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE animation);
+    void toggleSevenSegmentAnimation(uint16_t msDelay = DEFAULT_SEVEN_SEGMENT_MS_DELAY);
+    void setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE animation, uint16_t msDelay = DEFAULT_SEVEN_SEGMENT_MS_DELAY);
 
-    void clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCKS block);
-
-    void freeSevenSegmentLeftBlock();
-    void freeSevenSegmentRightBlock();
-    void freeSevenSegmentBothBlocks();
+    void toggleSevenSegmentEffect(void);
 
     void displayTextOnLeft7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
     void displayTextOnRight7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
