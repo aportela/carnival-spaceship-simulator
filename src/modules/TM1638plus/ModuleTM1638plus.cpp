@@ -233,7 +233,18 @@ void ModuleTM1638plus::toggleLedInverseMode(void)
 {
     if (this->currentLedEffectType != LED_ANIMATION_TYPE_NONE && this->ledEffect != nullptr)
     {
-        this->ledEffect->toggleInverse();
+        if (this->ledEffect->toggleInverse())
+        {
+#ifdef DEBUG_SERIAL
+            Serial.println("TM1638plus:: led animation inverse mode enabled");
+#endif
+        }
+        else
+        {
+#ifdef DEBUG_SERIAL
+            Serial.println("TM1638plus:: led animation inverse mode disabled");
+#endif
+        }
     }
 }
 
