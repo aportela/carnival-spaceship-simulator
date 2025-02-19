@@ -3,18 +3,18 @@
 
 ModuleTM1638plus::ModuleTM1638plus(uint8_t strobePIN, uint8_t clockPIN, uint8_t dioPIN, bool highFreq)
 {
-    this->module = new TM1638plus(strobePIN, clockPIN, dioPIN, highFreq);
-    this->module->displayBegin();
-    this->module->brightness(MAX_BRIGHTNESS);
-    this->buttons = new TM1638plusButtons(this->module);
+    this->modulePtr = new TM1638plus(strobePIN, clockPIN, dioPIN, highFreq);
+    this->modulePtr->displayBegin();
+    this->modulePtr->brightness(MAX_BRIGHTNESS);
+    this->buttonsPtr = new TM1638plusButtons(this->modulePtr);
 }
 
 ModuleTM1638plus::~ModuleTM1638plus()
 {
-    if (this->ledEffect != nullptr)
+    if (this->currentLedAnimationPtr != nullptr)
     {
-        delete this->ledEffect;
-        this->ledEffect = nullptr;
+        delete this->currentLedAnimationPtr;
+        this->currentLedAnimationPtr = nullptr;
     }
     if (this->SevenSegmentLeftBlock != nullptr)
     {
@@ -31,10 +31,10 @@ ModuleTM1638plus::~ModuleTM1638plus()
         delete this->SevenSegmentBothBlocks;
         this->SevenSegmentBothBlocks = nullptr;
     }
-    delete this->buttons;
-    this->buttons = nullptr;
-    delete this->module;
-    this->module = nullptr;
+    delete this->buttonsPtr;
+    this->buttonsPtr = nullptr;
+    delete this->modulePtr;
+    this->modulePtr = nullptr;
 }
 
 void ModuleTM1638plus::toggleSevenSegmentEffect(void)
@@ -49,7 +49,7 @@ void ModuleTM1638plus::toggleSevenSegmentEffect(void)
     {
     case SEVEN_SEGMENT_EFFECT_TYPE_NONE:
         this->currentSevenSegmentEffectType = SEVEN_SEGMENT_EFFECT_TYPE_RANDOM_WORDS;
-        this->sevenSegmentDisplayEffect = new SevenSegmentDisplayEffect(this->module);
+        this->sevenSegmentDisplayEffect = new SevenSegmentDisplayEffect(this->modulePtr);
         break;
     case SEVEN_SEGMENT_EFFECT_TYPE_RANDOM_WORDS:
         this->currentSevenSegmentEffectType = SEVEN_SEGMENT_EFFECT_TYPE_NONE;
@@ -70,7 +70,7 @@ void ModuleTM1638plus::toggleSevenSegmentEffect(void)
          this->mf = nullptr;
      }
          */
-    // this->ef = new SimpleTextEffect(this->module, "AA BB CC", true, 500, 0, 7);
+    // this->ef = new SimpleTextEffect(this->modulePtr, "AA BB CC", true, 500, 0, 7);
     /*
     const char *frames[] = {
         "S.O.S.     ",
@@ -115,13 +115,13 @@ void ModuleTM1638plus::toggleSevenSegmentEffect(void)
         "  UFO   ",
         " UFO    ",
     };
-    this->mf = new MultiFrameTextEffect(this->module, frames, sizeof(frames) / sizeof(frames[0]), 200, 0);
+    this->mf = new MultiFrameTextEffect(this->modulePtr, frames, sizeof(frames) / sizeof(frames[0]), 200, 0);
         */
 }
 
 void ModuleTM1638plus::toggleLedAnimation(uint16_t msDelay)
 {
-    switch (this->currentLedEffectType)
+    switch (this->currentLedAnimationType)
     {
     case LED_ANIMATION_TYPE_NONE:
         this->setLedAnimation(LED_ANIMATION_TYPE_SCANNER, msDelay);
@@ -152,18 +152,18 @@ void ModuleTM1638plus::toggleLedAnimation(uint16_t msDelay)
 
 LED_ANIMATION_TYPE ModuleTM1638plus::getCurrentLedAnimation(void)
 {
-    return (this->currentLedEffectType);
+    return (this->currentLedAnimationType);
 }
 
 void ModuleTM1638plus::setLedAnimation(LED_ANIMATION_TYPE animation, uint16_t msDelay)
 {
-    if (animation != this->currentLedEffectType)
+    if (animation != this->currentLedAnimationType)
     {
-        this->module->setLEDs(0);
-        if (this->ledEffect != nullptr)
+        this->modulePtr->setLEDs(0);
+        if (this->currentLedAnimationPtr != nullptr)
         {
-            delete this->ledEffect;
-            this->ledEffect = nullptr;
+            delete this->currentLedAnimationPtr;
+            this->currentLedAnimationPtr = nullptr;
         }
         switch (animation)
         {
@@ -171,69 +171,72 @@ void ModuleTM1638plus::setLedAnimation(LED_ANIMATION_TYPE animation, uint16_t ms
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set led animation => SCANNER (delay %f ms)", msDelay);
 #endif
-            this->ledEffect = new ScannerLedEffect(this->module, msDelay);
+            this->currentLedAnimationPtr = new ScannerLedEffect(this->modulePtr, msDelay);
             break;
         case LED_ANIMATION_TYPE_CHASE:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set led animation => CHASE (delay %f ms)", msDelay);
 #endif
-            this->ledEffect = new ChaseLedEffect(this->module, msDelay);
+            this->currentLedAnimationPtr = new ChaseLedEffect(this->modulePtr, msDelay);
             break;
         case LED_ANIMATION_TYPE_VUMETER:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set led animation => VUMETER (delay %f ms)", msDelay);
 #endif
-            this->ledEffect = new VuMeterLedEffect(this->module, msDelay);
+            this->currentLedAnimationPtr = new VuMeterLedEffect(this->modulePtr, msDelay);
             break;
         case LED_ANIMATION_TYPE_VUMETER_MIRRORED:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set led animation => VUMETER MIRRORED (delay %f ms)", msDelay);
 #endif
-            this->ledEffect = new VuMeterMirroredLedEffect(this->module, msDelay);
+            this->currentLedAnimationPtr = new VuMeterMirroredLedEffect(this->modulePtr, msDelay);
             break;
         case LED_ANIMATION_TYPE_ALTERNATE:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set led animation => ALTERNATE (delay %f ms)", msDelay);
 #endif
-            this->ledEffect = new AlternateLedEffect(this->module, msDelay);
+            this->currentLedAnimationPtr = new AlternateLedEffect(this->modulePtr, msDelay);
             break;
         case LED_ANIMATION_TYPE_INTERMITENT:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set led animation => INTERMITENT (delay %f ms)", msDelay);
 #endif
-            this->ledEffect = new IntermitentLedEffect(this->module, msDelay);
+            this->currentLedAnimationPtr = new IntermitentLedEffect(this->modulePtr, msDelay);
             break;
         case LED_ANIMATION_TYPE_MORSE_LETTER_S:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set led animation => morse letter S (delay %f ms)", msDelay);
 #endif
-            this->ledEffect = new MorseLedEffect(this->module, msDelay, 'S');
+            this->currentLedAnimationPtr = new MorseLedEffect(this->modulePtr, msDelay, 'S');
             break;
         case LED_ANIMATION_TYPE_MORSE_LETTER_O:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set led animation => morse letter O (delay %f ms)", msDelay);
 #endif
-            this->ledEffect = new MorseLedEffect(this->module, msDelay, 'O');
+            this->currentLedAnimationPtr = new MorseLedEffect(this->modulePtr, msDelay, 'O');
             break;
         default:
             break;
         }
-        this->currentLedEffectType = animation;
+        this->currentLedAnimationType = animation;
     }
     else
     {
+        if (animation != LED_ANIMATION_TYPE_NONE && this->currentLedAnimationPtr != nullptr)
+        {
 #ifdef DEBUG_SERIAL
-        Serial.printf("TM1638plus:: setting current led animation msDelay: %d\n", msDelay);
+            Serial.printf("TM1638plus:: setting current led animation msDelay: %d\n", msDelay);
 #endif
-        this->ledEffect->setDelay(msDelay);
+            this->currentLedAnimationPtr->setDelay(msDelay);
+        }
     }
 }
 
 void ModuleTM1638plus::toggleLedAnimationInverseMode(void)
 {
-    if (this->currentLedEffectType != LED_ANIMATION_TYPE_NONE && this->ledEffect != nullptr)
+    if (this->currentLedAnimationType != LED_ANIMATION_TYPE_NONE && this->currentLedAnimationPtr != nullptr)
     {
-        if (this->ledEffect->toggleInverse())
+        if (this->currentLedAnimationPtr->toggleInverse())
         {
 #ifdef DEBUG_SERIAL
             Serial.println("TM1638plus:: led animation inverse mode enabled");
@@ -252,17 +255,17 @@ void ModuleTM1638plus::clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCKS block)
 {
     if (block == SEVEN_SEGMENT_BLOCK_LEFT || SEVEN_SEGMENT_BLOCK_BOTH)
     {
-        this->module->displayASCII(0, ' ');
-        this->module->displayASCII(1, ' ');
-        this->module->displayASCII(2, ' ');
-        this->module->displayASCII(3, ' ');
+        this->modulePtr->displayASCII(0, ' ');
+        this->modulePtr->displayASCII(1, ' ');
+        this->modulePtr->displayASCII(2, ' ');
+        this->modulePtr->displayASCII(3, ' ');
     }
     if (block == SEVEN_SEGMENT_BLOCK_RIGHT || SEVEN_SEGMENT_BLOCK_BOTH)
     {
-        this->module->displayASCII(4, ' ');
-        this->module->displayASCII(5, ' ');
-        this->module->displayASCII(6, ' ');
-        this->module->displayASCII(7, ' ');
+        this->modulePtr->displayASCII(4, ' ');
+        this->modulePtr->displayASCII(5, ' ');
+        this->modulePtr->displayASCII(6, ' ');
+        this->modulePtr->displayASCII(7, ' ');
     }
 }
 
@@ -297,14 +300,14 @@ void ModuleTM1638plus::displayTextOnLeft7Segment(const char *text, bool blink, u
 {
     this->freeSevenSegmentBothBlocks();
     this->freeSevenSegmentLeftBlock();
-    this->SevenSegmentLeftBlock = new SimpleTextEffect(this->module, text, blink, blinkTimeout, 0, 4);
+    this->SevenSegmentLeftBlock = new SimpleTextEffect(this->modulePtr, text, blink, blinkTimeout, 0, 4);
 }
 
 void ModuleTM1638plus::displayTextOnRight7Segment(const char *text, bool blink, uint16_t blinkTimeout)
 {
     this->freeSevenSegmentBothBlocks();
     this->freeSevenSegmentRightBlock();
-    this->SevenSegmentRightBlock = new SimpleTextEffect(this->module, text, blink, blinkTimeout, 4, 8);
+    this->SevenSegmentRightBlock = new SimpleTextEffect(this->modulePtr, text, blink, blinkTimeout, 4, 8);
 }
 
 void ModuleTM1638plus::displayTextOnFull7Segment(const char *text, bool blink, uint16_t blinkTimeout)
@@ -312,7 +315,7 @@ void ModuleTM1638plus::displayTextOnFull7Segment(const char *text, bool blink, u
     this->freeSevenSegmentBothBlocks();
     this->freeSevenSegmentLeftBlock();
     this->freeSevenSegmentRightBlock();
-    this->SevenSegmentBothBlocks = new SimpleTextEffect(this->module, text, blink, blinkTimeout, 0, 8);
+    this->SevenSegmentBothBlocks = new SimpleTextEffect(this->modulePtr, text, blink, blinkTimeout, 0, 8);
 }
 
 void ModuleTM1638plus::refreshTextOnLeft7Segment(const char *text, bool blink, uint16_t blinkTimeout)
@@ -347,7 +350,7 @@ void ModuleTM1638plus::displayMultiFrameTextEffect(const char *frames[], size_t 
     this->freeSevenSegmentBothBlocks();
     this->freeSevenSegmentLeftBlock();
     this->freeSevenSegmentRightBlock();
-    this->SevenSegmentBothBlocks = new MultiFrameTextEffect(this->module, frames, frameCount, frameTimeout, startIndex);
+    this->SevenSegmentBothBlocks = new MultiFrameTextEffect(this->modulePtr, frames, frameCount, frameTimeout, startIndex);
 }
 
 void ModuleTM1638plus::displayMultiFrameSevenSegmentEffect(const uint8_t frames[], size_t frameCount, uint16_t frameTimeout, const uint8_t startIndex, const uint8_t endIndex)
@@ -355,7 +358,7 @@ void ModuleTM1638plus::displayMultiFrameSevenSegmentEffect(const uint8_t frames[
     this->freeSevenSegmentBothBlocks();
     this->freeSevenSegmentLeftBlock();
     this->freeSevenSegmentRightBlock();
-    this->SevenSegmentBothBlocks = new MultiFrameSegmentEffect(this->module, frames, frameCount, frameTimeout, startIndex, endIndex);
+    this->SevenSegmentBothBlocks = new MultiFrameSegmentEffect(this->modulePtr, frames, frameCount, frameTimeout, startIndex, endIndex);
 }
 
 void ModuleTM1638plus::displayMultiFrameIndividualSevenSegmentEffect(uint8_t **frames, size_t frameCount, size_t frameAffectedSegmentCount, uint16_t frameTimeout, const uint8_t startIndex, const uint8_t endIndex)
@@ -363,7 +366,7 @@ void ModuleTM1638plus::displayMultiFrameIndividualSevenSegmentEffect(uint8_t **f
     // this->freeSevenSegmentBothBlocks();
     // this->freeSevenSegmentLeftBlock();
     // this->freeSevenSegmentRightBlock();
-    this->SevenSegmentBothBlocks = new MultiFrameIndividualSegmentEffect(this->module, frames, frameCount, frameAffectedSegmentCount, frameTimeout, startIndex, endIndex);
+    this->SevenSegmentBothBlocks = new MultiFrameIndividualSegmentEffect(this->modulePtr, frames, frameCount, frameAffectedSegmentCount, frameTimeout, startIndex, endIndex);
 }
 
 void ModuleTM1638plus::displayOscilloscopeEffect(void)
@@ -387,7 +390,7 @@ void ModuleTM1638plus::displayOscilloscopeEffect(void)
 
 TM1638plusBUTTON ModuleTM1638plus::getPressedButton()
 {
-    uint8_t pressedButtons = this->buttons->getPressedButtonsMask();
+    uint8_t pressedButtons = this->buttonsPtr->getPressedButtonsMask();
     TM1638plusBUTTON pressedButton = TM1638plusBUTTON_NONE;
     if (pressedButtons == TM1638plusBUTTON_S1)
     {
@@ -426,9 +429,9 @@ TM1638plusBUTTON ModuleTM1638plus::getPressedButton()
 
 void ModuleTM1638plus::loop(void)
 {
-    if (this->currentLedEffectType != LED_ANIMATION_TYPE_NONE && this->ledEffect != nullptr)
+    if (this->currentLedAnimationType != LED_ANIMATION_TYPE_NONE && this->currentLedAnimationPtr != nullptr)
     {
-        this->ledEffect->loop();
+        this->currentLedAnimationPtr->loop();
     }
     // full 7 segment animation
     if (this->SevenSegmentBothBlocks != nullptr)

@@ -54,12 +54,12 @@ enum SEVEN_SEGMENT_ANIMATION_TYPE
 class ModuleTM1638plus
 {
 private:
-    TM1638plus *module = nullptr;
+    TM1638plus *modulePtr = nullptr;
 
-    TM1638plusButtons *buttons = nullptr;
+    TM1638plusButtons *buttonsPtr = nullptr;
 
-    ILedEffect *ledEffect = nullptr;
-    LED_ANIMATION_TYPE currentLedEffectType = LED_ANIMATION_TYPE_NONE;
+    ILedEffect *currentLedAnimationPtr = nullptr;
+    LED_ANIMATION_TYPE currentLedAnimationType = LED_ANIMATION_TYPE_NONE;
 
     ISevenSegmentDisplayEffect *SevenSegmentLeftBlock = nullptr;  // first 4 seven segments
     ISevenSegmentDisplayEffect *SevenSegmentRightBlock = nullptr; // last 4 seven segments
@@ -77,6 +77,8 @@ public:
     LED_ANIMATION_TYPE getCurrentLedAnimation(void);
     void setLedAnimation(LED_ANIMATION_TYPE animation, uint16_t msDelay = DEFAULT_LED_MS_DELAY);
     void toggleLedAnimationInverseMode(void);
+
+    void setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE animation);
 
     void clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCKS block);
 
