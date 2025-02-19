@@ -29,6 +29,7 @@ Sampler *samplerPtr = nullptr;
 Events *eventsPtr = nullptr;
 
 #define START_LED_ANIMATION_TYPE LED_ANIMATION_TYPE_SCANNER
+// #define START_SEVEN_SEGMENT_ANIMATION_TYPE SEVEN_SEGMENT_ANIMATION_TYPE_MESSAGE_1
 
 uint64_t lastDirtySyrenMillis = millis();
 
@@ -79,10 +80,12 @@ void setup()
     Serial.println("MAIN:: begin setting TM1638plus module");
 #endif
     tm1638plusPtr = new ModuleTM1638plus(TM1638_STROBE_PIN, TM1638_CLOCK_PIN, TM1638_DIO_PIN, true);
+#ifdef START_LED_ANIMATION_TYPE
     if (START_LED_ANIMATION_TYPE != LED_ANIMATION_TYPE_NONE)
     {
         tm1638plusPtr->setLedAnimation(START_LED_ANIMATION_TYPE, DEFAULT_LED_MS_DELAY);
     }
+#endif
     /*
     const char *textFrames[] = {
         "       P",
@@ -112,9 +115,14 @@ void setup()
     */
     // const uint8_t seq[] = {SEGMENT_A, SEGMENT_B, SEGMENT_G, SEGMENT_E, SEGMENT_D, SEGMENT_C, SEGMENT_G, SEGMENT_F}; // A, B, G, E, D, C, G, F
     // const uint8_t seq[] = {SEGMENT_A, SEGMENT_B, SEGMENT_C, SEGMENT_D, SEGMENT_E, SEGMENT_F}; // A, B, G, E, D, C, G, F
-    const uint8_t seq[] = {SEGMENT_A | SEGMENT_D, SEGMENT_F | SEGMENT_E | SEGMENT_B | SEGMENT_C, SEGMENT_G};
-    tm1638plusPtr->displayMultiFrameSevenSegmentEffect(seq, sizeof(seq) / sizeof(seq[0]), 300, 0, 7);
-
+    // const uint8_t seq[] = {SEGMENT_A | SEGMENT_D, SEGMENT_F | SEGMENT_E | SEGMENT_B | SEGMENT_C, SEGMENT_G};
+    // tm1638plusPtr->displayMultiFrameSevenSegmentEffect(seq, sizeof(seq) / sizeof(seq[0]), 300, 0, 7);
+#ifdef START_SEVEN_SEGMENT_ANIMATION_TYPE
+    if (START_SEVEN_SEGMENT_ANIMATION_TYPE != SEVEN_SEGMENT_ANIMATION_TYPE_NONE)
+    {
+        // tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_MESSAGE_1);
+    }
+#endif
 #ifdef DEBUG_SERIAL
     Serial.println("MAIN:: end setting TM1638plus module");
     Serial.println("MAIN:: begin setting PCM5102A module");
