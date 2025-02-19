@@ -298,6 +298,12 @@ void ModuleTM1638plus::freeSevenSegmentBothBlocks()
 }
 
 */
+
+SEVEN_SEGMENT_ANIMATION_TYPE ModuleTM1638plus::getCurrentSevenSegmentAnimation(void)
+{
+    return (this->currentSevenSegmentAnimationType);
+}
+
 void ModuleTM1638plus::toggleSevenSegmentAnimation()
 {
     switch (this->currentSevenSegmentAnimationType)
@@ -419,19 +425,19 @@ void ModuleTM1638plus::setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE ani
         case SEVEN_SEGMENT_ANIMATION_TYPE_SOS_1:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set seven segment animation => SOS morse letter S (delay %i ms)\n", msDelay);
-            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, "S.O.S.  S.O.S.", true, 105, 0, 7);
+            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, "S.O.S.  S.O.S.", true, msDelay, 0, 7);
 #endif
             break;
         case SEVEN_SEGMENT_ANIMATION_TYPE_SOS_2:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set seven segment animation => SOS morse letter O (delay %i ms)\n", msDelay);
-            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, "  CASA  ", true, 140, 0, 7);
+            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, "  CASA  ", true, msDelay, 0, 7);
 #endif
             break;
         case SEVEN_SEGMENT_ANIMATION_TYPE_SOS_3:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set seven segment animation => SOS morse letter S (delay %i ms)\n", msDelay);
-            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " CEAVA5 ", true, 105, 0, 7);
+            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " CEAVA5 ", true, msDelay, 0, 7);
 #endif
             break;
         case SEVEN_SEGMENT_ANIMATION_TYPE_NONE:
