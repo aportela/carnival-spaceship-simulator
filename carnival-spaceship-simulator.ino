@@ -29,7 +29,6 @@ Sampler *samplerPtr = nullptr;
 Events *eventsPtr = nullptr;
 
 #define START_LED_ANIMATION_TYPE LED_ANIMATION_TYPE_SCANNER
-LED_ANIMATION_TYPE currentLedEffectType = LED_ANIMATION_TYPE_NONE;
 
 uint64_t lastDirtySyrenMillis = millis();
 
