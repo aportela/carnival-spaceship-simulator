@@ -52,6 +52,7 @@ public:
     SevenSegmentDisplayEffect(TM1638plus *module, uint16_t msDelay = DEFAULT_7SEGMENT_MS_DELAY);
     ~SevenSegmentDisplayEffect();
 
+    void setDelay(uint16_t msDelay) override;
     virtual void loop(void) = 0;
 
     virtual bool isSimpleTextEffect() { return false; }

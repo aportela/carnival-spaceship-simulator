@@ -24,3 +24,8 @@ bool SevenSegmentDisplayEffect::refresh(void)
         return (false);
     }
 }
+
+void SevenSegmentDisplayEffect::setDelay(uint16_t msDelay)
+{
+    this->msDelay = msDelay;
+}

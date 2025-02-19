@@ -5,6 +5,7 @@ class ISevenSegmentDisplayEffect
 {
 public:
     virtual ~ISevenSegmentDisplayEffect() {}
+    virtual void setDelay(uint16_t msDelay) = 0;
     virtual void loop(void) = 0;
     virtual bool isSimpleTextEffect() { return false; }
     virtual bool isMultiFrameTextEffect() { return false; }
