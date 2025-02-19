@@ -29,7 +29,7 @@ Sampler *samplerPtr = nullptr;
 Events *eventsPtr = nullptr;
 
 #define START_LED_ANIMATION_TYPE LED_ANIMATION_TYPE_SCANNER
-// #define START_SEVEN_SEGMENT_ANIMATION_TYPE SEVEN_SEGMENT_ANIMATION_TYPE_MESSAGE_1
+#define START_SEVEN_SEGMENT_ANIMATION_TYPE SEVEN_SEGMENT_ANIMATION_TYPE_MESSAGE_1
 
 uint64_t lastDirtySyrenMillis = millis();
 
@@ -62,7 +62,7 @@ void setup()
     delay(500);
 #ifdef DEBUG_SERIAL
     Serial.begin(115200);
-    while (!Serial)
+    while (!Serial && millis() < 500)
     {
         yield();
         delay(10);
@@ -86,41 +86,10 @@ void setup()
         tm1638plusPtr->setLedAnimation(START_LED_ANIMATION_TYPE, DEFAULT_LED_MS_DELAY);
     }
 #endif
-    /*
-    const char *textFrames[] = {
-        "       P",
-        "      PI",
-        "     PIL",
-        "    PILI",
-        "   PILI ",
-        "  PILI D",
-        " PILI DE",
-        "PILI DE ",
-        "ILI DE L",
-        "LI DE LE",
-        "I DE LEI",
-        " DE LEIA",
-        "DE LEIAO",
-        "E LEIAO ",
-        " LEIAO  ",
-        "LEIAO   ",
-        "EIAO    ",
-        "IAO     ",
-        "AO      ",
-        "O       ",
-        "        ",
-    };
-    tm1638plusPtr->displayMultiFrameTextEffect(textFrames, sizeof(textFrames) / sizeof(textFrames[0]), 300, 0);
-    //  tm1638plusPtr->displayTextOnFull7Segment("LEI80 12", true, DEFAULT_LED_MS_DELAY);
-    */
-    // const uint8_t seq[] = {SEGMENT_A, SEGMENT_B, SEGMENT_G, SEGMENT_E, SEGMENT_D, SEGMENT_C, SEGMENT_G, SEGMENT_F}; // A, B, G, E, D, C, G, F
-    // const uint8_t seq[] = {SEGMENT_A, SEGMENT_B, SEGMENT_C, SEGMENT_D, SEGMENT_E, SEGMENT_F}; // A, B, G, E, D, C, G, F
-    // const uint8_t seq[] = {SEGMENT_A | SEGMENT_D, SEGMENT_F | SEGMENT_E | SEGMENT_B | SEGMENT_C, SEGMENT_G};
-    // tm1638plusPtr->displayMultiFrameSevenSegmentEffect(seq, sizeof(seq) / sizeof(seq[0]), 300, 0, 7);
 #ifdef START_SEVEN_SEGMENT_ANIMATION_TYPE
     if (START_SEVEN_SEGMENT_ANIMATION_TYPE != SEVEN_SEGMENT_ANIMATION_TYPE_NONE)
     {
-        // tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_MESSAGE_1);
+        tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_MESSAGE_1, 300);
     }
 #endif
 #ifdef DEBUG_SERIAL
@@ -149,6 +118,7 @@ void loop()
     eventsPtr->onTM1638plusButton(tm1638plusPtr->getPressedButton());
     tm1638plusPtr->loop();
     samplerPtr->loop();
+    /*
     uint64_t currentMillis = millis();
     if (currentMillis - lastDirtySyrenMillis > PLAY_DIRTY_SYREN_EVERY)
     {
@@ -163,4 +133,5 @@ void loop()
             break;
         }
     }
+    */
 }
