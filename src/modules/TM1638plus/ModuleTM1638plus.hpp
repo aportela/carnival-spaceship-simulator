@@ -46,10 +46,14 @@ enum SEVEN_SEGMENT_BLOCKS
 enum SEVEN_SEGMENT_ANIMATION_TYPE
 {
     SEVEN_SEGMENT_ANIMATION_TYPE_NONE = 0,
-    SEVEN_SEGMENT_ANIMATION_TYPE_LASER = 1,
-    SEVEN_SEGMENT_ANIMATION_TYPE_SOS_MORSE_LETTER_S = 2,
-    SEVEN_SEGMENT_ANIMATION_TYPE_SOS_MORSE_LETTER_O = 3,
-    SEVEN_SEGMENT_ANIMATION_TYPE_MESSAGE_1 = 4, // "PILI DE LEIRO"
+    SEVEN_SEGMENT_ANIMATION_TYPE_FULL_PATTERN_1 = 1,
+    SEVEN_SEGMENT_ANIMATION_TYPE_FULL_PATTERN_2 = 2,
+    SEVEN_SEGMENT_ANIMATION_TYPE_FULL_PATTERN_3 = 3,
+    SEVEN_SEGMENT_ANIMATION_TYPE_LASER = 4,
+    SEVEN_SEGMENT_ANIMATION_TYPE_SOS_MORSE_LETTER_S = 5,
+    SEVEN_SEGMENT_ANIMATION_TYPE_SOS_MORSE_LETTER_O = 6,
+
+    SEVEN_SEGMENT_ANIMATION_TYPE_MESSAGE_1 = 7, // "PILI DE LEIRO"
 };
 
 class ModuleTM1638plus
@@ -64,9 +68,10 @@ private:
 
     SEVEN_SEGMENT_ANIMATION_TYPE currentSevenSegmentAnimationType = SEVEN_SEGMENT_ANIMATION_TYPE_NONE;
 
-    ISevenSegmentDisplayEffect *SevenSegmentLeftBlock = nullptr;  // first 4 seven segments
-    ISevenSegmentDisplayEffect *SevenSegmentRightBlock = nullptr; // last 4 seven segments
-    ISevenSegmentDisplayEffect *SevenSegmentBothBlocks = nullptr; // all 8 (4 left + 4 right) seven segments
+    // TODO: refactorPtr
+    ISevenSegmentDisplayEffect *SevenSegmentLeftBlockPtr = nullptr;  // first 4 seven segments
+    ISevenSegmentDisplayEffect *SevenSegmentRightBlockPtr = nullptr; // last 4 seven segments
+    ISevenSegmentDisplayEffect *SevenSegmentBothBlocksPtr = nullptr; // all 8 (4 left + 4 right) seven segments
 
     void clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCKS block);
 
@@ -82,11 +87,11 @@ public:
     TM1638plusBUTTON getPressedButton(void);
 
     LED_ANIMATION_TYPE getCurrentLedAnimation(void);
-    void toggleLedAnimation(uint16_t msDelay = DEFAULT_LED_MS_DELAY);
+    void toggleLedAnimation();
     void toggleLedAnimationInverseMode(void);
     void setLedAnimation(LED_ANIMATION_TYPE animation, uint16_t msDelay = DEFAULT_LED_MS_DELAY);
 
-    void toggleSevenSegmentAnimation(uint16_t msDelay = DEFAULT_SEVEN_SEGMENT_MS_DELAY);
+    void toggleSevenSegmentAnimation();
     void setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE animation, uint16_t msDelay = DEFAULT_SEVEN_SEGMENT_MS_DELAY);
 
     void toggleSevenSegmentEffect(void);
