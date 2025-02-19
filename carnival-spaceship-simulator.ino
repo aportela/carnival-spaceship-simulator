@@ -28,8 +28,8 @@ Sampler *samplerPtr = nullptr;
 
 Events *eventsPtr = nullptr;
 
-#define START_LED_EFFECT_TYPE LED_EFFECT_TYPE_SCANNER
-LED_EFFECT_TYPE currentLedEffectType = LED_EFFECT_TYPE_NONE;
+#define START_LED_ANIMATION_TYPE LED_ANIMATION_TYPE_SCANNER
+LED_ANIMATION_TYPE currentLedEffectType = LED_ANIMATION_TYPE_NONE;
 
 uint64_t lastDirtySyrenMillis = millis();
 
@@ -80,9 +80,9 @@ void setup()
     Serial.println("MAIN:: begin setting TM1638plus module");
 #endif
     tm1638plusPtr = new ModuleTM1638plus(TM1638_STROBE_PIN, TM1638_CLOCK_PIN, TM1638_DIO_PIN, true);
-    if (START_LED_EFFECT_TYPE != LED_EFFECT_TYPE_NONE)
+    if (START_LED_ANIMATION_TYPE != LED_ANIMATION_TYPE_NONE)
     {
-        tm1638plusPtr->setLedEffect(START_LED_EFFECT_TYPE, DEFAULT_LED_MS_DELAY);
+        tm1638plusPtr->setLedEffect(START_LED_ANIMATION_TYPE, DEFAULT_LED_MS_DELAY);
     }
     /*
     const char *textFrames[] = {

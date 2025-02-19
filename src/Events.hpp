@@ -29,7 +29,7 @@ private:
     uint8_t currentLaserSamplesPlaying = 0;
     uint16_t laserShoots = 0;
 
-    LED_EFFECT_TYPE previousLedEffect = LED_EFFECT_TYPE_NONE;
+    LED_ANIMATION_TYPE previousLedEffect = LED_ANIMATION_TYPE_NONE;
     ANIMATION currentAnimation = ANIMATION_NONE;
 
     void display7SegmentLaserAnimation(void);

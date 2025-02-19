@@ -7,7 +7,6 @@
 
 #include "Buttons/TM1638plusButtons.hpp"
 #include "SevenSegmentDisplay/ISevenSegmentDisplayEffect.hpp"
-// #include "SevenSegmentDisplay/SevenSegmentDisplayEffect.hpp"
 #include "Leds/ILedEffect.hpp"
 #include "Leds/Effects/ScannerLedEffect.hpp"
 #include "Leds/Effects/ChaseLedEffect.hpp"
@@ -23,17 +22,17 @@
 
 #define MAX_BRIGHTNESS 8
 
-enum LED_EFFECT_TYPE
+enum LED_ANIMATION_TYPE
 {
-    LED_EFFECT_TYPE_NONE = 0,
-    LED_EFFECT_TYPE_SCANNER = 1,
-    LED_EFFECT_TYPE_CHASE = 2,
-    LED_EFFECT_TYPE_VUMETER = 3,
-    LED_EFFECT_TYPE_VUMETER_MIRRORED = 4,
-    LED_EFFECT_TYPE_ALTERNATE = 5,
-    LED_EFFECT_TYPE_INTERMITENT = 6,
-    LED_EFFECT_TYPE_MORSE_LETTER_S = 7,
-    LED_EFFECT_TYPE_MORSE_LETTER_O = 8,
+    LED_ANIMATION_TYPE_NONE = 0,
+    LED_ANIMATION_TYPE_SCANNER = 1,
+    LED_ANIMATION_TYPE_CHASE = 2,
+    LED_ANIMATION_TYPE_VUMETER = 3,
+    LED_ANIMATION_TYPE_VUMETER_MIRRORED = 4,
+    LED_ANIMATION_TYPE_ALTERNATE = 5,
+    LED_ANIMATION_TYPE_INTERMITENT = 6,
+    LED_ANIMATION_TYPE_MORSE_LETTER_S = 7,
+    LED_ANIMATION_TYPE_MORSE_LETTER_O = 8,
 };
 
 enum SEVEN_SEGMENT_BLOCKS
@@ -41,6 +40,15 @@ enum SEVEN_SEGMENT_BLOCKS
     SEVEN_SEGMENT_BLOCK_LEFT = 1,
     SEVEN_SEGMENT_BLOCK_RIGHT = 2,
     SEVEN_SEGMENT_BLOCK_BOTH = 3,
+};
+
+enum SEVEN_SEGMENT_ANIMATION_TYPE
+{
+    SEVEN_SEGMENT_ANIMATION_TYPE_NONE = 0,
+    SEVEN_SEGMENT_ANIMATION_TYPE_LASER = 1,
+    SEVEN_SEGMENT_ANIMATION_TYPE_SOS_MORSE_LETTER_S = 2,
+    SEVEN_SEGMENT_ANIMATION_TYPE_SOS_MORSE_LETTER_O = 3,
+    SEVEN_SEGMENT_ANIMATION_TYPE_MESSAGE_1 = 4, // "PILI DE LEIRO"
 };
 
 class ModuleTM1638plus
@@ -51,7 +59,7 @@ private:
     TM1638plusButtons *buttons = nullptr;
 
     ILedEffect *ledEffect = nullptr;
-    LED_EFFECT_TYPE currentLedEffectType = LED_EFFECT_TYPE_NONE;
+    LED_ANIMATION_TYPE currentLedEffectType = LED_ANIMATION_TYPE_NONE;
 
     ISevenSegmentDisplayEffect *SevenSegmentLeftBlock = nullptr;  // first 4 seven segments
     ISevenSegmentDisplayEffect *SevenSegmentRightBlock = nullptr; // last 4 seven segments
@@ -66,8 +74,8 @@ public:
     void toggleSevenSegmentEffect(void);
 
     void toggleLedEffect(uint16_t msDelay = DEFAULT_LED_MS_DELAY);
-    LED_EFFECT_TYPE getCurrentLedEffect(void);
-    void setLedEffect(LED_EFFECT_TYPE effect, uint16_t msDelay = DEFAULT_LED_MS_DELAY);
+    LED_ANIMATION_TYPE getCurrentLedEffect(void);
+    void setLedEffect(LED_ANIMATION_TYPE effect, uint16_t msDelay = DEFAULT_LED_MS_DELAY);
     void toggleLedInverseMode(void);
 
     void clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCKS block);
