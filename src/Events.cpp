@@ -111,28 +111,25 @@ void Events::onTM1638plusButton(TM1638plusBUTTON button)
 #ifdef DEBUG_SERIAL
             Serial.println("EVENTS:: TM1638plus button 5 pressed...");
 #endif
+            this->samplerPtr->play(SAMPLE_ALARM_REVERB);
             break;
         case TM1638plusBUTTON_S6:
 #ifdef DEBUG_SERIAL
             Serial.println("EVENTS:: TM1638plus button 6 pressed...");
 #endif
-            // this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_SOS_1, DEFAULT_SEVEN_SEGMENT_LASER_EFFECT_MS_DELAY, 1000);
-            this->startAnimation(ANIMATION_SOS_1);
+            this->samplerPtr->play(SAMPLE_DIRTY_SYREN_1);
             break;
         case TM1638plusBUTTON_S7:
 #ifdef DEBUG_SERIAL
             Serial.println("EVENTS:: TM1638plus button 7 pressed...");
-            // this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_SOS_2, DEFAULT_SEVEN_SEGMENT_LASER_EFFECT_MS_DELAY, 1000);
-            this->startAnimation(ANIMATION_SOS_2);
 #endif
+            this->samplerPtr->play(SAMPLE_DIRTY_SYREN_2);
             break;
         case TM1638plusBUTTON_S8:
 #ifdef DEBUG_SERIAL
             Serial.println("EVENTS:: TM1638plus button 8 pressed...");
 #endif
-            // this->tm1638plusPtr->toggleSevenSegmentAnimation();
-            // this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_SOS_3, DEFAULT_SEVEN_SEGMENT_LASER_EFFECT_MS_DELAY, 1000);
-            this->startAnimation(ANIMATION_SOS_3);
+            // TODO: REBOOT
             break;
         }
     }
@@ -531,16 +528,16 @@ void Events::startAnimation(ANIMATION animation)
             this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_LASER, DEFAULT_7SEGMENT_MS_DELAY, this->laserShoots);
             break;
         case ANIMATION_SOS_1:
-            this->tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_MORSE_LETTER_S, 80);
-            this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_SOS_1, 105);
+            this->tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_MORSE_LETTER_S, 100);
+            this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_SOS_1, 100);
             break;
         case ANIMATION_SOS_2:
             this->tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_MORSE_LETTER_O, 140);
             this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_SOS_2, 140);
             break;
         case ANIMATION_SOS_3:
-            this->tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_MORSE_LETTER_S, 80);
-            this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_SOS_3, 105);
+            this->tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_MORSE_LETTER_S, 100);
+            this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_SOS_3, 100);
             break;
             /*
         case ANIMATION_ALIEN_VOICE_1:
