@@ -143,64 +143,48 @@ void Events::onSampleStarted(SAMPLE sample)
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_LASER1_SINGLE");
 #endif
-        this->currentLaserSamplesPlaying++;
-        this->laserShoots++;
         this->startAnimation(ANIMATION_LASER_SHOOT);
         break;
     case SAMPLE_LASER2_SINGLE:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_LASER2_SINGLE");
 #endif
-        this->currentLaserSamplesPlaying++;
-        this->laserShoots++;
         this->startAnimation(ANIMATION_LASER_SHOOT);
         break;
     case SAMPLE_LASER3_SINGLE:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_LASER3_SINGLE");
 #endif
-        this->currentLaserSamplesPlaying++;
-        this->laserShoots++;
         this->startAnimation(ANIMATION_LASER_SHOOT);
         break;
     case SAMPLE_LASER4_SINGLE:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_LASER4_SINGLE");
 #endif
-        this->currentLaserSamplesPlaying++;
-        this->laserShoots++;
         this->startAnimation(ANIMATION_LASER_SHOOT);
         break;
     case SAMPLE_LASER1_DOUBLE:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_LASER1_DOUBLE");
 #endif
-        this->currentLaserSamplesPlaying++;
-        this->laserShoots++;
         this->startAnimation(ANIMATION_LASER_SHOOT);
         break;
     case SAMPLE_LASER2_DOUBLE:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_LASER2_DOUBLE");
 #endif
-        this->currentLaserSamplesPlaying++;
-        this->laserShoots++;
         this->startAnimation(ANIMATION_LASER_SHOOT);
         break;
     case SAMPLE_LASER3_DOUBLE:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_LASER3_DOUBLE");
 #endif
-        this->currentLaserSamplesPlaying++;
-        this->laserShoots++;
         this->startAnimation(ANIMATION_LASER_SHOOT);
         break;
     case SAMPLE_LASER4_DOUBLE:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_LASER4_DOUBLE");
 #endif
-        this->currentLaserSamplesPlaying++;
-        this->laserShoots++;
         this->startAnimation(ANIMATION_LASER_SHOOT);
         break;
     case SAMPLE_ALARM_REVERB:
@@ -334,120 +318,156 @@ void Events::onSampleStopped(SAMPLE sample)
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_LASER1_SINGLE");
 #endif
-        this->currentLaserSamplesPlaying--;
+        this->stopAnimation(ANIMATION_LASER_SHOOT);
         break;
     case SAMPLE_LASER2_SINGLE:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_LASER2_SINGLE");
 #endif
-        this->currentLaserSamplesPlaying--;
+        this->stopAnimation(ANIMATION_LASER_SHOOT);
         break;
     case SAMPLE_LASER3_SINGLE:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_LASER3_SINGLE");
 #endif
-        this->currentLaserSamplesPlaying--;
+        this->stopAnimation(ANIMATION_LASER_SHOOT);
         break;
     case SAMPLE_LASER4_SINGLE:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_LASER4_SINGLE");
 #endif
-        this->currentLaserSamplesPlaying--;
+        this->stopAnimation(ANIMATION_LASER_SHOOT);
         break;
     case SAMPLE_LASER1_DOUBLE:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_LASER1_DOUBLE");
 #endif
-        this->currentLaserSamplesPlaying--;
+        this->stopAnimation(ANIMATION_LASER_SHOOT);
         samplerPtr->queueSample(SAMPLE_LASER1_SINGLE);
         break;
     case SAMPLE_LASER2_DOUBLE:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_LASER2_DOUBLE");
 #endif
-        this->currentLaserSamplesPlaying--;
+        this->stopAnimation(ANIMATION_LASER_SHOOT);
         samplerPtr->queueSample(SAMPLE_LASER2_SINGLE);
         break;
     case SAMPLE_LASER3_DOUBLE:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_LASER3_DOUBLE");
 #endif
-        this->currentLaserSamplesPlaying--;
+        this->stopAnimation(ANIMATION_LASER_SHOOT);
         samplerPtr->queueSample(SAMPLE_LASER3_SINGLE);
         break;
     case SAMPLE_LASER4_DOUBLE:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_LASER4_DOUBLE");
 #endif
-        this->currentLaserSamplesPlaying--;
+        this->stopAnimation(ANIMATION_LASER_SHOOT);
         samplerPtr->queueSample(SAMPLE_LASER4_SINGLE);
         break;
     case SAMPLE_ALARM_REVERB:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_ALARM_REVERB");
 #endif
+        this->stopAnimation(ANIMATION_ALARM_REVERB);
         break;
     case SAMPLE_DIRTY_SYREN_1:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_DIRTY_SYREN_1");
 #endif
+        this->stopAnimation(ANIMATION_DIRTY_SYREN_1);
         break;
     case SAMPLE_DIRTY_SYREN_2:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_DIRTY_SYREN_2");
 #endif
+        this->stopAnimation(ANIMATION_DIRTY_SYREN_2);
+        break;
+    case SAMPLE_ALIEN_VOICE_01:
+#ifdef DEBUG_SERIAL
+        Serial.println("EVENTS:: Stopped playing SAMPLE_ALIEN_VOICE_01");
+#endif
+        this->stopAnimation(ANIMATION_ALIEN_VOICE_1);
+        break;
+    case SAMPLE_ALIEN_VOICE_02:
+#ifdef DEBUG_SERIAL
+        Serial.println("EVENTS:: Stopped playing SAMPLE_ALIEN_VOICE_02");
+#endif
+        this->stopAnimation(ANIMATION_ALIEN_VOICE_2);
+        break;
+    case SAMPLE_ALIEN_VOICE_03:
+#ifdef DEBUG_SERIAL
+        Serial.println("EVENTS:: Stopped playing SAMPLE_ALIEN_VOICE_03");
+#endif
+        this->stopAnimation(ANIMATION_ALIEN_VOICE_3);
+        break;
+    case SAMPLE_ALIEN_VOICE_04:
+#ifdef DEBUG_SERIAL
+        Serial.println("EVENTS:: Stopped playing SAMPLE_ALIEN_VOICE_04");
+#endif
+        this->stopAnimation(ANIMATION_ALIEN_VOICE_4);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1");
 #endif
+        // this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
         samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2");
 #endif
+        // this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
         samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3");
 #endif
+        // this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
         samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4");
 #endif
+        // this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
         samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5");
 #endif
+        // this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1");
 #endif
+        // this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
         samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2");
 #endif
+        // this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
         samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3");
 #endif
+        // this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
         samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4");
 #endif
+        // this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
         samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5:
@@ -459,33 +479,31 @@ void Events::onSampleStopped(SAMPLE sample)
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_SOS_01");
 #endif
+        this->stopAnimation(ANIMATION_SOS_1);
         samplerPtr->queueSample(SAMPLE_SOS_02);
         break;
     case SAMPLE_SOS_02:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_SOS_02");
 #endif
+        this->stopAnimation(ANIMATION_SOS_2);
         samplerPtr->queueSample(SAMPLE_SOS_03);
         break;
     case SAMPLE_SOS_03:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_SOS_03");
 #endif
-        this->stopAnimation();
+        this->stopAnimation(ANIMATION_SOS_3);
         break;
     default:
 #ifdef DEBUG_SERIAL
 #endif
         break;
     }
-    if (true || this->currentLaserSamplesPlaying <= 0)
-    {
-        // TODO: conflict with another animations ?
-        // this->stopAnimation();
-    }
 }
 
-void Events::display7SegmentLaserAnimation(void)
+// TODO: REMOVE
+void Events::display7SegmentLaserAnimation(bool init)
 {
     // tm1638plusPtr->clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCK_BOTH);
     char buffer[5] = {'\0'};
@@ -497,7 +515,19 @@ void Events::display7SegmentLaserAnimation(void)
         this->laserShoots = 0;
     }
     snprintf(buffer, sizeof(buffer), "%04d", this->laserShoots);
-    tm1638plusPtr->displayTextOnRight7Segment(buffer, false, 0);
+
+    if (init)
+    {
+        tm1638plusPtr->displayTextOnRight7Segment(buffer, false, 0);
+    }
+    else
+    {
+        tm1638plusPtr->refreshTextOnRight7Segment(buffer, false, 0);
+    }
+    if (!init)
+    {
+        tm1638plusPtr->freeSevenSegmentBothBlocks();
+    }
     // seven segment left block
     size_t frameCount = 5;
     size_t frameAffectedSegmentCount = 4;
@@ -514,6 +544,41 @@ void Events::display7SegmentLaserAnimation(void)
     tm1638plusPtr->displayMultiFrameIndividualSevenSegmentEffect(seq, frameCount, frameAffectedSegmentCount, 60, 0, 3);
 }
 
+bool Events::allowStartAnimation(ANIMATION animation)
+{
+
+    if (this->currentAnimation != animation)
+    {
+        return (true);
+    }
+    else
+    {
+        return (false);
+    }
+}
+
+void Events::refreshAnimation(ANIMATION animation)
+{
+    char buffer[5] = {'\0'};
+    switch (animation)
+    {
+    case ANIMATION_LASER_SHOOT:
+        this->currentLaserSamplesPlaying++;
+        this->laserShoots++;
+        if (this->laserShoots >= 10000) // only 4 digits (right block)
+        {
+            this->laserShoots = 0;
+        }
+        snprintf(buffer, sizeof(buffer), "%04d", this->laserShoots);
+        tm1638plusPtr->refreshTextOnRight7Segment(buffer, false, 0);
+        break;
+    case ANIMATION_SOS_1:
+    case ANIMATION_SOS_2:
+    case ANIMATION_SOS_3:
+        break;
+    }
+}
+
 void Events::startAnimation(ANIMATION animation)
 {
     if (animation != this->currentAnimation)
@@ -524,6 +589,8 @@ void Events::startAnimation(ANIMATION animation)
         switch (animation)
         {
         case ANIMATION_LASER_SHOOT:
+            this->currentLaserSamplesPlaying++;
+            this->laserShoots++;
             this->tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_INTERMITENT, 80);
             this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_LASER, DEFAULT_7SEGMENT_MS_DELAY, this->laserShoots);
             break;
@@ -539,67 +606,78 @@ void Events::startAnimation(ANIMATION animation)
             this->tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_MORSE_LETTER_S, 100);
             this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_SOS_3, 100);
             break;
-            /*
         case ANIMATION_ALIEN_VOICE_1:
+            Serial.println("5");
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 5);
+            this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_1, 100);
         case ANIMATION_ALIEN_VOICE_2:
+            Serial.println("10");
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 10);
+            this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_2, 100);
         case ANIMATION_ALIEN_VOICE_3:
+            Serial.println("25");
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 25);
+            this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_3, 100);
         case ANIMATION_ALIEN_VOICE_4:
-            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, 80);
-            this->previousLedEffect = tm1638plusPtr->getCurrentLedAnimation();
-            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, random(50, 100));
+            Serial.println("50");
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 50);
+            this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_4, 100);
             break;
         case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE:
-            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, 80);
+            // tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, 80);
             break;
-            */
         }
     }
     else
     {
-        char buffer[5] = {'\0'};
-        switch (animation)
-        {
-        case ANIMATION_LASER_SHOOT:
-            if (this->laserShoots >= 10000) // only 4 digits (right block)
-            {
-                this->laserShoots = 0;
-            }
-            snprintf(buffer, sizeof(buffer), "%04d", this->laserShoots);
-            tm1638plusPtr->refreshTextOnRight7Segment(buffer, false, 0);
-            break;
-        case ANIMATION_SOS_1:
-        case ANIMATION_SOS_2:
-        case ANIMATION_SOS_3:
-            break;
-        }
+        this->refreshAnimation(animation);
     }
 }
 
-void Events::stopAnimation()
+void Events::stopAnimation(ANIMATION animation)
 {
-    this->previousLedEffect = LED_ANIMATION_TYPE_SCANNER;
-    switch (this->currentAnimation)
+    // this->previousLedEffect = LED_ANIMATION_TYPE_SCANNER;
+    switch (animation)
     {
     case ANIMATION_LASER_SHOOT:
-        tm1638plusPtr->setLedAnimation(this->previousLedEffect);
-        // tm1638plusPtr->freeSevenSegmentLeftBlock();
-        // tm1638plusPtr->freeSevenSegmentRightBlock();
-        // tm1638plusPtr->freeSevenSegmentBothBlocks();
-        // tm1638plusPtr->clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCK_BOTH);
+
+        if (this->currentLaserSamplesPlaying > 0)
+        {
+            this->currentLaserSamplesPlaying--;
+        }
+        if (this->currentLaserSamplesPlaying == 0)
+        {
+            // tm1638plusPtr->setLedAnimation(this->previousLedEffect);
+            //  tm1638plusPtr->freeSevenSegmentLeftBlock();
+            //  tm1638plusPtr->freeSevenSegmentRightBlock();
+            //  tm1638plusPtr->freeSevenSegmentBothBlocks();
+            //  tm1638plusPtr->clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCK_BOTH);
+        }
         break;
     case ANIMATION_SOS_1:
     case ANIMATION_SOS_2:
     case ANIMATION_SOS_3:
-        tm1638plusPtr->setLedAnimation(this->previousLedEffect);
-        // tm1638plusPtr->freeSevenSegmentBothBlocks();
-        // tm1638plusPtr->clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCK_BOTH);
+        // tm1638plusPtr->setLedAnimation(this->previousLedEffect);
+        //  tm1638plusPtr->freeSevenSegmentBothBlocks();
+        //  tm1638plusPtr->clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCK_BOTH);
         break;
     case ANIMATION_ALIEN_VOICE_1:
     case ANIMATION_ALIEN_VOICE_2:
     case ANIMATION_ALIEN_VOICE_3:
     case ANIMATION_ALIEN_VOICE_4:
-        tm1638plusPtr->setLedAnimation(this->previousLedEffect);
+        // tm1638plusPtr->setLedAnimation(this->previousLedEffect);
         break;
         this->currentAnimation = ANIMATION_NONE;
+    case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE:
+        break;
+    case ANIMATION_ALARM_REVERB:
+        break;
+    case ANIMATION_DIRTY_SYREN_1:
+        break;
+    case ANIMATION_DIRTY_SYREN_2:
+        break;
     }
+    this->currentAnimation = ANIMATION_NONE;
+    tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_NONE, 0);
+    this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_NONE, 0);
 }

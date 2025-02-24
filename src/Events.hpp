@@ -32,13 +32,16 @@ private:
 
     uint8_t currentLaserSamplesPlaying = 0;
     uint16_t laserShoots = 0;
+    bool isPlayingSOSAnimation = false;
 
     LED_ANIMATION_TYPE previousLedEffect = LED_ANIMATION_TYPE_NONE;
     ANIMATION currentAnimation = ANIMATION_NONE;
 
     SEVEN_SEGMENT_ANIMATION_TYPE previousSevenSegmentAnimation = SEVEN_SEGMENT_ANIMATION_TYPE_NONE;
 
-    void display7SegmentLaserAnimation(void);
+    void display7SegmentLaserAnimation(bool init = true);
+    bool allowStartAnimation(ANIMATION animation);
+    void refreshAnimation(ANIMATION animation);
 
 public:
     Events(ExternalButtons *externalButtonsPtr, ModuleTM1638plus *tm1638plusPtr, Sampler *samplerPtr);
@@ -48,7 +51,7 @@ public:
     void onSampleStarted(SAMPLE sample);
     void onSampleStopped(SAMPLE sample);
     void startAnimation(ANIMATION animation);
-    void stopAnimation();
+    void stopAnimation(ANIMATION animation);
 };
 
 #endif // EVENTS_H
