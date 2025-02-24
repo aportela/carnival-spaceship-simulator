@@ -37,6 +37,11 @@ ModuleTM1638plus::~ModuleTM1638plus()
     this->modulePtr = nullptr;
 }
 
+void ModuleTM1638plus::reset(void)
+{
+    this->modulePtr->reset();
+}
+
 void ModuleTM1638plus::toggleSevenSegmentEffect(void)
 {
     /*
@@ -269,7 +274,6 @@ void ModuleTM1638plus::clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCKS block)
     }
 }
 
-/*
 void ModuleTM1638plus::freeSevenSegmentLeftBlock()
 {
     if (this->SevenSegmentLeftBlockPtr != nullptr)
@@ -296,8 +300,6 @@ void ModuleTM1638plus::freeSevenSegmentBothBlocks()
         this->SevenSegmentBothBlocksPtr = nullptr;
     }
 }
-
-*/
 
 SEVEN_SEGMENT_ANIMATION_TYPE ModuleTM1638plus::getCurrentSevenSegmentAnimation(void)
 {
@@ -455,10 +457,35 @@ void ModuleTM1638plus::setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE ani
             this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " CEAVA5 ", true, msDelay, 0, 7);
 #endif
             break;
+        case SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_1:
+#ifdef DEBUG_SERIAL
+            Serial.printf("TM1638plus:: set seven segment animation => Alien voice 1 (delay %i ms)\n", msDelay);
+            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " ALIEN1 ", true, msDelay, 0, 7);
+#endif
+            break;
+        case SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_2:
+#ifdef DEBUG_SERIAL
+            Serial.printf("TM1638plus:: set seven segment animation => Alien voice 2 (delay %i ms)\n", msDelay);
+            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " ALIEN2 ", true, msDelay, 0, 7);
+#endif
+            break;
+        case SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_3:
+#ifdef DEBUG_SERIAL
+            Serial.printf("TM1638plus:: set seven segment animation => Alien voice 3 (delay %i ms)\n", msDelay);
+            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " ALIEN3 ", true, msDelay, 0, 7);
+#endif
+            break;
+        case SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_4:
+#ifdef DEBUG_SERIAL
+            Serial.printf("TM1638plus:: set seven segment animation => Alien voice 4 (delay %i ms)\n", msDelay);
+            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " ALIEN4 ", true, msDelay, 0, 7);
+#endif
+            break;
         case SEVEN_SEGMENT_ANIMATION_TYPE_NONE:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set seven segment animation => NONE (delay %i ms)\n", msDelay);
 #endif
+            // TODO: CLEAR ?
             break;
         }
         this->currentSevenSegmentAnimationType = animation;
@@ -492,25 +519,30 @@ void ModuleTM1638plus::setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE ani
     }
 }
 
-void ModuleTM1638plus::displayTextOnLeft7Segment(const char *text, bool blink, uint16_t blinkTimeout)
+void ModuleTM1638plus::displayTextOnLeft7Segment(const char *text, bool blink, uint16_t blinkTimeout, bool freePrevious)
 {
-    // this->freeSevenSegmentBothBlocks();
-    // this->freeSevenSegmentLeftBlock();
+    if (freePrevious)
+    {
+        this->freeSevenSegmentLeftBlock();
+    }
     this->SevenSegmentLeftBlockPtr = new SimpleTextEffect(this->modulePtr, text, blink, blinkTimeout, 0, 4);
 }
 
-void ModuleTM1638plus::displayTextOnRight7Segment(const char *text, bool blink, uint16_t blinkTimeout)
+void ModuleTM1638plus::displayTextOnRight7Segment(const char *text, bool blink, uint16_t blinkTimeout, bool freePrevious)
 {
-    // this->freeSevenSegmentBothBlocks();
-    // this->freeSevenSegmentRightBlock();
+    if (freePrevious)
+    {
+        this->freeSevenSegmentRightBlock();
+    }
     this->SevenSegmentRightBlockPtr = new SimpleTextEffect(this->modulePtr, text, blink, blinkTimeout, 4, 8);
 }
 
-void ModuleTM1638plus::displayTextOnFull7Segment(const char *text, bool blink, uint16_t blinkTimeout)
+void ModuleTM1638plus::displayTextOnFull7Segment(const char *text, bool blink, uint16_t blinkTimeout, bool freePrevious)
 {
-    // this->freeSevenSegmentBothBlocks();
-    // this->freeSevenSegmentLeftBlock();
-    // this->freeSevenSegmentRightBlock();
+    if (freePrevious)
+    {
+        this->freeSevenSegmentBothBlocks();
+    }
     this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, text, blink, blinkTimeout, 0, 8);
 }
 
@@ -541,27 +573,30 @@ void ModuleTM1638plus::refreshTextOnFull7Segment(const char *text, bool blink, u
     }
 }
 
-void ModuleTM1638plus::displayMultiFrameTextEffect(const char *frames[], size_t frameCount, uint16_t frameTimeout, const uint8_t startIndex)
+void ModuleTM1638plus::displayMultiFrameTextEffect(const char *frames[], size_t frameCount, uint16_t frameTimeout, const uint8_t startIndex, bool freePrevious)
 {
-    // this->freeSevenSegmentBothBlocks();
-    // this->freeSevenSegmentLeftBlock();
-    // this->freeSevenSegmentRightBlock();
+    if (freePrevious)
+    {
+        this->freeSevenSegmentBothBlocks();
+    }
     this->SevenSegmentBothBlocksPtr = new MultiFrameTextEffect(this->modulePtr, frames, frameCount, frameTimeout, startIndex);
 }
 
-void ModuleTM1638plus::displayMultiFrameSevenSegmentEffect(const uint8_t frames[], size_t frameCount, uint16_t frameTimeout, const uint8_t startIndex, const uint8_t endIndex)
+void ModuleTM1638plus::displayMultiFrameSevenSegmentEffect(const uint8_t frames[], size_t frameCount, uint16_t frameTimeout, const uint8_t startIndex, const uint8_t endIndex, bool freePrevious)
 {
-    // this->freeSevenSegmentBothBlocks();
-    // this->freeSevenSegmentLeftBlock();
-    // this->freeSevenSegmentRightBlock();
+    if (freePrevious)
+    {
+        this->freeSevenSegmentBothBlocks();
+    }
     this->SevenSegmentBothBlocksPtr = new MultiFrameSegmentEffect(this->modulePtr, frames, frameCount, frameTimeout, startIndex, endIndex);
 }
 
-void ModuleTM1638plus::displayMultiFrameIndividualSevenSegmentEffect(uint8_t **frames, size_t frameCount, size_t frameAffectedSegmentCount, uint16_t frameTimeout, const uint8_t startIndex, const uint8_t endIndex)
+void ModuleTM1638plus::displayMultiFrameIndividualSevenSegmentEffect(uint8_t **frames, size_t frameCount, size_t frameAffectedSegmentCount, uint16_t frameTimeout, const uint8_t startIndex, const uint8_t endIndex, bool freePrevious)
 {
-    // this->freeSevenSegmentBothBlocks();
-    // this->freeSevenSegmentLeftBlock();
-    // this->freeSevenSegmentRightBlock();
+    if (freePrevious)
+    {
+        this->freeSevenSegmentBothBlocks();
+    }
     this->SevenSegmentBothBlocksPtr = new MultiFrameIndividualSegmentEffect(this->modulePtr, frames, frameCount, frameAffectedSegmentCount, frameTimeout, startIndex, endIndex);
 }
 

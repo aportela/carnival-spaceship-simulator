@@ -53,8 +53,14 @@ enum SEVEN_SEGMENT_ANIMATION_TYPE
     SEVEN_SEGMENT_ANIMATION_TYPE_SOS_1 = 5,
     SEVEN_SEGMENT_ANIMATION_TYPE_SOS_2 = 6,
     SEVEN_SEGMENT_ANIMATION_TYPE_SOS_3 = 7,
-
-    SEVEN_SEGMENT_ANIMATION_TYPE_MESSAGE_1 = 8, // "PILI DE LEIRO"
+    SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_1 = 8,
+    SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_2 = 9,
+    SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_3 = 10,
+    SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_4 = 11,
+    SEVEN_SEGMENT_ANIMATION_TYPE_ALARM_REVERB = 12,
+    SEVEN_SEGMENT_ANIMATION_TYPE_DIRTY_SYREN_1 = 13,
+    SEVEN_SEGMENT_ANIMATION_TYPE_DIRTY_SYREN_2 = 14,
+    SEVEN_SEGMENT_ANIMATION_TYPE_MESSAGE_1 = 20, // "PILI DE LEIRO"
 };
 
 class ModuleTM1638plus
@@ -76,17 +82,14 @@ private:
 
     void clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCKS block);
 
-    // TODO: remove ?
-    // void freeSevenSegmentLeftBlock(void);
-    // void freeSevenSegmentRightBlock(void);
-    // void freeSevenSegmentBothBlocks(void);
-
     void setSevenSegmentLaserAnimation(uint16_t laserShoots);
     void updateSevenSegmentLaserCountAnimationText(uint16_t laserShoots);
 
 public:
     ModuleTM1638plus(uint8_t strobePIN, uint8_t clockPIN, uint8_t dioPIN, bool highFreq);
     ~ModuleTM1638plus();
+
+    void reset(void);
 
     TM1638plusBUTTON getPressedButton(void);
 
@@ -101,16 +104,20 @@ public:
 
     void toggleSevenSegmentEffect(void);
 
-    void displayTextOnLeft7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
-    void displayTextOnRight7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
-    void displayTextOnFull7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
+    void freeSevenSegmentLeftBlock(void);
+    void freeSevenSegmentRightBlock(void);
+    void freeSevenSegmentBothBlocks(void);
+
+    void displayTextOnLeft7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0, bool freePrevious = false);
+    void displayTextOnRight7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0, bool freePrevious = false);
+    void displayTextOnFull7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0, bool freePrevious = false);
     void refreshTextOnLeft7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
     void refreshTextOnRight7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
     void refreshTextOnFull7Segment(const char *text, bool blink = false, uint16_t blinkTimeout = 0);
 
-    void displayMultiFrameTextEffect(const char *frames[], size_t frameCount, uint16_t frameTimeout = 0, const uint8_t startIndex = 0);
-    void displayMultiFrameSevenSegmentEffect(const uint8_t frames[], size_t frameCount, uint16_t frameTimeout = 0, const uint8_t startIndex = 0, const uint8_t endIndex = 7);
-    void displayMultiFrameIndividualSevenSegmentEffect(uint8_t **frames, size_t frameCount, size_t frameAffectedSegmentCount, uint16_t frameTimeout = 0, const uint8_t startIndex = 0, const uint8_t endIndex = 7);
+    void displayMultiFrameTextEffect(const char *frames[], size_t frameCount, uint16_t frameTimeout = 0, const uint8_t startIndex = 0, bool freePrevious = false);
+    void displayMultiFrameSevenSegmentEffect(const uint8_t frames[], size_t frameCount, uint16_t frameTimeout = 0, const uint8_t startIndex = 0, const uint8_t endIndex = 7, bool freePrevious = false);
+    void displayMultiFrameIndividualSevenSegmentEffect(uint8_t **frames, size_t frameCount, size_t frameAffectedSegmentCount, uint16_t frameTimeout = 0, const uint8_t startIndex = 0, const uint8_t endIndex = 7, bool freePrevious = false);
 
     void displayOscilloscopeEffect(void);
 
