@@ -37,7 +37,7 @@ void Events::onExternalButton(EXTERNAL_BUTTON button)
 #ifdef DEBUG_SERIAL
             Serial.println("EVENTS:: external button 3 pressed... enqueue tones1 sample");
 #endif
-            if (!this->isPlayingEncountersOnThirdPhaseSamples)
+            if (!this->isPlayingEncountersOnThirdPhaseSamples && !this->isPlayingAlienVoiceSamples && !this->isPlayingSOSSamples)
             {
                 this->isPlayingEncountersOnThirdPhaseSamples = true;
                 switch (random(0, 2))
@@ -55,7 +55,7 @@ void Events::onExternalButton(EXTERNAL_BUTTON button)
 #ifdef DEBUG_SERIAL
             Serial.println("EVENTS:: external button 4 pressed... enqueue tones2 sample");
 #endif
-            if (!this->isPlayingAlienVoiceSamples && !this->isPlayingSOSSamples)
+            if (!this->isPlayingAlienVoiceSamples && !this->isPlayingSOSSamples && !this->isPlayingEncountersOnThirdPhaseSamples)
             {
                 this->isPlayingAlienVoiceSamples = true;
                 switch (random(0, 4))
@@ -83,7 +83,7 @@ void Events::onExternalButton(EXTERNAL_BUTTON button)
 #ifdef DEBUG_SERIAL
             Serial.println("EVENTS:: external button 5 pressed ... enqueue SOS sample");
 #endif
-            if (!this->isPlayingSOSSamples && !this->isPlayingAlienVoiceSamples)
+            if (!this->isPlayingSOSSamples && !this->isPlayingAlienVoiceSamples && !this->isPlayingEncountersOnThirdPhaseSamples)
             {
                 this->isPlayingSOSSamples = true;
                 this->samplerPtr->queueSample(SAMPLE_SOS_01);
