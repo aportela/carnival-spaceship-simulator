@@ -1,4 +1,5 @@
 #include <cstring>
+#include <Arduino.h>
 #include "src/modules/ExternalButtons/ExternalButtons.hpp"
 #include "src/modules/TM1638plus/ModuleTM1638plus.hpp"
 #include "src/modules/Audio/Sampler.hpp"
@@ -59,6 +60,7 @@ void onSampleStopPlaying(SAMPLE sample)
 
 void setup()
 {
+    randomSeed(analogRead(A0));
     delay(500);
 #ifdef DEBUG_SERIAL
     Serial.begin(115200);
@@ -83,13 +85,13 @@ void setup()
 #ifdef START_LED_ANIMATION_TYPE
     if (START_LED_ANIMATION_TYPE != LED_ANIMATION_TYPE_NONE)
     {
-        tm1638plusPtr->setLedAnimation(START_LED_ANIMATION_TYPE, DEFAULT_LED_MS_DELAY);
+        // tm1638plusPtr->setLedAnimation(START_LED_ANIMATION_TYPE, DEFAULT_LED_MS_DELAY);
     }
 #endif
 #ifdef START_SEVEN_SEGMENT_ANIMATION_TYPE
     if (START_SEVEN_SEGMENT_ANIMATION_TYPE != SEVEN_SEGMENT_ANIMATION_TYPE_NONE)
     {
-        tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_MESSAGE_1, 300);
+        // tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_MESSAGE_1, 300);
     }
 #endif
 #ifdef DEBUG_SERIAL
