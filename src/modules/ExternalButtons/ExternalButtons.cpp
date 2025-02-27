@@ -21,23 +21,6 @@ ExternalButtons::~ExternalButtons()
 
 EXTERNAL_BUTTON ExternalButtons::getPressedButton(void)
 {
-    if (this->pressed)
-    {
-        for (int i = 0; i < TOTAL_EXTERNAL_BUTTONS; i++)
-        {
-            this->buttons[i]->update();
-#ifndef BUTTON_MODE_INVERSE
-            if (this->buttons[i]->rose())
-#else
-            if (this->buttons[i]->fell())
-#endif
-            {
-                this->pressed = false;
-                return (EXTERNAL_BUTTON_NONE);
-            }
-        }
-        return (EXTERNAL_BUTTON_NONE);
-    }
     for (int i = 0; i < TOTAL_EXTERNAL_BUTTONS; i++)
     {
         this->buttons[i]->update();
@@ -47,8 +30,6 @@ EXTERNAL_BUTTON ExternalButtons::getPressedButton(void)
         if (this->buttons[i]->rose())
 #endif
         {
-            this->pressed = true;
-            // return static_cast<EXTERNAL_BUTTON>(1 << i);
             return static_cast<EXTERNAL_BUTTON>(i + 1);
         }
     }
