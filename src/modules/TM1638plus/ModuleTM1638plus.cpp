@@ -256,6 +256,11 @@ void ModuleTM1638plus::setLedAnimation(LED_ANIMATION_TYPE animation, uint16_t ms
     }
 }
 
+void ModuleTM1638plus::setLedAnimationRandomDelay(uint16_t minRandomMSDelay, uint16_t maxRandomMSDelay, uint8_t randomMultiplier)
+{
+    this->currentLedAnimationPtr->setRandomDelay(minRandomMSDelay, maxRandomMSDelay, randomMultiplier);
+}
+
 void ModuleTM1638plus::clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCKS block)
 {
     if (block == SEVEN_SEGMENT_BLOCK_LEFT || block == SEVEN_SEGMENT_BLOCK_BOTH)

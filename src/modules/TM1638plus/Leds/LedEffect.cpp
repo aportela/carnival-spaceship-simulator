@@ -21,6 +21,10 @@ LedEffect::~LedEffect()
 bool LedEffect::refresh(void)
 {
     uint64_t timestamp = millis();
+    if (this->useRandomDelay)
+    {
+        this->msDelay = random(this->minRandomMSDelay, this->maxRandomMSDelay) * this->randomMultiplier;
+    }
     if (timestamp - this->lastRefresh > this->msDelay)
     {
         this->lastRefresh = timestamp;
@@ -41,6 +45,17 @@ bool LedEffect::toggleInverse(void)
 void LedEffect::setDelay(uint16_t msDelay)
 {
     this->msDelay = msDelay;
+}
+
+void LedEffect::setRandomDelay(uint16_t minRandomMSDelay, uint16_t maxRandomMSDelay, uint8_t randomMultiplier)
+{
+    if (minRandomMSDelay > 0 && maxRandomMSDelay > minRandomMSDelay && randomMultiplier > 0)
+    {
+        this->minRandomMSDelay = minRandomMSDelay;
+        this->maxRandomMSDelay = maxRandomMSDelay;
+        this->randomMultiplier = randomMultiplier;
+        this->useRandomDelay = true;
+    }
 }
 
 bool LedEffect::loop(void)

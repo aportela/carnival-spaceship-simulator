@@ -97,6 +97,7 @@ public:
     void toggleLedAnimation();
     void toggleLedAnimationInverseMode(void);
     void setLedAnimation(LED_ANIMATION_TYPE animation, uint16_t msDelay = DEFAULT_LED_MS_DELAY);
+    void setLedAnimationRandomDelay(uint16_t minRandomMSDelay, uint16_t maxRandomMSDelay, uint8_t randomMultiplier = 0);
 
     SEVEN_SEGMENT_ANIMATION_TYPE getCurrentSevenSegmentAnimation(void);
     void toggleSevenSegmentAnimation();

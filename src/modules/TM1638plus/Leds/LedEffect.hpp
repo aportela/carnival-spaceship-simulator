@@ -29,6 +29,10 @@ protected:
     size_t totalFrames = 0;
     size_t currentFrameIndex = 0;
     uint16_t msDelay = 0;
+    bool useRandomDelay = false;
+    uint8_t randomMultiplier = 1;
+    uint16_t minRandomMSDelay = 0;
+    uint16_t maxRandomMSDelay = 0;
 
 public:
     LedEffect(TM1638plus *module, const uint16_t *maskedFrames, size_t frameCount, uint16_t msDelay = DEFAULT_LED_MS_DELAY);
@@ -37,6 +41,7 @@ public:
     bool refresh(void);
     bool toggleInverse(void) override;
     void setDelay(uint16_t msDelay) override;
+    void setRandomDelay(uint16_t minRandomMSDelay, uint16_t maxRandomMSDelay, uint8_t randomMultiplier = 1) override;
     bool loop(void) override;
 };
 
