@@ -1,5 +1,6 @@
 #include <cstring>
 #include <Arduino.h>
+#include <RP2040.h>
 #include "Events.hpp"
 #include "CommonDefines.hpp"
 
@@ -36,44 +37,57 @@ void Events::onExternalButton(EXTERNAL_BUTTON button)
 #ifdef DEBUG_SERIAL
             Serial.println("EVENTS:: external button 3 pressed... enqueue tones1 sample");
 #endif
-            switch (random(0, 2))
+            if (!this->isPlayingEncountersOnThirdPhaseSamples)
             {
-            case 0:
-                this->samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1);
-                break;
-            case 1:
-                this->samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1);
-                break;
+                this->isPlayingEncountersOnThirdPhaseSamples = true;
+                switch (random(0, 2))
+                {
+                case 0:
+                    this->samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1);
+                    break;
+                case 1:
+                    this->samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1);
+                    break;
+                }
             }
             break;
         case EXTERNAL_BUTTON_4:
 #ifdef DEBUG_SERIAL
             Serial.println("EVENTS:: external button 4 pressed... enqueue tones2 sample");
 #endif
-            switch (random(0, 4))
+            if (!this->isPlayingAlienVoiceSamples && !this->isPlayingSOSSamples)
             {
-            case 0:
-                this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_01);
-                break;
+                this->isPlayingAlienVoiceSamples = true;
+                switch (random(0, 4))
+                {
+                case 0:
+                    this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_01);
+                    break;
 
-            case 1:
-                this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_02);
-                break;
+                case 1:
+                    this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_02);
+                    break;
 
-            case 2:
-                this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_03);
-                break;
+                case 2:
+                    this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_03);
+                    break;
 
-            case 3:
-                this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_04);
-                break;
+                case 3:
+                    this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_04);
+                    break;
+                }
             }
+
             break;
         case EXTERNAL_BUTTON_5:
 #ifdef DEBUG_SERIAL
             Serial.println("EVENTS:: external button 5 pressed ... enqueue SOS sample");
 #endif
-            this->samplerPtr->queueSample(SAMPLE_SOS_01);
+            if (!this->isPlayingSOSSamples && !this->isPlayingAlienVoiceSamples)
+            {
+                this->isPlayingSOSSamples = true;
+                this->samplerPtr->queueSample(SAMPLE_SOS_01);
+            }
             break;
         }
     }
@@ -129,7 +143,7 @@ void Events::onTM1638plusButton(TM1638plusBUTTON button)
 #ifdef DEBUG_SERIAL
             Serial.println("EVENTS:: TM1638plus button 8 pressed...");
 #endif
-            // TODO: REBOOT
+            rp2040.reboot();
             break;
         }
     }
@@ -412,68 +426,61 @@ void Events::onSampleStopped(SAMPLE sample)
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1");
 #endif
-        // this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
         samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2");
 #endif
-        // this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
         samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3");
 #endif
-        // this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
         samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4");
 #endif
-        // this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
         samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5");
 #endif
-        // this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
+        this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1");
 #endif
-        // this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
         samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2");
 #endif
-        // this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
         samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3");
 #endif
-        // this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
         samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4");
 #endif
-        // this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
         samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5");
 #endif
+        this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
         break;
     case SAMPLE_SOS_01:
 #ifdef DEBUG_SERIAL
@@ -607,20 +614,20 @@ void Events::startAnimation(ANIMATION animation)
             this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_SOS_3, 100);
             break;
         case ANIMATION_ALIEN_VOICE_1:
-            Serial.println("5");
-            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 5);
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 100);
+            tm1638plusPtr->setLedAnimationRandomDelay(1, 10, 25);
             this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_1, 100);
         case ANIMATION_ALIEN_VOICE_2:
-            Serial.println("10");
-            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 10);
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 100);
+            tm1638plusPtr->setLedAnimationRandomDelay(1, 10, 25);
             this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_2, 100);
         case ANIMATION_ALIEN_VOICE_3:
-            Serial.println("25");
-            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 25);
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 100);
+            tm1638plusPtr->setLedAnimationRandomDelay(1, 10, 25);
             this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_3, 100);
         case ANIMATION_ALIEN_VOICE_4:
-            Serial.println("50");
-            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 50);
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 100);
+            tm1638plusPtr->setLedAnimationRandomDelay(1, 10, 25);
             this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_4, 100);
             break;
         case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE:
@@ -636,6 +643,7 @@ void Events::startAnimation(ANIMATION animation)
 
 void Events::stopAnimation(ANIMATION animation)
 {
+    bool stopAnimation = false;
     // this->previousLedEffect = LED_ANIMATION_TYPE_SCANNER;
     switch (animation)
     {
@@ -647,37 +655,51 @@ void Events::stopAnimation(ANIMATION animation)
         }
         if (this->currentLaserSamplesPlaying == 0)
         {
-            // tm1638plusPtr->setLedAnimation(this->previousLedEffect);
-            //  tm1638plusPtr->freeSevenSegmentLeftBlock();
-            //  tm1638plusPtr->freeSevenSegmentRightBlock();
-            //  tm1638plusPtr->freeSevenSegmentBothBlocks();
-            //  tm1638plusPtr->clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCK_BOTH);
+            stopAnimation = true;
         }
         break;
     case ANIMATION_SOS_1:
     case ANIMATION_SOS_2:
+        stopAnimation = true;
+        break;
     case ANIMATION_SOS_3:
-        // tm1638plusPtr->setLedAnimation(this->previousLedEffect);
-        //  tm1638plusPtr->freeSevenSegmentBothBlocks();
-        //  tm1638plusPtr->clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCK_BOTH);
+        if (this->isPlayingSOSSamples)
+        {
+            this->isPlayingSOSSamples = false;
+        }
+        stopAnimation = true;
         break;
     case ANIMATION_ALIEN_VOICE_1:
     case ANIMATION_ALIEN_VOICE_2:
     case ANIMATION_ALIEN_VOICE_3:
     case ANIMATION_ALIEN_VOICE_4:
-        // tm1638plusPtr->setLedAnimation(this->previousLedEffect);
+        if (this->isPlayingAlienVoiceSamples)
+        {
+            this->isPlayingAlienVoiceSamples = false;
+        }
+        stopAnimation = true;
         break;
-        this->currentAnimation = ANIMATION_NONE;
     case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE:
+        if (this->isPlayingEncountersOnThirdPhaseSamples)
+        {
+            this->isPlayingEncountersOnThirdPhaseSamples = false;
+        }
+        stopAnimation = true;
         break;
     case ANIMATION_ALARM_REVERB:
+        stopAnimation = true;
         break;
     case ANIMATION_DIRTY_SYREN_1:
+        stopAnimation = true;
         break;
     case ANIMATION_DIRTY_SYREN_2:
+        stopAnimation = true;
         break;
     }
-    this->currentAnimation = ANIMATION_NONE;
-    tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_NONE, 0);
-    this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_NONE, 0);
+    if (stopAnimation)
+    {
+        this->currentAnimation = ANIMATION_NONE;
+        tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_NONE, 0);
+        this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_NONE, 0);
+    }
 }

@@ -31,8 +31,10 @@ private:
     Sampler *samplerPtr = nullptr;
 
     uint8_t currentLaserSamplesPlaying = 0;
+    bool isPlayingAlienVoiceSamples = false;
+    bool isPlayingSOSSamples = false;
+    bool isPlayingEncountersOnThirdPhaseSamples = false;
     uint16_t laserShoots = 0;
-    bool isPlayingSOSAnimation = false;
 
     LED_ANIMATION_TYPE previousLedEffect = LED_ANIMATION_TYPE_NONE;
     ANIMATION currentAnimation = ANIMATION_NONE;
