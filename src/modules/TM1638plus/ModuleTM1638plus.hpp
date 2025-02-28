@@ -63,6 +63,7 @@ enum SEVEN_SEGMENT_ANIMATION_TYPE
     SEVEN_SEGMENT_ANIMATION_TYPE_DIRTY_SYREN_1 = 13,
     SEVEN_SEGMENT_ANIMATION_TYPE_DIRTY_SYREN_2 = 14,
     SEVEN_SEGMENT_ANIMATION_TYPE_NOTES = 15,
+    SEVEN_SEGMENT_ANIMATION_TYPE_WAVE = 16,
     SEVEN_SEGMENT_ANIMATION_TYPE_MESSAGE_1 = 20, // "PILI DE LEIRO"
 };
 
@@ -88,6 +89,8 @@ private:
     void setSevenSegmentLaserAnimation(uint16_t laserShoots);
     void updateSevenSegmentLaserCountAnimationText(uint16_t laserShoots);
 
+    void setSevenSegmentOscilloscopeAnimation(void);
+
 public:
     ModuleTM1638plus(uint8_t strobePIN, uint8_t clockPIN, uint8_t dioPIN, bool highFreq);
     ~ModuleTM1638plus();
@@ -105,6 +108,7 @@ public:
     SEVEN_SEGMENT_ANIMATION_TYPE getCurrentSevenSegmentAnimation(void);
     void toggleSevenSegmentAnimation();
     void setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE animation, uint16_t msDelay = DEFAULT_SEVEN_SEGMENT_MS_DELAY, uint16_t extraData = 0);
+    void setSevenSegmentBothBlocksAnimationRandomDelay(uint16_t minRandomMSDelay, uint16_t maxRandomMSDelay, uint8_t randomMultiplier = 0);
 
     void toggleSevenSegmentEffect(void);
 
@@ -122,8 +126,6 @@ public:
     void displayMultiFrameTextEffect(const char *frames[], size_t frameCount, uint16_t frameTimeout = 0, const uint8_t startIndex = 0, bool freePrevious = false);
     void displayMultiFrameSevenSegmentEffect(const uint8_t frames[], size_t frameCount, uint16_t frameTimeout = 0, const uint8_t startIndex = 0, const uint8_t endIndex = 7, bool freePrevious = false);
     void displayMultiFrameIndividualSevenSegmentEffect(uint8_t **frames, size_t frameCount, size_t frameAffectedSegmentCount, uint16_t frameTimeout = 0, const uint8_t startIndex = 0, const uint8_t endIndex = 7, bool freePrevious = false);
-
-    void displayOscilloscopeEffect(void);
 
     void loop(void);
 };

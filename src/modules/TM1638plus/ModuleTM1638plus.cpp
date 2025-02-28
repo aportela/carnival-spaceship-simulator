@@ -371,6 +371,26 @@ void ModuleTM1638plus::updateSevenSegmentLaserCountAnimationText(uint16_t laserS
     effect->setText(buffer, false, 0);
 }
 
+void ModuleTM1638plus::setSevenSegmentOscilloscopeAnimation(void)
+{
+    const uint8_t oscilloscopeFrame[] = {SEGMENT_G, SEGMENT_F | SEGMENT_A | SEGMENT_B | SEGMENT_C, SEGMENT_D, SEGMENT_E | SEGMENT_G | SEGMENT_B, SEGMENT_A | SEGMENT_B, SEGMENT_G | SEGMENT_C, SEGMENT_D, SEGMENT_E | SEGMENT_G};
+    size_t frameCount = 8;
+    size_t frameAffectedSegmentCount = 8;
+    uint8_t **scrolledFrames = new uint8_t *[frameCount];
+    for (size_t i = 0; i < frameCount; ++i)
+    {
+        scrolledFrames[i] = new uint8_t[frameAffectedSegmentCount];
+    }
+    for (size_t i = 0; i < frameCount; ++i)
+    {
+        for (size_t j = 0; j < frameAffectedSegmentCount; ++j)
+        {
+            scrolledFrames[i][j] = oscilloscopeFrame[(j + i) % frameAffectedSegmentCount];
+        }
+    }
+    this->SevenSegmentBothBlocksPtr = new MultiFrameIndividualSegmentEffect(this->modulePtr, scrolledFrames, frameCount, frameAffectedSegmentCount, 100, 0, 3);
+}
+
 void ModuleTM1638plus::setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE animation, uint16_t msDelay, uint16_t extraData)
 {
     if (animation != this->currentSevenSegmentAnimationType)
@@ -492,36 +512,36 @@ void ModuleTM1638plus::setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE ani
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set seven segment animation => Alien voice 1 (delay %i ms)\n", msDelay);
 #endif
-            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " ALIEN1 ", true, msDelay, 0, 7);
+            this->setSevenSegmentOscilloscopeAnimation();
             break;
         case SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_2:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set seven segment animation => Alien voice 2 (delay %i ms)\n", msDelay);
 #endif
-            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " ALIEN2 ", true, msDelay, 0, 7);
+            this->setSevenSegmentOscilloscopeAnimation();
             break;
         case SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_3:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set seven segment animation => Alien voice 3 (delay %i ms)\n", msDelay);
 #endif
-            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " ALIEN3 ", true, msDelay, 0, 7);
+            this->setSevenSegmentOscilloscopeAnimation();
             break;
         case SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_4:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set seven segment animation => Alien voice 4 (delay %i ms)\n", msDelay);
 #endif
-            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " ALIEN4 ", true, msDelay, 0, 7);
-            break;
-        case SEVEN_SEGMENT_ANIMATION_TYPE_NONE:
-#ifdef DEBUG_SERIAL
-            Serial.printf("TM1638plus:: set seven segment animation => NONE (delay %i ms)\n", msDelay);
-#endif
+            this->setSevenSegmentOscilloscopeAnimation();
             break;
         case SEVEN_SEGMENT_ANIMATION_TYPE_NOTES:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set seven segment animation => NOTES (delay %i ms)\n", msDelay);
 #endif
             this->SevenSegmentBothBlocksPtr = new MultiFrameTextEffect(this->modulePtr, notesFrames, sizeof(notesFrames) / sizeof(notesFrames[0]), msDelay, 0);
+            break;
+        case SEVEN_SEGMENT_ANIMATION_TYPE_NONE:
+#ifdef DEBUG_SERIAL
+            Serial.printf("TM1638plus:: set seven segment animation => NONE (delay %i ms)\n", msDelay);
+#endif
             break;
         }
         this->currentSevenSegmentAnimationType = animation;
@@ -533,25 +553,19 @@ void ModuleTM1638plus::setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE ani
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: setting current seven segment animation msDelay: %d\n", msDelay);
 #endif
-            /*
-            if (this->SevenSegmentLeftBlockPtr != nullptr)
-            {
-                this->SevenSegmentLeftBlockPtr->setDelay(msDelay);
-            }
-            if (this->SevenSegmentRightBlockPtr != nullptr)
-            {
-                this->SevenSegmentRightBlockPtr->setDelay(msDelay);
-            }
-            if (this->SevenSegmentBothBlocksPtr != nullptr)
-            {
-                this->SevenSegmentBothBlocksPtr->setDelay(msDelay);
-            }
-            */
             if (this->currentSevenSegmentAnimationType == SEVEN_SEGMENT_ANIMATION_TYPE_LASER)
             {
                 this->updateSevenSegmentLaserCountAnimationText(extraData);
             }
         }
+    }
+}
+
+void ModuleTM1638plus::setSevenSegmentBothBlocksAnimationRandomDelay(uint16_t minRandomMSDelay, uint16_t maxRandomMSDelay, uint8_t randomMultiplier)
+{
+    if (this->SevenSegmentBothBlocksPtr != nullptr)
+    {
+        this->SevenSegmentBothBlocksPtr->setRandomDelay(minRandomMSDelay, maxRandomMSDelay, randomMultiplier);
     }
 }
 
@@ -634,25 +648,6 @@ void ModuleTM1638plus::displayMultiFrameIndividualSevenSegmentEffect(uint8_t **f
         this->freeSevenSegmentBothBlocks();
     }
     this->SevenSegmentBothBlocksPtr = new MultiFrameIndividualSegmentEffect(this->modulePtr, frames, frameCount, frameAffectedSegmentCount, frameTimeout, startIndex, endIndex);
-}
-
-void ModuleTM1638plus::displayOscilloscopeEffect(void)
-{
-    // this->freeSevenSegmentBothBlocks();
-    // this->freeSevenSegmentLeftBlock();
-    // this->freeSevenSegmentRightBlock();
-    size_t frameCount = 4;
-    size_t frameAffectedSegmentCount = 8;
-    uint8_t **seq = new uint8_t *[frameCount];
-    for (size_t i = 0; i < frameCount; ++i)
-    {
-        seq[i] = new uint8_t[frameAffectedSegmentCount];
-    }
-    std::memcpy(seq[0], (uint8_t[]){SEGMENT_D, SEGMENT_G | SEGMENT_E | SEGMENT_F, SEGMENT_A | SEGMENT_B | SEGMENT_C, SEGMENT_G | SEGMENT_E | SEGMENT_F, SEGMENT_D, SEGMENT_NONE, SEGMENT_NONE, SEGMENT_NONE}, frameAffectedSegmentCount * sizeof(uint8_t));
-    std::memcpy(seq[1], (uint8_t[]){SEGMENT_NONE, SEGMENT_D, SEGMENT_G | SEGMENT_E | SEGMENT_F, SEGMENT_A | SEGMENT_B | SEGMENT_C, SEGMENT_G | SEGMENT_E | SEGMENT_F, SEGMENT_D, SEGMENT_NONE, SEGMENT_NONE}, frameAffectedSegmentCount * sizeof(uint8_t));
-    std::memcpy(seq[2], (uint8_t[]){SEGMENT_NONE, SEGMENT_NONE, SEGMENT_D, SEGMENT_G | SEGMENT_E | SEGMENT_F, SEGMENT_A | SEGMENT_B | SEGMENT_C, SEGMENT_G | SEGMENT_E | SEGMENT_F, SEGMENT_D, SEGMENT_NONE}, frameAffectedSegmentCount * sizeof(uint8_t));
-    std::memcpy(seq[3], (uint8_t[]){SEGMENT_NONE, SEGMENT_NONE, SEGMENT_NONE, SEGMENT_D, SEGMENT_G | SEGMENT_E | SEGMENT_F, SEGMENT_A | SEGMENT_B | SEGMENT_C, SEGMENT_G | SEGMENT_E | SEGMENT_F, SEGMENT_D}, frameAffectedSegmentCount * sizeof(uint8_t));
-    this->displayMultiFrameIndividualSevenSegmentEffect(seq, frameCount, frameAffectedSegmentCount, 300, 0, 3);
 }
 
 TM1638plusBUTTON ModuleTM1638plus::getPressedButton()

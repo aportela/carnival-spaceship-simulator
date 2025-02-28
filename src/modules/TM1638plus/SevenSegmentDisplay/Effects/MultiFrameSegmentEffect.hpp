@@ -1,3 +1,6 @@
+#ifndef TM1638_PLUS_SEVEN_SEGMENT_DISPLAY_MULTIFRAME_SEGMENT_EFFECT_H
+#define TM1638_PLUS_SEVEN_SEGMENT_DISPLAY_MULTIFRAME_SEGMENT_EFFECT_H
+
 #include <stdint.h>
 #include <stdlib.h>
 #include "../SevenSegmentDisplayEffect.hpp"
@@ -19,3 +22,5 @@ public:
 
     bool isMultiFrameSegmentEffect() override { return true; }
 };
+
+#endif // TM1638_PLUS_SEVEN_SEGMENT_DISPLAY_MULTIFRAME_SEGMENT_EFFECT_H

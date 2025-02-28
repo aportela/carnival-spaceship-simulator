@@ -617,18 +617,22 @@ void Events::startAnimation(ANIMATION animation)
             tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 100);
             tm1638plusPtr->setLedAnimationRandomDelay(1, 10, 25);
             this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_1, 100);
+            tm1638plusPtr->setSevenSegmentBothBlocksAnimationRandomDelay(80, 150, 1);
         case ANIMATION_ALIEN_VOICE_2:
             tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 100);
             tm1638plusPtr->setLedAnimationRandomDelay(1, 10, 25);
             this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_2, 100);
+            tm1638plusPtr->setSevenSegmentBothBlocksAnimationRandomDelay(80, 150, 1);
         case ANIMATION_ALIEN_VOICE_3:
             tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 100);
             tm1638plusPtr->setLedAnimationRandomDelay(1, 10, 25);
             this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_3, 100);
+            tm1638plusPtr->setSevenSegmentBothBlocksAnimationRandomDelay(80, 150, 1);
         case ANIMATION_ALIEN_VOICE_4:
             tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 100);
             tm1638plusPtr->setLedAnimationRandomDelay(1, 10, 25);
             this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_4, 100);
+            tm1638plusPtr->setSevenSegmentBothBlocksAnimationRandomDelay(80, 150, 1);
             break;
         case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_1:
             tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_NOTES, 125);
@@ -648,6 +652,15 @@ void Events::startAnimation(ANIMATION animation)
             break;
         case ANIMATION_ALARM_REVERB:
             tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER, 62);
+            this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_FULL_PATTERN_1, 50);
+            break;
+        case ANIMATION_DIRTY_SYREN_1:
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER, 62);
+            this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_FULL_PATTERN_2, 100);
+            break;
+        case ANIMATION_DIRTY_SYREN_2:
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER, 62);
+            this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_FULL_PATTERN_3, 100);
             break;
         }
     }

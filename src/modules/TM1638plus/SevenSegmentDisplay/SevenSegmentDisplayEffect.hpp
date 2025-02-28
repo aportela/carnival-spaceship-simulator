@@ -46,6 +46,10 @@ protected:
     uint64_t lastRefresh = 0;
     uint8_t currentSpeed = 7;
     uint16_t msDelay = currentSpeed * DEFAULT_7SEGMENT_MS_DELAY;
+    bool useRandomDelay = false;
+    uint8_t randomMultiplier = 1;
+    uint16_t minRandomMSDelay = 0;
+    uint16_t maxRandomMSDelay = 0;
     uint64_t lastTimestamp = 0;
 
     bool refresh(void);
@@ -55,6 +59,7 @@ public:
     ~SevenSegmentDisplayEffect();
 
     void setDelay(uint16_t msDelay) override;
+    void setRandomDelay(uint16_t minRandomMSDelay, uint16_t maxRandomMSDelay, uint8_t randomMultiplier = 1) override;
     virtual void loop(void) = 0;
 
     virtual bool isSimpleTextEffect() { return false; }
