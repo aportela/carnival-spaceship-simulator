@@ -223,61 +223,61 @@ void Events::onSampleStarted(SAMPLE sample)
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1");
 #endif
-        this->startAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
+        this->startAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_1);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2");
 #endif
-        this->startAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
+        this->startAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_2);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3");
 #endif
-        this->startAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
+        this->startAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_3);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4");
 #endif
-        this->startAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
+        this->startAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_4);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5");
 #endif
-        this->startAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
+        this->startAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_5);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1");
 #endif
-        this->startAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
+        this->startAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_1);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2");
 #endif
-        this->startAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
+        this->startAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_2);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3");
 #endif
-        this->startAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
+        this->startAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_3);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4");
 #endif
-        this->startAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
+        this->startAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_4);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5");
 #endif
-        this->startAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
+        this->startAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_5);
         break;
     case SAMPLE_SOS_01:
 #ifdef DEBUG_SERIAL
@@ -450,7 +450,7 @@ void Events::onSampleStopped(SAMPLE sample)
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5");
 #endif
-        this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
+        this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_5);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1:
 #ifdef DEBUG_SERIAL
@@ -480,7 +480,7 @@ void Events::onSampleStopped(SAMPLE sample)
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5");
 #endif
-        this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE);
+        this->stopAnimation(ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_5);
         break;
     case SAMPLE_SOS_01:
 #ifdef DEBUG_SERIAL
@@ -630,8 +630,24 @@ void Events::startAnimation(ANIMATION animation)
             tm1638plusPtr->setLedAnimationRandomDelay(1, 10, 25);
             this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_4, 100);
             break;
-        case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE:
+        case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_1:
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_NOTES, 125);
+            this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_NOTES, 125);
+            break;
+        case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_2:
             // tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, 80);
+            break;
+        case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_3:
+            // tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, 80);
+            break;
+        case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_4:
+            // tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, 80);
+            break;
+        case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_5:
+            // tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, 80);
+            break;
+        case ANIMATION_ALARM_REVERB:
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER, 62);
             break;
         }
     }
@@ -679,7 +695,43 @@ void Events::stopAnimation(ANIMATION animation)
         }
         stopAnimation = true;
         break;
-    case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE:
+    case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_1:
+        /*
+            if (this->isPlayingEncountersOnThirdPhaseSamples)
+            {
+                this->isPlayingEncountersOnThirdPhaseSamples = false;
+            }
+            stopAnimation = true;
+            */
+        break;
+    case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_2:
+        /*
+            if (this->isPlayingEncountersOnThirdPhaseSamples)
+            {
+                this->isPlayingEncountersOnThirdPhaseSamples = false;
+            }
+            stopAnimation = true;
+            */
+        break;
+    case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_3:
+        /*
+            if (this->isPlayingEncountersOnThirdPhaseSamples)
+            {
+                this->isPlayingEncountersOnThirdPhaseSamples = false;
+            }
+            stopAnimation = true;
+            */
+        break;
+    case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_4:
+        /*
+            if (this->isPlayingEncountersOnThirdPhaseSamples)
+            {
+                this->isPlayingEncountersOnThirdPhaseSamples = false;
+            }
+            stopAnimation = true;
+            */
+        break;
+    case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_5:
         if (this->isPlayingEncountersOnThirdPhaseSamples)
         {
             this->isPlayingEncountersOnThirdPhaseSamples = false;

@@ -229,15 +229,22 @@ void ModuleTM1638plus::setLedAnimation(LED_ANIMATION_TYPE animation, uint16_t ms
             break;
         case LED_ANIMATION_TYPE_MORSE_LETTER_S:
 #ifdef DEBUG_SERIAL
-            Serial.printf("TM1638plus:: set led animation => morse letter S (delay %i ms)", msDelay);
+            Serial.printf("TM1638plus:: set led animation => MORSE LETTER S (delay %i ms)", msDelay);
 #endif
             this->currentLedAnimationPtr = new MorseLedEffect(this->modulePtr, msDelay, 'S');
             break;
         case LED_ANIMATION_TYPE_MORSE_LETTER_O:
 #ifdef DEBUG_SERIAL
-            Serial.printf("TM1638plus:: set led animation => morse letter O (delay %i ms)", msDelay);
+            Serial.printf("TM1638plus:: set led animation => MORSE LETTER O (delay %i ms)", msDelay);
 #endif
             this->currentLedAnimationPtr = new MorseLedEffect(this->modulePtr, msDelay, 'O');
+            break;
+        case LED_ANIMATION_TYPE_NOTES:
+#ifdef DEBUG_SERIAL
+            Serial.printf("TM1638plus:: set led animation => NOTES (delay %i ms)", msDelay);
+#endif
+            this->currentLedAnimationPtr = new NotesLedEffect(this->modulePtr, msDelay);
+            // this->currentLedAnimationPtr->disableAnimationLoopAtEnd();
             break;
         default:
             break;
@@ -407,6 +414,25 @@ void ModuleTM1638plus::setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE ani
             "O       ",
             "        ",
         };
+        const char *notesFrames[] = {
+            "W-_[%|1<",
+            "W-_[%|1<",
+            "W-_[%|1<",
+            "*<!K]#/%",
+            "*<!K]#/%",
+            "*<!K]#/%",
+            "[cd|f-tv",
+            "[cd|f-tv",
+            "[cd|f-tv",
+            "WX=<>K[N",
+            "WX=<>K[N",
+            "WX=<>K[N",
+            "WX=<>K[N",
+            "]1|v<W>4",
+            "]1|v<W>4",
+            "]1|v<W>4",
+            "]1|v<W>4",
+        };
         const uint8_t seq1[] = {SEGMENT_A, SEGMENT_B, SEGMENT_G, SEGMENT_E, SEGMENT_D, SEGMENT_C, SEGMENT_G, SEGMENT_F};
         const uint8_t seq2[] = {SEGMENT_A, SEGMENT_B, SEGMENT_C, SEGMENT_D, SEGMENT_E, SEGMENT_F};
         const uint8_t seq3[] = {SEGMENT_A | SEGMENT_D, SEGMENT_F | SEGMENT_E | SEGMENT_B | SEGMENT_C, SEGMENT_G};
@@ -447,50 +473,55 @@ void ModuleTM1638plus::setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE ani
         case SEVEN_SEGMENT_ANIMATION_TYPE_SOS_1:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set seven segment animation => SOS morse letter S (delay %i ms)\n", msDelay);
-            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, "S.O.S.  S.O.S.", true, msDelay, 0, 7);
 #endif
+            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, "S.O.S.  S.O.S.", true, msDelay, 0, 7);
             break;
         case SEVEN_SEGMENT_ANIMATION_TYPE_SOS_2:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set seven segment animation => SOS morse letter O (delay %i ms)\n", msDelay);
-            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, "  CASA  ", true, msDelay, 0, 7);
 #endif
+            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, "  CASA  ", true, msDelay, 0, 7);
             break;
         case SEVEN_SEGMENT_ANIMATION_TYPE_SOS_3:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set seven segment animation => SOS morse letter S (delay %i ms)\n", msDelay);
-            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " CEAVA5 ", true, msDelay, 0, 7);
 #endif
+            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " CEAVA5 ", true, msDelay, 0, 7);
             break;
         case SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_1:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set seven segment animation => Alien voice 1 (delay %i ms)\n", msDelay);
-            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " ALIEN1 ", true, msDelay, 0, 7);
 #endif
+            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " ALIEN1 ", true, msDelay, 0, 7);
             break;
         case SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_2:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set seven segment animation => Alien voice 2 (delay %i ms)\n", msDelay);
-            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " ALIEN2 ", true, msDelay, 0, 7);
 #endif
+            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " ALIEN2 ", true, msDelay, 0, 7);
             break;
         case SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_3:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set seven segment animation => Alien voice 3 (delay %i ms)\n", msDelay);
-            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " ALIEN3 ", true, msDelay, 0, 7);
 #endif
+            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " ALIEN3 ", true, msDelay, 0, 7);
             break;
         case SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_4:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set seven segment animation => Alien voice 4 (delay %i ms)\n", msDelay);
-            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " ALIEN4 ", true, msDelay, 0, 7);
 #endif
+            this->SevenSegmentBothBlocksPtr = new SimpleTextEffect(this->modulePtr, " ALIEN4 ", true, msDelay, 0, 7);
             break;
         case SEVEN_SEGMENT_ANIMATION_TYPE_NONE:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set seven segment animation => NONE (delay %i ms)\n", msDelay);
 #endif
-            // TODO: CLEAR ?
+            break;
+        case SEVEN_SEGMENT_ANIMATION_TYPE_NOTES:
+#ifdef DEBUG_SERIAL
+            Serial.printf("TM1638plus:: set seven segment animation => NOTES (delay %i ms)\n", msDelay);
+#endif
+            this->SevenSegmentBothBlocksPtr = new MultiFrameTextEffect(this->modulePtr, notesFrames, sizeof(notesFrames) / sizeof(notesFrames[0]), msDelay, 0);
             break;
         }
         this->currentSevenSegmentAnimationType = animation;

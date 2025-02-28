@@ -15,6 +15,7 @@
 #include "Leds/Effects/AlternateLedEffect.hpp"
 #include "Leds/Effects/IntermitentLedEffect.hpp"
 #include "Leds/Effects/MorseLedEffect.hpp"
+#include "Leds/Effects/NotesLedEffect.hpp"
 #include "SevenSegmentDisplay/Effects/SimpleTextEffect.hpp"
 #include "SevenSegmentDisplay/Effects/MultiFrameTextEffect.hpp"
 #include "SevenSegmentDisplay/Effects/MultiFrameSegmentEffect.hpp"
@@ -34,6 +35,7 @@ enum LED_ANIMATION_TYPE
     // CUSTOM SAMPLE LED ANIMATIONS
     LED_ANIMATION_TYPE_MORSE_LETTER_S = 7,
     LED_ANIMATION_TYPE_MORSE_LETTER_O = 8,
+    LED_ANIMATION_TYPE_NOTES = 9,
 };
 
 enum SEVEN_SEGMENT_BLOCKS
@@ -60,6 +62,7 @@ enum SEVEN_SEGMENT_ANIMATION_TYPE
     SEVEN_SEGMENT_ANIMATION_TYPE_ALARM_REVERB = 12,
     SEVEN_SEGMENT_ANIMATION_TYPE_DIRTY_SYREN_1 = 13,
     SEVEN_SEGMENT_ANIMATION_TYPE_DIRTY_SYREN_2 = 14,
+    SEVEN_SEGMENT_ANIMATION_TYPE_NOTES = 15,
     SEVEN_SEGMENT_ANIMATION_TYPE_MESSAGE_1 = 20, // "PILI DE LEIRO"
 };
 
