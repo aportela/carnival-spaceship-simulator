@@ -58,13 +58,21 @@ void LedEffect::setRandomDelay(uint16_t minRandomMSDelay, uint16_t maxRandomMSDe
     }
 }
 
+void LedEffect::disableAnimationLoopAtEnd(void)
+{
+    this->animationLoopAtEnd = false;
+}
+
 bool LedEffect::loop(void)
 {
     if (this->refresh())
     {
         if (this->currentFrameIndex >= this->totalFrames)
         {
-            this->currentFrameIndex = 0;
+            if (this->animationLoopAtEnd)
+            {
+                this->currentFrameIndex = 0;
+            }
         }
         uint16_t mask = this->frames[this->currentFrameIndex];
         if (inverse)
@@ -72,7 +80,10 @@ bool LedEffect::loop(void)
             mask = ~mask;
         }
         this->module->setLEDs(mask);
-        this->currentFrameIndex++;
+        if (this->currentFrameIndex < this->totalFrames && this->animationLoopAtEnd)
+        {
+            this->currentFrameIndex++;
+        }
         return (true);
     }
     else
