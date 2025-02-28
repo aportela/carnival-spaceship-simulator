@@ -58,23 +58,47 @@ void Events::onExternalButton(EXTERNAL_BUTTON button)
             if (!this->isPlayingAlienVoiceSamples && !this->isPlayingSOSSamples && !this->isPlayingEncountersOnThirdPhaseSamples)
             {
                 this->isPlayingAlienVoiceSamples = true;
-                switch (random(0, 4))
+                bool regenerateRandom = true;
+                while (regenerateRandom) // prevent replay last alien voice sample
                 {
-                case 0:
-                    this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_01);
-                    break;
+                    switch (random(0, 4))
+                    {
+                    case 0:
+                        if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_01)
+                        {
+                            this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_01);
+                            this->lastAlienVoiceSamplePlayed = SAMPLE_ALIEN_VOICE_01;
+                            regenerateRandom = false;
+                        }
+                        break;
 
-                case 1:
-                    this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_02);
-                    break;
+                    case 1:
+                        if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_02)
+                        {
+                            this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_02);
+                            this->lastAlienVoiceSamplePlayed = SAMPLE_ALIEN_VOICE_02;
+                            regenerateRandom = false;
+                        }
+                        break;
 
-                case 2:
-                    this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_03);
-                    break;
+                    case 2:
+                        if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_03)
+                        {
+                            this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_03);
+                            this->lastAlienVoiceSamplePlayed = SAMPLE_ALIEN_VOICE_03;
+                            regenerateRandom = false;
+                        }
+                        break;
 
-                case 3:
-                    this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_04);
-                    break;
+                    case 3:
+                        if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_04)
+                        {
+                            this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_04);
+                            this->lastAlienVoiceSamplePlayed = SAMPLE_ALIEN_VOICE_04;
+                            regenerateRandom = false;
+                        }
+                        break;
+                    }
                 }
             }
 

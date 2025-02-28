@@ -44,6 +44,7 @@ private:
     ANIMATION currentAnimation = ANIMATION_NONE;
 
     SEVEN_SEGMENT_ANIMATION_TYPE previousSevenSegmentAnimation = SEVEN_SEGMENT_ANIMATION_TYPE_NONE;
+    SAMPLE lastAlienVoiceSamplePlayed = SAMPLE_NONE;
 
     bool allowStartAnimation(ANIMATION animation);
     void refreshAnimation(ANIMATION animation);
