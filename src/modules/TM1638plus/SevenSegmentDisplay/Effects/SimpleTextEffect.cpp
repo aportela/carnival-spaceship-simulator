@@ -1,23 +1,13 @@
 #include "SimpleTextEffect.hpp"
 #include <string.h>
 
-SimpleTextEffect::SimpleTextEffect(TM1638plus *module, const char *text, bool blink, uint16_t blinkTimeout, const uint8_t startIndex, const uint8_t endIndex) : module(module), blink(blink), blinkTimeout(blinkTimeout), startIndex(startIndex), endIndex(endIndex)
+SimpleTextEffect::SimpleTextEffect(TM1638plus *module, const char *text, bool blink, uint16_t blinkTimeout, const uint8_t startIndex, const uint8_t endIndex)
+    : SevenSegmentDisplayEffect(module, blinkTimeout),
+      blink(blink),
+      startIndex(startIndex),
+      endIndex(endIndex)
 {
-    this->lastTimestamp = millis();
-    this->currentTextLength = strlen(text);
-    // TODO TRIM
-    /*
-        char trimmedText[5] = {'\0'};
-        strncpy(trimmedText, text, 4);
-        trimmedText[4] = '\0';
-    */
-    this->showText(text);
-    this->visible = true;
-    if (this->blink)
-    {
-        this->currentText = new char[this->currentTextLength + 1];
-        strcpy(this->currentText, text);
-    }
+    this->setText(text);
 }
 
 SimpleTextEffect::~SimpleTextEffect()
@@ -57,14 +47,30 @@ void SimpleTextEffect::hideText(void)
     }
 }
 
+void SimpleTextEffect::setText(const char *text, bool blink, uint16_t blinkTimeout)
+{
+    this->currentTextLength = strlen(text);
+    // TODO TRIM
+    /*
+        char trimmedText[5] = {'\0'};
+        strncpy(trimmedText, text, 4);
+        trimmedText[4] = '\0';
+    */
+    this->showText(text);
+    this->visible = true;
+    if (this->blink)
+    {
+        this->currentText = new char[this->currentTextLength + 1];
+        strcpy(this->currentText, text);
+    }
+}
+
 void SimpleTextEffect::loop(void)
 {
     if (this->blink)
     {
-        uint64_t currentMillis = millis();
-        if (currentMillis - this->lastTimestamp > this->blinkTimeout)
+        if (this->refresh())
         {
-            this->lastTimestamp = currentMillis;
             if (!this->visible)
             {
                 this->showText(this->currentText);

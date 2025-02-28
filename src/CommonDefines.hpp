@@ -2,6 +2,13 @@
 #define COMMON_DEFINES_H
 
 #define DEBUG_SERIAL
-#define DEBUG_SERIAL_MORE_DATA
+
+#ifdef DEBUG_SERIAL
+
+// #define DEBUG_SERIAL_MORE_DATA
+
+#endif
+
+#define BUTTON_MODE_INVERSE
 
 #endif // COMMON_DEFINES_H

@@ -2,8 +2,7 @@
 #define EXTERNAL_BUTTONS_H
 
 #include <Bounce2.h>
-
-#define BUTTON_MODE_INVERSE
+#include "../../CommonDefines.hpp"
 
 enum EXTERNAL_BUTTON
 {
@@ -22,11 +21,6 @@ class ExternalButtons
 {
 private:
     Bounce *buttons[TOTAL_EXTERNAL_BUTTONS] = {nullptr, nullptr, nullptr, nullptr, nullptr};
-#ifndef BUTTON_MODE_INVERSE
-    bool pressed = false;
-#else
-    bool pressed = true;
-#endif
 
 public:
     ExternalButtons(const uint8_t BUTTON_PINS[TOTAL_EXTERNAL_BUTTONS]);

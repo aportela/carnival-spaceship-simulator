@@ -1,3 +1,5 @@
+#include <cstring>
+#include <Arduino.h>
 #include "src/modules/ExternalButtons/ExternalButtons.hpp"
 #include "src/modules/TM1638plus/ModuleTM1638plus.hpp"
 #include "src/modules/Audio/Sampler.hpp"
@@ -27,8 +29,12 @@ Sampler *samplerPtr = nullptr;
 
 Events *eventsPtr = nullptr;
 
-#define START_LED_EFFECT_TYPE LED_EFFECT_TYPE_SCANNER
-LED_EFFECT_TYPE currentLedEffectType = LED_EFFECT_TYPE_NONE;
+#define START_LED_ANIMATION_TYPE LED_ANIMATION_TYPE_SCANNER
+#define START_SEVEN_SEGMENT_ANIMATION_TYPE SEVEN_SEGMENT_ANIMATION_TYPE_MESSAGE_1
+
+uint64_t lastDirtySyrenMillis = millis();
+
+#define PLAY_DIRTY_SYREN_EVERY 60000
 
 void displayLaserShootCount(uint16_t count)
 {
@@ -44,319 +50,21 @@ void displayLaserShootCount(uint16_t count)
 
 void onSampleStartPlaying(SAMPLE sample)
 {
-    switch (sample)
-    {
-    case SAMPLE_LASER1_SINGLE:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_LASER1_SINGLE");
-#endif
-        // currentLaserSamplesPlaying++;
-        // displayLaserShootCount(++laserShoots);
-        tm1638plusPtr->displayTextOnLeft7Segment("1", true, 200);
-        break;
-    case SAMPLE_LASER2_SINGLE:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_LASER2_SINGLE");
-#endif
-        // currentLaserSamplesPlaying++;
-        // displayLaserShootCount(++laserShoots);
-        tm1638plusPtr->displayTextOnLeft7Segment("2", true, 200);
-        break;
-    case SAMPLE_LASER3_SINGLE:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_LASER3_SINGLE");
-#endif
-        // currentLaserSamplesPlaying++;
-        // displayLaserShootCount(++laserShoots);
-        tm1638plusPtr->displayTextOnLeft7Segment("3", true, 200);
-        break;
-    case SAMPLE_LASER4_SINGLE:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_LASER4_SINGLE");
-#endif
-        // currentLaserSamplesPlaying++;
-        // displayLaserShootCount(++laserShoots);
-        tm1638plusPtr->displayTextOnLeft7Segment("4", true, 200);
-        break;
-    case SAMPLE_LASER1_DOUBLE:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_LASER1_DOUBLE");
-#endif
-        // currentLaserSamplesPlaying++;
-        // displayLaserShootCount(laserShoots += 2);
-        tm1638plusPtr->displayTextOnLeft7Segment("11", true, 300);
-        break;
-    case SAMPLE_LASER2_DOUBLE:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_LASER2_DOUBLE");
-#endif
-        // currentLaserSamplesPlaying++;
-        // displayLaserShootCount(laserShoots += 2);
-        tm1638plusPtr->displayTextOnLeft7Segment("22", true, 300);
-        break;
-    case SAMPLE_LASER3_DOUBLE:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_LASER3_DOUBLE");
-#endif
-        // currentLaserSamplesPlaying++;
-        // displayLaserShootCount(laserShoots += 2);
-        tm1638plusPtr->displayTextOnLeft7Segment("33", true, 300);
-        break;
-    case SAMPLE_LASER4_DOUBLE:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_LASER4_DOUBLE");
-#endif
-        // currentLaserSamplesPlaying++;
-        // displayLaserShootCount(laserShoots += 2);
-        tm1638plusPtr->displayTextOnLeft7Segment("44", true, 300);
-        break;
-    case SAMPLE_ALARM_REVERB:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_ALARM_REVERB");
-#endif
-        break;
-    case SAMPLE_DIRTY_SYREN_1:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_DIRTY_SYREN_1");
-#endif
-        break;
-    case SAMPLE_DIRTY_SYREN_2:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_DIRTY_SYREN_2");
-#endif
-        break;
-    case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1");
-#endif
-        break;
-    case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2");
-#endif
-        break;
-    case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3");
-#endif
-        break;
-    case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4");
-#endif
-        break;
-    case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5:
-        Serial.println("Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5");
-        break;
-    case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1");
-#endif
-        break;
-    case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2");
-#endif
-        break;
-    case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3");
-#endif
-        break;
-    case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4");
-#endif
-        break;
-    case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5");
-#endif
-        break;
-    case SAMPLE_SOS_01:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_SOS_01");
-#endif
-        break;
-    case SAMPLE_SOS_02:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_SOS_02");
-#endif
-        break;
-    case SAMPLE_SOS_03:
-#ifdef DEBUG_SERIAL
-        Serial.println("Started playing SAMPLE_SOS_03");
-#endif
-        break;
-    default:
-#ifdef DEBUG_SERIAL
-#endif
-        tm1638plusPtr->displayTextOnLeft7Segment("    ", false, 0);
-        break;
-    }
+    eventsPtr->onSampleStarted(sample);
 }
 
 void onSampleStopPlaying(SAMPLE sample)
 {
-    switch (sample)
-    {
-    case SAMPLE_LASER1_SINGLE:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_LASER1_SINGLE");
-#endif
-        // currentLaserSamplesPlaying--;
-        break;
-    case SAMPLE_LASER2_SINGLE:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_LASER2_SINGLE");
-#endif
-        // currentLaserSamplesPlaying--;
-        break;
-    case SAMPLE_LASER3_SINGLE:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_LASER3_SINGLE");
-#endif
-        // currentLaserSamplesPlaying--;
-        break;
-    case SAMPLE_LASER4_SINGLE:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_LASER4_SINGLE");
-#endif
-        // currentLaserSamplesPlaying--;
-        break;
-    case SAMPLE_LASER1_DOUBLE:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_LASER1_DOUBLE");
-#endif
-        // currentLaserSamplesPlaying--;
-        samplerPtr->queueSample(SAMPLE_LASER1_SINGLE);
-        break;
-    case SAMPLE_LASER2_DOUBLE:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_LASER2_DOUBLE");
-#endif
-        // currentLaserSamplesPlaying--;
-        samplerPtr->queueSample(SAMPLE_LASER2_SINGLE);
-        break;
-    case SAMPLE_LASER3_DOUBLE:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_LASER3_DOUBLE");
-#endif
-        // currentLaserSamplesPlaying--;
-        samplerPtr->queueSample(SAMPLE_LASER3_SINGLE);
-        break;
-    case SAMPLE_LASER4_DOUBLE:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_LASER4_DOUBLE");
-#endif
-        // currentLaserSamplesPlaying--;
-        samplerPtr->queueSample(SAMPLE_LASER4_SINGLE);
-        break;
-    case SAMPLE_ALARM_REVERB:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_ALARM_REVERB");
-#endif
-        break;
-    case SAMPLE_DIRTY_SYREN_1:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_DIRTY_SYREN_1");
-#endif
-        break;
-    case SAMPLE_DIRTY_SYREN_2:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_DIRTY_SYREN_2");
-#endif
-        break;
-    case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1");
-#endif
-        samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2);
-        break;
-    case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_2");
-#endif
-        samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3);
-        break;
-    case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_3");
-#endif
-        samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4);
-        break;
-    case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_4");
-#endif
-        samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5);
-        break;
-    case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_5");
-#endif
-        break;
-    case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1");
-#endif
-        samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2);
-        break;
-    case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_2");
-#endif
-        samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3);
-        break;
-    case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_3");
-#endif
-        samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4);
-        break;
-    case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_4");
-#endif
-        samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5);
-        break;
-    case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_5");
-#endif
-        break;
-    case SAMPLE_SOS_01:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_SOS_01");
-#endif
-        samplerPtr->queueSample(SAMPLE_SOS_02);
-        break;
-    case SAMPLE_SOS_02:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_SOS_02");
-#endif
-        samplerPtr->queueSample(SAMPLE_SOS_03);
-        break;
-    case SAMPLE_SOS_03:
-#ifdef DEBUG_SERIAL
-        Serial.println("Stopped playing SAMPLE_SOS_03");
-#endif
-        break;
-    default:
-#ifdef DEBUG_SERIAL
-#endif
-        break;
-    }
-    tm1638plusPtr->displayTextOnLeft7Segment("    ", false, 0);
-    tm1638plusPtr->displayTextOnRight7Segment("    ", false, 0);
+    eventsPtr->onSampleStopped(sample);
 }
 
 void setup()
 {
+    randomSeed(analogRead(A0));
     delay(500);
 #ifdef DEBUG_SERIAL
     Serial.begin(115200);
-    while (!Serial)
+    while (!Serial && millis() < 500)
     {
         yield();
         delay(10);
@@ -364,35 +72,46 @@ void setup()
     Serial.println("########################################");
     Serial.println("Carnival spaceship simulator starting...");
     Serial.println("########################################");
-    Serial.print("Setting external buttons...");
+    Serial.println("MAIN:: begin setup() method");
+    Serial.println("MAIN:: begin setting external buttons");
 #endif
     const uint8_t BUTTON_PINS[TOTAL_EXTERNAL_BUTTONS] = {EXTERNAL_BUTTON1_PIN, EXTERNAL_BUTTON2_PIN, EXTERNAL_BUTTON3_PIN, EXTERNAL_BUTTON4_PIN, EXTERNAL_BUTTON5_PIN};
     externalButtonsPtr = new ExternalButtons(BUTTON_PINS);
 #ifdef DEBUG_SERIAL
-    Serial.println("ok!");
-    Serial.print("Setting TM1638plus module...");
+    Serial.println("MAIN:: end setting external buttons");
+    Serial.println("MAIN:: begin setting TM1638plus module");
 #endif
     tm1638plusPtr = new ModuleTM1638plus(TM1638_STROBE_PIN, TM1638_CLOCK_PIN, TM1638_DIO_PIN, true);
-    if (START_LED_EFFECT_TYPE != LED_EFFECT_TYPE_NONE)
+#ifdef START_LED_ANIMATION_TYPE
+    if (START_LED_ANIMATION_TYPE != LED_ANIMATION_TYPE_NONE)
     {
-        tm1638plusPtr->setLedEffect(START_LED_EFFECT_TYPE, DEFAULT_LED_MS_DELAY);
+        // tm1638plusPtr->setLedAnimation(START_LED_ANIMATION_TYPE, DEFAULT_LED_MS_DELAY);
     }
+#endif
+#ifdef START_SEVEN_SEGMENT_ANIMATION_TYPE
+    if (START_SEVEN_SEGMENT_ANIMATION_TYPE != SEVEN_SEGMENT_ANIMATION_TYPE_NONE)
+    {
+        // tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_MESSAGE_1, 300);
+    }
+#endif
 #ifdef DEBUG_SERIAL
-    Serial.println("ok!");
-    Serial.print("Setting PCM5102A module...");
+    Serial.println("MAIN:: end setting TM1638plus module");
+    Serial.println("MAIN:: begin setting PCM5102A module");
 #endif
     samplerPtr = new Sampler(DAC_I2S_BCK_PIN, DAC_I2S_LRCK_PIN, DAC_I2S_DATA_PIN, onSampleStartPlaying, onSampleStopPlaying);
 #ifdef DEBUG_SERIAL
-    Serial.println("ok!");
-    Serial.print("Setting global eventsPtr handler...");
+    Serial.println("MAIN:: end setting PCM5102A module");
+    Serial.println("MAIN:: begin setting global eventsPtr handler");
 #endif
     eventsPtr = new Events(externalButtonsPtr, tm1638plusPtr, samplerPtr);
-    // samplerPtr->setEvents(eventsPtr->onSampleStarted, eventsPtr->onSampleStopped);
 #ifdef DEBUG_SERIAL
-    Serial.println("ok!");
-    Serial.println("Playing init sample");
+    Serial.println("MAIN:: end setting global eventsPtr handler");
+    Serial.println("MAIN:: playing init sample");
 #endif
     samplerPtr->play(SAMPLE_ALARM_REVERB);
+#ifdef DEBUG_SERIAL
+    Serial.println("MAIN:: end setup() method");
+#endif
 }
 
 void loop()
@@ -401,4 +120,20 @@ void loop()
     eventsPtr->onTM1638plusButton(tm1638plusPtr->getPressedButton());
     tm1638plusPtr->loop();
     samplerPtr->loop();
+    /*
+    uint64_t currentMillis = millis();
+    if (currentMillis - lastDirtySyrenMillis > PLAY_DIRTY_SYREN_EVERY)
+    {
+        lastDirtySyrenMillis = currentMillis;
+        switch (random(0, 3))
+        {
+        case 0:
+            samplerPtr->queueSample(SAMPLE_DIRTY_SYREN_1);
+            break;
+        case 1:
+            samplerPtr->queueSample(SAMPLE_DIRTY_SYREN_2);
+            break;
+        }
+    }
+    */
 }
