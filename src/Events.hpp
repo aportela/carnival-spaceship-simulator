@@ -45,7 +45,6 @@ private:
 
     SEVEN_SEGMENT_ANIMATION_TYPE previousSevenSegmentAnimation = SEVEN_SEGMENT_ANIMATION_TYPE_NONE;
 
-    void display7SegmentLaserAnimation(bool init = true);
     bool allowStartAnimation(ANIMATION animation);
     void refreshAnimation(ANIMATION animation);
 

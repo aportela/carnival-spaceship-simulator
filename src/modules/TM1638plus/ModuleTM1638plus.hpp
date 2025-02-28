@@ -79,7 +79,6 @@ private:
 
     SEVEN_SEGMENT_ANIMATION_TYPE currentSevenSegmentAnimationType = SEVEN_SEGMENT_ANIMATION_TYPE_NONE;
 
-    // TODO: refactorPtr
     ISevenSegmentDisplayEffect *SevenSegmentLeftBlockPtr = nullptr;  // first 4 seven segments
     ISevenSegmentDisplayEffect *SevenSegmentRightBlockPtr = nullptr; // last 4 seven segments
     ISevenSegmentDisplayEffect *SevenSegmentBothBlocksPtr = nullptr; // all 8 (4 left + 4 right) seven segments
@@ -109,8 +108,6 @@ public:
     void toggleSevenSegmentAnimation();
     void setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE animation, uint16_t msDelay = DEFAULT_SEVEN_SEGMENT_MS_DELAY, uint16_t extraData = 0);
     void setSevenSegmentBothBlocksAnimationRandomDelay(uint16_t minRandomMSDelay, uint16_t maxRandomMSDelay, uint8_t randomMultiplier = 0);
-
-    void toggleSevenSegmentEffect(void);
 
     void freeSevenSegmentLeftBlock(void);
     void freeSevenSegmentRightBlock(void);

@@ -509,48 +509,6 @@ void Events::onSampleStopped(SAMPLE sample)
     }
 }
 
-// TODO: REMOVE
-void Events::display7SegmentLaserAnimation(bool init)
-{
-    // tm1638plusPtr->clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCK_BOTH);
-    char buffer[5] = {'\0'};
-    // led block
-    tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_INTERMITENT, 80);
-    // seven segment right block
-    if (this->laserShoots >= 10000) // only 4 digits (right block)
-    {
-        this->laserShoots = 0;
-    }
-    snprintf(buffer, sizeof(buffer), "%04d", this->laserShoots);
-
-    if (init)
-    {
-        tm1638plusPtr->displayTextOnRight7Segment(buffer, false, 0);
-    }
-    else
-    {
-        tm1638plusPtr->refreshTextOnRight7Segment(buffer, false, 0);
-    }
-    if (!init)
-    {
-        tm1638plusPtr->freeSevenSegmentBothBlocks();
-    }
-    // seven segment left block
-    size_t frameCount = 5;
-    size_t frameAffectedSegmentCount = 4;
-    uint8_t **seq = new uint8_t *[frameCount];
-    for (size_t i = 0; i < frameCount; ++i)
-    {
-        seq[i] = new uint8_t[frameAffectedSegmentCount];
-    }
-    std::memcpy(seq[0], (uint8_t[]){SEGMENT_NONE, SEGMENT_G, SEGMENT_G, SEGMENT_NONE}, frameAffectedSegmentCount * sizeof(uint8_t));
-    std::memcpy(seq[1], (uint8_t[]){SEGMENT_G, SEGMENT_G, SEGMENT_G, SEGMENT_G}, frameAffectedSegmentCount * sizeof(uint8_t));
-    std::memcpy(seq[2], (uint8_t[]){SEGMENT_F | SEGMENT_G | SEGMENT_E, SEGMENT_G, SEGMENT_G, SEGMENT_B | SEGMENT_G | SEGMENT_C}, frameAffectedSegmentCount * sizeof(uint8_t));
-    std::memcpy(seq[3], (uint8_t[]){SEGMENT_A | SEGMENT_F | SEGMENT_G | SEGMENT_E | SEGMENT_D, SEGMENT_G, SEGMENT_G, SEGMENT_A | SEGMENT_B | SEGMENT_G | SEGMENT_C | SEGMENT_D}, frameAffectedSegmentCount * sizeof(uint8_t));
-    std::memcpy(seq[4], (uint8_t[]){SEGMENT_A | SEGMENT_F | SEGMENT_E | SEGMENT_D, SEGMENT_A | SEGMENT_D, SEGMENT_A | SEGMENT_D, SEGMENT_A | SEGMENT_B | SEGMENT_C | SEGMENT_D}, frameAffectedSegmentCount * sizeof(uint8_t));
-    tm1638plusPtr->displayMultiFrameIndividualSevenSegmentEffect(seq, frameCount, frameAffectedSegmentCount, 60, 0, 3);
-}
-
 bool Events::allowStartAnimation(ANIMATION animation)
 {
 
@@ -639,16 +597,12 @@ void Events::startAnimation(ANIMATION animation)
             this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_NOTES, 125);
             break;
         case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_2:
-            // tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, 80);
             break;
         case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_3:
-            // tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, 80);
             break;
         case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_4:
-            // tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, 80);
             break;
         case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_5:
-            // tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, 80);
             break;
         case ANIMATION_ALARM_REVERB:
             tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER, 62);
@@ -673,7 +627,6 @@ void Events::startAnimation(ANIMATION animation)
 void Events::stopAnimation(ANIMATION animation)
 {
     bool stopAnimation = false;
-    // this->previousLedEffect = LED_ANIMATION_TYPE_SCANNER;
     switch (animation)
     {
     case ANIMATION_LASER_SHOOT:
@@ -709,40 +662,12 @@ void Events::stopAnimation(ANIMATION animation)
         stopAnimation = true;
         break;
     case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_1:
-        /*
-            if (this->isPlayingEncountersOnThirdPhaseSamples)
-            {
-                this->isPlayingEncountersOnThirdPhaseSamples = false;
-            }
-            stopAnimation = true;
-            */
         break;
     case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_2:
-        /*
-            if (this->isPlayingEncountersOnThirdPhaseSamples)
-            {
-                this->isPlayingEncountersOnThirdPhaseSamples = false;
-            }
-            stopAnimation = true;
-            */
         break;
     case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_3:
-        /*
-            if (this->isPlayingEncountersOnThirdPhaseSamples)
-            {
-                this->isPlayingEncountersOnThirdPhaseSamples = false;
-            }
-            stopAnimation = true;
-            */
         break;
     case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_4:
-        /*
-            if (this->isPlayingEncountersOnThirdPhaseSamples)
-            {
-                this->isPlayingEncountersOnThirdPhaseSamples = false;
-            }
-            stopAnimation = true;
-            */
         break;
     case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_5:
         if (this->isPlayingEncountersOnThirdPhaseSamples)

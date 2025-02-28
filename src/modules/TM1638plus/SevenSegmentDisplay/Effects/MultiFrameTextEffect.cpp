@@ -1,6 +1,5 @@
 #include "MultiFrameTextEffect.hpp"
 
-// TODO: start frame index
 MultiFrameTextEffect::MultiFrameTextEffect(TM1638plus *module, const char *frames[], size_t frameCount, uint16_t msDelay, const uint8_t startIndex, const uint8_t startFrameIndex) : SevenSegmentDisplayEffect(module, msDelay), frameCount(frameCount), startIndex(startIndex)
 {
     if (frames != nullptr && frameCount > 0)
