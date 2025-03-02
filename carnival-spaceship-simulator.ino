@@ -31,18 +31,6 @@ Events *eventsPtr = nullptr;
 
 uint64_t lastDirtySyrenMillis = millis();
 
-void displayLaserShootCount(uint16_t count)
-{
-    if (count >= 10000) // only 4 digits (right block)
-    {
-        // reset counter
-        // laserShoots = 0;
-    }
-    char buffer[5] = {'\0'};
-    snprintf(buffer, sizeof(buffer), "%04d", count);
-    tm1638plusPtr->displayTextOnRight7Segment(buffer, false, 0);
-}
-
 void onSampleStartPlaying(SAMPLE sample)
 {
     eventsPtr->onSampleStarted(sample);
@@ -80,7 +68,7 @@ void setup()
 #ifdef START_LED_ANIMATION_TYPE
     if (START_LED_ANIMATION_TYPE != LED_ANIMATION_TYPE_NONE)
     {
-        tm1638plusPtr->setLedAnimation(START_LED_ANIMATION_TYPE, START_LED_ANIMATION_DELAY);
+        tm1638plusPtr->setLedAnimation(START_LED_ANIMATION_TYPE, START_LED_ANIMATION_DELAY, true);
     }
 #endif
 #ifdef START_SEVEN_SEGMENT_ANIMATION_TYPE
