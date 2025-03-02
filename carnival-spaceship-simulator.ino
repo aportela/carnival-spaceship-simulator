@@ -29,12 +29,7 @@ Sampler *samplerPtr = nullptr;
 
 Events *eventsPtr = nullptr;
 
-#define START_LED_ANIMATION_TYPE LED_ANIMATION_TYPE_SCANNER
-#define START_SEVEN_SEGMENT_ANIMATION_TYPE SEVEN_SEGMENT_ANIMATION_TYPE_MESSAGE_1
-
 uint64_t lastDirtySyrenMillis = millis();
-
-#define PLAY_DIRTY_SYREN_EVERY 60000
 
 void displayLaserShootCount(uint16_t count)
 {
@@ -120,20 +115,4 @@ void loop()
     eventsPtr->onTM1638plusButton(tm1638plusPtr->getPressedButton());
     tm1638plusPtr->loop();
     samplerPtr->loop();
-    /*
-    uint64_t currentMillis = millis();
-    if (currentMillis - lastDirtySyrenMillis > PLAY_DIRTY_SYREN_EVERY)
-    {
-        lastDirtySyrenMillis = currentMillis;
-        switch (random(0, 3))
-        {
-        case 0:
-            samplerPtr->queueSample(SAMPLE_DIRTY_SYREN_1);
-            break;
-        case 1:
-            samplerPtr->queueSample(SAMPLE_DIRTY_SYREN_2);
-            break;
-        }
-    }
-    */
 }
