@@ -41,6 +41,7 @@ public:
 
     bool refresh(void);
     bool toggleInverse(void) override;
+    void restart(void) override;
     void setDelay(uint16_t msDelay) override;
     void setRandomDelay(uint16_t minRandomMSDelay, uint16_t maxRandomMSDelay, uint8_t randomMultiplier = 1) override;
     void disableAnimationLoopAtEnd(void) override;

@@ -42,6 +42,12 @@ bool LedEffect::toggleInverse(void)
     return (this->inverse);
 }
 
+void LedEffect::restart(void)
+{
+    this->currentFrameIndex = 0;
+    Serial.println("RESTARTING");
+}
+
 void LedEffect::setDelay(uint16_t msDelay)
 {
     this->msDelay = msDelay;
