@@ -52,28 +52,28 @@ void ModuleTM1638plus::toggleLedAnimation()
     switch (this->currentLedAnimationType)
     {
     case LED_ANIMATION_TYPE_NONE:
-        this->setLedAnimation(LED_ANIMATION_TYPE_SCANNER, DEFAULT_LED_MS_DELAY);
+        this->setLedAnimation(LED_ANIMATION_TYPE_SCANNER, DEFAULT_LED_MS_DELAY, true);
         break;
     case LED_ANIMATION_TYPE_SCANNER:
-        this->setLedAnimation(LED_ANIMATION_TYPE_CHASE, DEFAULT_LED_MS_DELAY);
+        this->setLedAnimation(LED_ANIMATION_TYPE_CHASE, DEFAULT_LED_MS_DELAY, true);
         break;
     case LED_ANIMATION_TYPE_CHASE:
-        this->setLedAnimation(LED_ANIMATION_TYPE_VUMETER, DEFAULT_LED_MS_DELAY);
+        this->setLedAnimation(LED_ANIMATION_TYPE_VUMETER, DEFAULT_LED_MS_DELAY, true);
         break;
     case LED_ANIMATION_TYPE_VUMETER:
-        this->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, DEFAULT_LED_MS_DELAY);
+        this->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, DEFAULT_LED_MS_DELAY, true);
         break;
     case LED_ANIMATION_TYPE_VUMETER_MIRRORED:
-        this->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, DEFAULT_LED_MS_DELAY);
+        this->setLedAnimation(LED_ANIMATION_TYPE_ALTERNATE, DEFAULT_LED_MS_DELAY, true);
         break;
     case LED_ANIMATION_TYPE_ALTERNATE:
-        this->setLedAnimation(LED_ANIMATION_TYPE_INTERMITENT, DEFAULT_LED_MS_DELAY);
+        this->setLedAnimation(LED_ANIMATION_TYPE_INTERMITENT, DEFAULT_LED_MS_DELAY, true);
         break;
     case LED_ANIMATION_TYPE_INTERMITENT:
-        this->setLedAnimation(LED_ANIMATION_TYPE_NONE, DEFAULT_LED_MS_DELAY);
+        this->setLedAnimation(LED_ANIMATION_TYPE_NONE, DEFAULT_LED_MS_DELAY, true);
         break;
     default:
-        this->setLedAnimation(LED_ANIMATION_TYPE_NONE, DEFAULT_LED_MS_DELAY);
+        this->setLedAnimation(LED_ANIMATION_TYPE_NONE, DEFAULT_LED_MS_DELAY, true);
         break;
     }
 }
@@ -97,8 +97,13 @@ void ModuleTM1638plus::toggleLedAnimationInverseMode(void)
     }
 }
 
-void ModuleTM1638plus::setLedAnimation(LED_ANIMATION_TYPE animation, uint16_t msDelay)
+void ModuleTM1638plus::setLedAnimation(LED_ANIMATION_TYPE animation, uint16_t msDelay, bool isDefault)
 {
+    if (isDefault)
+    {
+        this->defaultLedAnimationType = animation;
+        this->defaultLedAnimationMSDelay = msDelay;
+    }
     if (animation != this->currentLedAnimationType)
     {
         this->modulePtr->setLEDs(0);
@@ -184,6 +189,11 @@ void ModuleTM1638plus::setLedAnimation(LED_ANIMATION_TYPE animation, uint16_t ms
 void ModuleTM1638plus::setLedAnimationRandomDelay(uint16_t minRandomMSDelay, uint16_t maxRandomMSDelay, uint8_t randomMultiplier)
 {
     this->currentLedAnimationPtr->setRandomDelay(minRandomMSDelay, maxRandomMSDelay, randomMultiplier);
+}
+
+void ModuleTM1638plus::restoreDefaultLedAnimation(void)
+{
+    this->setLedAnimation(this->defaultLedAnimationType, this->defaultLedAnimationMSDelay, false);
 }
 
 void ModuleTM1638plus::clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCKS block)

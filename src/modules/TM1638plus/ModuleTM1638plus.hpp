@@ -76,6 +76,8 @@ private:
 
     ILedEffect *currentLedAnimationPtr = nullptr;
     LED_ANIMATION_TYPE currentLedAnimationType = LED_ANIMATION_TYPE_NONE;
+    LED_ANIMATION_TYPE defaultLedAnimationType = LED_ANIMATION_TYPE_NONE;
+    uint16_t defaultLedAnimationMSDelay = 0;
 
     SEVEN_SEGMENT_ANIMATION_TYPE currentSevenSegmentAnimationType = SEVEN_SEGMENT_ANIMATION_TYPE_NONE;
 
@@ -101,8 +103,9 @@ public:
     LED_ANIMATION_TYPE getCurrentLedAnimation(void);
     void toggleLedAnimation();
     void toggleLedAnimationInverseMode(void);
-    void setLedAnimation(LED_ANIMATION_TYPE animation, uint16_t msDelay = DEFAULT_LED_MS_DELAY);
+    void setLedAnimation(LED_ANIMATION_TYPE animation, uint16_t msDelay = DEFAULT_LED_MS_DELAY, bool isDefault = false);
     void setLedAnimationRandomDelay(uint16_t minRandomMSDelay, uint16_t maxRandomMSDelay, uint8_t randomMultiplier = 0);
+    void restoreDefaultLedAnimation(void);
 
     SEVEN_SEGMENT_ANIMATION_TYPE getCurrentSevenSegmentAnimation(void);
     void toggleSevenSegmentAnimation();
