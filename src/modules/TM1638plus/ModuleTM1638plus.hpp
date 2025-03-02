@@ -80,6 +80,8 @@ private:
     uint16_t defaultLedAnimationMSDelay = 0;
 
     SEVEN_SEGMENT_ANIMATION_TYPE currentSevenSegmentAnimationType = SEVEN_SEGMENT_ANIMATION_TYPE_NONE;
+    SEVEN_SEGMENT_ANIMATION_TYPE defaultSevenSegmentAnimationType = SEVEN_SEGMENT_ANIMATION_TYPE_NONE;
+    uint16_t defaultSevenSegmentAnimationMSDelay = 0;
 
     ISevenSegmentDisplayEffect *SevenSegmentLeftBlockPtr = nullptr;  // first 4 seven segments
     ISevenSegmentDisplayEffect *SevenSegmentRightBlockPtr = nullptr; // last 4 seven segments
@@ -109,8 +111,9 @@ public:
 
     SEVEN_SEGMENT_ANIMATION_TYPE getCurrentSevenSegmentAnimation(void);
     void toggleSevenSegmentAnimation();
-    void setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE animation, uint16_t msDelay = DEFAULT_SEVEN_SEGMENT_MS_DELAY, uint16_t extraData = 0);
+    void setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE animation, uint16_t msDelay = DEFAULT_SEVEN_SEGMENT_MS_DELAY, uint16_t extraData = 0, bool isDefault = false);
     void setSevenSegmentBothBlocksAnimationRandomDelay(uint16_t minRandomMSDelay, uint16_t maxRandomMSDelay, uint8_t randomMultiplier = 0);
+    void restoreDefaultSevenSegmentAnimation(void);
 
     void freeSevenSegmentLeftBlock(void);
     void freeSevenSegmentRightBlock(void);

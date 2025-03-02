@@ -319,8 +319,14 @@ void ModuleTM1638plus::setSevenSegmentOscilloscopeAnimation(void)
     this->SevenSegmentBothBlocksPtr = new MultiFrameIndividualSegmentEffect(this->modulePtr, scrolledFrames, frameCount, frameAffectedSegmentCount, 100, 0, 3);
 }
 
-void ModuleTM1638plus::setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE animation, uint16_t msDelay, uint16_t extraData)
+void ModuleTM1638plus::setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE animation, uint16_t msDelay, uint16_t extraData, bool isDefault)
 {
+    if (isDefault)
+    {
+        this->defaultSevenSegmentAnimationType = animation;
+        Serial.printf("Default animation %d\n", animation);
+        this->defaultSevenSegmentAnimationMSDelay = msDelay;
+    }
     if (animation != this->currentSevenSegmentAnimationType)
     {
         this->clearSevenSegmentBlock(SEVEN_SEGMENT_BLOCK_BOTH);
@@ -495,6 +501,12 @@ void ModuleTM1638plus::setSevenSegmentBothBlocksAnimationRandomDelay(uint16_t mi
     {
         this->SevenSegmentBothBlocksPtr->setRandomDelay(minRandomMSDelay, maxRandomMSDelay, randomMultiplier);
     }
+}
+
+void ModuleTM1638plus::restoreDefaultSevenSegmentAnimation(void)
+{
+    Serial.printf("Restoring animation %d\n", this->defaultSevenSegmentAnimationType);
+    this->setSevenSegmentAnimation(this->defaultSevenSegmentAnimationType, this->defaultSevenSegmentAnimationMSDelay, false);
 }
 
 void ModuleTM1638plus::displayTextOnLeft7Segment(const char *text, bool blink, uint16_t blinkTimeout, bool freePrevious)
