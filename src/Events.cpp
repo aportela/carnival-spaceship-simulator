@@ -712,8 +712,8 @@ void Events::stopAnimation(ANIMATION animation)
     }
     if (stopAnimation)
     {
-        this->currentAnimation = ANIMATION_NONE;
-        tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_NONE, 0);
-        this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_NONE, 0);
+        this->currentAnimation = ANIMATION_DEFAULT;
+        tm1638plusPtr->setLedAnimation(DEFAULT_LED_ANIMATION_TYPE, DEFAULT_LED_ANIMATION_DELAY);
+        this->tm1638plusPtr->setSevenSegmentAnimation(DEFAULT_SEVEN_SEGMENT_ANIMATION_TYPE, DEFAULT_SEVEN_SEGMENT_ANIMATION_DELAY);
     }
 }
