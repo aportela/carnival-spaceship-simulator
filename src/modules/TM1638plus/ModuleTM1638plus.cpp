@@ -509,7 +509,6 @@ void ModuleTM1638plus::setSevenSegmentBothBlocksAnimationRandomDelay(uint16_t mi
 
 void ModuleTM1638plus::restoreDefaultSevenSegmentAnimation(void)
 {
-    Serial.printf("Restoring animation %d\n", this->defaultSevenSegmentAnimationType);
     this->setSevenSegmentAnimation(this->defaultSevenSegmentAnimationType, this->defaultSevenSegmentAnimationMSDelay, false);
 }
 
