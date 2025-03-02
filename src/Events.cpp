@@ -149,7 +149,7 @@ void Events::onTM1638plusButton(TM1638plusBUTTON button)
 #ifdef DEBUG_SERIAL
             Serial.println("EVENTS:: TM1638plus button 5 pressed...");
 #endif
-            this->samplerPtr->play(SAMPLE_ALARM_REVERB);
+            this->samplerPtr->play(SAMPLE_ALARM_REVERB_SEQ_1);
             break;
         case TM1638plusBUTTON_S6:
 #ifdef DEBUG_SERIAL
@@ -226,6 +226,9 @@ void Events::onSampleStarted(SAMPLE sample)
         this->startAnimation(ANIMATION_LASER_SHOOT);
         break;
     case SAMPLE_ALARM_REVERB:
+    case SAMPLE_ALARM_REVERB_SEQ_1:
+    case SAMPLE_ALARM_REVERB_SEQ_2:
+    case SAMPLE_ALARM_REVERB_SEQ_3:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Started playing SAMPLE_ALARM_REVERB");
 #endif
@@ -407,6 +410,24 @@ void Events::onSampleStopped(SAMPLE sample)
     case SAMPLE_ALARM_REVERB:
 #ifdef DEBUG_SERIAL
         Serial.println("EVENTS:: Stopped playing SAMPLE_ALARM_REVERB");
+#endif
+        this->stopAnimation(ANIMATION_ALARM_REVERB);
+        break;
+    case SAMPLE_ALARM_REVERB_SEQ_1:
+#ifdef DEBUG_SERIAL
+        Serial.println("EVENTS:: Stopped playing SAMPLE_ALARM_REVERB SEQ1");
+#endif
+        samplerPtr->queueSample(SAMPLE_ALARM_REVERB_SEQ_2);
+        break;
+    case SAMPLE_ALARM_REVERB_SEQ_2:
+#ifdef DEBUG_SERIAL
+        Serial.println("EVENTS:: Stopped playing SAMPLE_ALARM_REVERB SEQ2");
+#endif
+        samplerPtr->queueSample(SAMPLE_ALARM_REVERB_SEQ_3);
+        break;
+    case SAMPLE_ALARM_REVERB_SEQ_3:
+#ifdef DEBUG_SERIAL
+        Serial.println("EVENTS:: Stopped playing SAMPLE_ALARM_REVERB SEQ3");
 #endif
         this->stopAnimation(ANIMATION_ALARM_REVERB);
         break;
@@ -701,6 +722,9 @@ void Events::stopAnimation(ANIMATION animation)
         stopAnimation = true;
         break;
     case ANIMATION_ALARM_REVERB:
+    case SAMPLE_ALARM_REVERB_SEQ_1:
+    case SAMPLE_ALARM_REVERB_SEQ_2:
+    case SAMPLE_ALARM_REVERB_SEQ_3:
         stopAnimation = true;
         break;
     case ANIMATION_DIRTY_SYREN_1:
@@ -712,8 +736,9 @@ void Events::stopAnimation(ANIMATION animation)
     }
     if (stopAnimation)
     {
+        Serial.println("STOP");
         this->currentAnimation = ANIMATION_DEFAULT;
-        tm1638plusPtr->setLedAnimation(DEFAULT_LED_ANIMATION_TYPE, DEFAULT_LED_ANIMATION_DELAY);
-        this->tm1638plusPtr->setSevenSegmentAnimation(DEFAULT_SEVEN_SEGMENT_ANIMATION_TYPE, DEFAULT_SEVEN_SEGMENT_ANIMATION_DELAY);
+        this->tm1638plusPtr->restoreDefaultLedAnimation();
+        this->tm1638plusPtr->restoreDefaultSevenSegmentAnimation();
     }
 }
