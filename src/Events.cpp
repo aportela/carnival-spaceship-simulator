@@ -586,6 +586,9 @@ void Events::refreshAnimation(ANIMATION animation)
     case ANIMATION_SOS_2:
     case ANIMATION_SOS_3:
         break;
+    case ANIMATION_ALARM_REVERB:
+        tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER, 60, false, true);
+        break;
     }
 }
 
@@ -650,7 +653,7 @@ void Events::startAnimation(ANIMATION animation)
         case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_5:
             break;
         case ANIMATION_ALARM_REVERB:
-            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER, 62);
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER, 60);
             this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_FULL_PATTERN_1, 50);
             break;
         case ANIMATION_DIRTY_SYREN_1:
@@ -736,7 +739,6 @@ void Events::stopAnimation(ANIMATION animation)
     }
     if (stopAnimation)
     {
-        Serial.println("STOP");
         this->currentAnimation = ANIMATION_DEFAULT;
         this->tm1638plusPtr->restoreDefaultLedAnimation();
         this->tm1638plusPtr->restoreDefaultSevenSegmentAnimation();
