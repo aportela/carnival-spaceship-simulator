@@ -104,6 +104,9 @@ bool Sampler::play(SAMPLE sample)
             this->file[firstFreeVoiceIndex] = new AudioFileSourcePROGMEM(laser_04_wav, laser_04_wav_len);
             break;
         case SAMPLE_ALARM_REVERB:
+        case SAMPLE_ALARM_REVERB_SEQ_1:
+        case SAMPLE_ALARM_REVERB_SEQ_2:
+        case SAMPLE_ALARM_REVERB_SEQ_3:
             this->file[firstFreeVoiceIndex] = new AudioFileSourcePROGMEM(alarm_reverb_wav, alarm_reverb_wav_len);
             break;
         case SAMPLE_DIRTY_SYREN_1:

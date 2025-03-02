@@ -45,6 +45,9 @@ enum SAMPLE
     SAMPLE_SOS_01 = 40,
     SAMPLE_SOS_02 = 41,
     SAMPLE_SOS_03 = 42,
+    SAMPLE_ALARM_REVERB_SEQ_1 = 50,
+    SAMPLE_ALARM_REVERB_SEQ_2 = 51,
+    SAMPLE_ALARM_REVERB_SEQ_3 = 52,
 };
 
 typedef void (*sampleEventCallback)(SAMPLE);
