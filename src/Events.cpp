@@ -657,12 +657,14 @@ void Events::startAnimation(ANIMATION animation)
             this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_FULL_PATTERN_1, 50);
             break;
         case ANIMATION_DIRTY_SYREN_1:
-            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER, 62);
-            this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_FULL_PATTERN_2, 100);
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 300);
+            // tm1638plusPtr->toggleLedAnimationInverseMode();
+            this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_FULL_PATTERN_2, 300);
             break;
         case ANIMATION_DIRTY_SYREN_2:
-            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER, 62);
-            this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_FULL_PATTERN_3, 100);
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 400);
+            tm1638plusPtr->toggleLedAnimationInverseMode();
+            this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_FULL_PATTERN_3, 400);
             break;
         }
     }
