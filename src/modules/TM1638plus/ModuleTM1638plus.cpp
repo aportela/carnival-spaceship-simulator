@@ -97,7 +97,7 @@ void ModuleTM1638plus::toggleLedAnimationInverseMode(void)
     }
 }
 
-void ModuleTM1638plus::setLedAnimation(LED_ANIMATION_TYPE animation, uint16_t msDelay, bool isDefault)
+void ModuleTM1638plus::setLedAnimation(LED_ANIMATION_TYPE animation, uint16_t msDelay, bool isDefault, bool restart)
 {
     if (isDefault)
     {
@@ -182,6 +182,10 @@ void ModuleTM1638plus::setLedAnimation(LED_ANIMATION_TYPE animation, uint16_t ms
             Serial.printf("TM1638plus:: setting current led animation msDelay: %d\n", msDelay);
 #endif
             this->currentLedAnimationPtr->setDelay(msDelay);
+            if (restart)
+            {
+                this->currentLedAnimationPtr->restart();
+            }
         }
     }
 }
