@@ -157,6 +157,21 @@ bool Sampler::play(SAMPLE sample)
         case SAMPLE_ALIEN_VOICE_04:
             this->file[firstFreeVoiceIndex] = new AudioFileSourcePROGMEM(alien_voice_04_wav, alien_voice_04_wav_len);
             break;
+        case SAMPLE_ALIEN_VOICE_05:
+            this->file[firstFreeVoiceIndex] = new AudioFileSourcePROGMEM(alien_voice_05_wav, alien_voice_05_wav_len);
+            break;
+        case SAMPLE_ALIEN_VOICE_06:
+            this->file[firstFreeVoiceIndex] = new AudioFileSourcePROGMEM(alien_voice_06_wav, alien_voice_06_wav_len);
+            break;
+        case SAMPLE_ALIEN_VOICE_07:
+            this->file[firstFreeVoiceIndex] = new AudioFileSourcePROGMEM(alien_voice_07_wav, alien_voice_07_wav_len);
+            break;
+        case SAMPLE_ALIEN_VOICE_08:
+            this->file[firstFreeVoiceIndex] = new AudioFileSourcePROGMEM(alien_voice_08_wav, alien_voice_08_wav_len);
+            break;
+        case SAMPLE_ALIEN_VOICE_09:
+            this->file[firstFreeVoiceIndex] = new AudioFileSourcePROGMEM(alien_voice_09_wav, alien_voice_09_wav_len);
+            break;
         case SAMPLE_SOS_01:
             this->file[firstFreeVoiceIndex] = new AudioFileSourcePROGMEM(morse_letter_s_wav, morse_letter_s_wav_len);
             this->isPlayingSOSSample = true;

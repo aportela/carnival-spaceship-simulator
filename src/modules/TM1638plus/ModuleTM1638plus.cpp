@@ -470,6 +470,36 @@ void ModuleTM1638plus::setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE ani
 #endif
             this->setSevenSegmentOscilloscopeAnimation();
             break;
+        case SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_5:
+#ifdef DEBUG_SERIAL
+            Serial.printf("TM1638plus:: set seven segment animation => Alien voice 5 (delay %i ms)\n", msDelay);
+#endif
+            this->setSevenSegmentOscilloscopeAnimation();
+            break;
+        case SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_6:
+#ifdef DEBUG_SERIAL
+            Serial.printf("TM1638plus:: set seven segment animation => Alien voice 6 (delay %i ms)\n", msDelay);
+#endif
+            this->setSevenSegmentOscilloscopeAnimation();
+            break;
+        case SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_7:
+#ifdef DEBUG_SERIAL
+            Serial.printf("TM1638plus:: set seven segment animation => Alien voice 7 (delay %i ms)\n", msDelay);
+#endif
+            this->setSevenSegmentOscilloscopeAnimation();
+            break;
+        case SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_8:
+#ifdef DEBUG_SERIAL
+            Serial.printf("TM1638plus:: set seven segment animation => Alien voice 8 (delay %i ms)\n", msDelay);
+#endif
+            this->setSevenSegmentOscilloscopeAnimation();
+            break;
+        case SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_9:
+#ifdef DEBUG_SERIAL
+            Serial.printf("TM1638plus:: set seven segment animation => Alien voice 9 (delay %i ms)\n", msDelay);
+#endif
+            this->setSevenSegmentOscilloscopeAnimation();
+            break;
         case SEVEN_SEGMENT_ANIMATION_TYPE_NOTES:
 #ifdef DEBUG_SERIAL
             Serial.printf("TM1638plus:: set seven segment animation => NOTES (delay %i ms)\n", msDelay);

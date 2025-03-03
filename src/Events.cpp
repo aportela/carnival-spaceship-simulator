@@ -640,6 +640,36 @@ void Events::startAnimation(ANIMATION animation)
             this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_4, 100);
             tm1638plusPtr->setSevenSegmentBothBlocksAnimationRandomDelay(80, 150, 1);
             break;
+        case ANIMATION_ALIEN_VOICE_5:
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 100);
+            tm1638plusPtr->setLedAnimationRandomDelay(1, 10, 25);
+            this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_5, 100);
+            tm1638plusPtr->setSevenSegmentBothBlocksAnimationRandomDelay(80, 150, 1);
+            break;
+        case ANIMATION_ALIEN_VOICE_6:
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 100);
+            tm1638plusPtr->setLedAnimationRandomDelay(1, 10, 25);
+            this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_6, 100);
+            tm1638plusPtr->setSevenSegmentBothBlocksAnimationRandomDelay(80, 150, 1);
+            break;
+        case ANIMATION_ALIEN_VOICE_7:
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 100);
+            tm1638plusPtr->setLedAnimationRandomDelay(1, 10, 25);
+            this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_7, 100);
+            tm1638plusPtr->setSevenSegmentBothBlocksAnimationRandomDelay(80, 150, 1);
+            break;
+        case ANIMATION_ALIEN_VOICE_8:
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 100);
+            tm1638plusPtr->setLedAnimationRandomDelay(1, 10, 25);
+            this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_8, 100);
+            tm1638plusPtr->setSevenSegmentBothBlocksAnimationRandomDelay(80, 150, 1);
+            break;
+        case ANIMATION_ALIEN_VOICE_9:
+            tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_VUMETER_MIRRORED, 100);
+            tm1638plusPtr->setLedAnimationRandomDelay(1, 10, 25);
+            this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_ALIEN_VOICE_9, 100);
+            tm1638plusPtr->setSevenSegmentBothBlocksAnimationRandomDelay(80, 150, 1);
+            break;
         case ANIMATION_CLOSE_ENCOUNTERS_ON_THIRD_PHASE_1:
             tm1638plusPtr->setLedAnimation(LED_ANIMATION_TYPE_NOTES, 125);
             this->tm1638plusPtr->setSevenSegmentAnimation(SEVEN_SEGMENT_ANIMATION_TYPE_NOTES, 125);
@@ -705,6 +735,11 @@ void Events::stopAnimation(ANIMATION animation)
     case ANIMATION_ALIEN_VOICE_2:
     case ANIMATION_ALIEN_VOICE_3:
     case ANIMATION_ALIEN_VOICE_4:
+    case ANIMATION_ALIEN_VOICE_5:
+    case ANIMATION_ALIEN_VOICE_6:
+    case ANIMATION_ALIEN_VOICE_7:
+    case ANIMATION_ALIEN_VOICE_8:
+    case ANIMATION_ALIEN_VOICE_9:
         if (this->isPlayingAlienVoiceSamples)
         {
             this->isPlayingAlienVoiceSamples = false;
