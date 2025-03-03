@@ -61,7 +61,7 @@ void Events::onExternalButton(EXTERNAL_BUTTON button)
                 bool regenerateRandom = true;
                 while (regenerateRandom) // prevent replay last alien voice sample
                 {
-                    switch (random(0, 4))
+                    switch (random(0, 9))
                     {
                     case 0:
                         if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_01)
@@ -71,7 +71,6 @@ void Events::onExternalButton(EXTERNAL_BUTTON button)
                             regenerateRandom = false;
                         }
                         break;
-
                     case 1:
                         if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_02)
                         {
@@ -80,7 +79,6 @@ void Events::onExternalButton(EXTERNAL_BUTTON button)
                             regenerateRandom = false;
                         }
                         break;
-
                     case 2:
                         if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_03)
                         {
@@ -89,7 +87,6 @@ void Events::onExternalButton(EXTERNAL_BUTTON button)
                             regenerateRandom = false;
                         }
                         break;
-
                     case 3:
                         if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_04)
                         {
@@ -98,10 +95,49 @@ void Events::onExternalButton(EXTERNAL_BUTTON button)
                             regenerateRandom = false;
                         }
                         break;
+                    case 4:
+                        if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_05)
+                        {
+                            this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_05);
+                            this->lastAlienVoiceSamplePlayed = SAMPLE_ALIEN_VOICE_05;
+                            regenerateRandom = false;
+                        }
+                        break;
+                    case 5:
+                        if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_06)
+                        {
+                            this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_06);
+                            this->lastAlienVoiceSamplePlayed = SAMPLE_ALIEN_VOICE_06;
+                            regenerateRandom = false;
+                        }
+                        break;
+                    case 6:
+                        if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_07)
+                        {
+                            this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_07);
+                            this->lastAlienVoiceSamplePlayed = SAMPLE_ALIEN_VOICE_07;
+                            regenerateRandom = false;
+                        }
+                        break;
+                    case 7:
+                        if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_08)
+                        {
+                            this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_08);
+                            this->lastAlienVoiceSamplePlayed = SAMPLE_ALIEN_VOICE_08;
+                            regenerateRandom = false;
+                        }
+                        break;
+                    case 8:
+                        if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_09)
+                        {
+                            this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_09);
+                            this->lastAlienVoiceSamplePlayed = SAMPLE_ALIEN_VOICE_09;
+                            regenerateRandom = false;
+                        }
+                        break;
                     }
                 }
             }
-
             break;
         case EXTERNAL_BUTTON_5:
 #ifdef DEBUG_SERIAL
@@ -348,6 +384,36 @@ void Events::onSampleStarted(SAMPLE sample)
 #endif
         this->startAnimation(ANIMATION_ALIEN_VOICE_4);
         break;
+    case SAMPLE_ALIEN_VOICE_05:
+#ifdef DEBUG_SERIAL
+        Serial.println("EVENTS:: Started playing SAMPLE_ALIEN_VOICE_05");
+#endif
+        this->startAnimation(ANIMATION_ALIEN_VOICE_5);
+        break;
+    case SAMPLE_ALIEN_VOICE_06:
+#ifdef DEBUG_SERIAL
+        Serial.println("EVENTS:: Started playing SAMPLE_ALIEN_VOICE_06");
+#endif
+        this->startAnimation(ANIMATION_ALIEN_VOICE_6);
+        break;
+    case SAMPLE_ALIEN_VOICE_07:
+#ifdef DEBUG_SERIAL
+        Serial.println("EVENTS:: Started playing SAMPLE_ALIEN_VOICE_07");
+#endif
+        this->startAnimation(ANIMATION_ALIEN_VOICE_7);
+        break;
+    case SAMPLE_ALIEN_VOICE_08:
+#ifdef DEBUG_SERIAL
+        Serial.println("EVENTS:: Started playing SAMPLE_ALIEN_VOICE_08");
+#endif
+        this->startAnimation(ANIMATION_ALIEN_VOICE_8);
+        break;
+    case SAMPLE_ALIEN_VOICE_09:
+#ifdef DEBUG_SERIAL
+        Serial.println("EVENTS:: Started playing SAMPLE_ALIEN_VOICE_09");
+#endif
+        this->startAnimation(ANIMATION_ALIEN_VOICE_9);
+        break;
     }
 }
 
@@ -466,6 +532,36 @@ void Events::onSampleStopped(SAMPLE sample)
         Serial.println("EVENTS:: Stopped playing SAMPLE_ALIEN_VOICE_04");
 #endif
         this->stopAnimation(ANIMATION_ALIEN_VOICE_4);
+        break;
+    case SAMPLE_ALIEN_VOICE_05:
+#ifdef DEBUG_SERIAL
+        Serial.println("EVENTS:: Stopped playing SAMPLE_ALIEN_VOICE_05");
+#endif
+        this->stopAnimation(ANIMATION_ALIEN_VOICE_5);
+        break;
+    case SAMPLE_ALIEN_VOICE_06:
+#ifdef DEBUG_SERIAL
+        Serial.println("EVENTS:: Stopped playing SAMPLE_ALIEN_VOICE_06");
+#endif
+        this->stopAnimation(ANIMATION_ALIEN_VOICE_6);
+        break;
+    case SAMPLE_ALIEN_VOICE_07:
+#ifdef DEBUG_SERIAL
+        Serial.println("EVENTS:: Stopped playing SAMPLE_ALIEN_VOICE_07");
+#endif
+        this->stopAnimation(ANIMATION_ALIEN_VOICE_7);
+        break;
+    case SAMPLE_ALIEN_VOICE_08:
+#ifdef DEBUG_SERIAL
+        Serial.println("EVENTS:: Stopped playing SAMPLE_ALIEN_VOICE_08");
+#endif
+        this->stopAnimation(ANIMATION_ALIEN_VOICE_8);
+        break;
+    case SAMPLE_ALIEN_VOICE_09:
+#ifdef DEBUG_SERIAL
+        Serial.println("EVENTS:: Stopped playing SAMPLE_ALIEN_VOICE_09");
+#endif
+        this->stopAnimation(ANIMATION_ALIEN_VOICE_9);
         break;
     case SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1:
 #ifdef DEBUG_SERIAL
