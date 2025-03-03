@@ -44,6 +44,9 @@ private:
     bool isPlayingAlienVoiceSamples = false;
     bool isPlayingSOSSamples = false;
     bool isPlayingEncountersOnThirdPhaseSamples = false;
+    bool isPlayingAlarmReverbSamples = false;
+    bool isPlayingDirtySyren1Sample = false;
+    bool isPlayingDirtySyren2Sample = false;
     uint16_t laserShoots = 0;
 
     LED_ANIMATION_TYPE previousLedEffect = LED_ANIMATION_TYPE_NONE;

@@ -185,19 +185,31 @@ void Events::onTM1638plusButton(TM1638plusBUTTON button)
 #ifdef DEBUG_SERIAL
             Serial.println("EVENTS:: TM1638plus button 5 pressed...");
 #endif
-            this->samplerPtr->play(SAMPLE_ALARM_REVERB_SEQ_1);
+            if (!this->isPlayingAlarmReverbSamples)
+            {
+                this->isPlayingAlarmReverbSamples = true;
+                this->samplerPtr->play(SAMPLE_ALARM_REVERB_SEQ_1);
+            }
             break;
         case TM1638plusBUTTON_S6:
 #ifdef DEBUG_SERIAL
             Serial.println("EVENTS:: TM1638plus button 6 pressed...");
 #endif
-            this->samplerPtr->play(SAMPLE_DIRTY_SYREN_1);
+            if (!this->isPlayingDirtySyren1Sample)
+            {
+                this->isPlayingDirtySyren1Sample = true;
+                this->samplerPtr->play(SAMPLE_DIRTY_SYREN_1);
+            }
             break;
         case TM1638plusBUTTON_S7:
 #ifdef DEBUG_SERIAL
             Serial.println("EVENTS:: TM1638plus button 7 pressed...");
 #endif
-            this->samplerPtr->play(SAMPLE_DIRTY_SYREN_2);
+            if (!this->isPlayingDirtySyren2Sample)
+            {
+                this->isPlayingDirtySyren2Sample = true;
+                this->samplerPtr->play(SAMPLE_DIRTY_SYREN_2);
+            }
             break;
         case TM1638plusBUTTON_S8:
 #ifdef DEBUG_SERIAL
@@ -861,12 +873,15 @@ void Events::stopAnimation(ANIMATION animation)
     case SAMPLE_ALARM_REVERB_SEQ_1:
     case SAMPLE_ALARM_REVERB_SEQ_2:
     case SAMPLE_ALARM_REVERB_SEQ_3:
+        this->isPlayingAlarmReverbSamples = false;
         stopAnimation = true;
         break;
     case ANIMATION_DIRTY_SYREN_1:
+        this->isPlayingDirtySyren1Sample = false;
         stopAnimation = true;
         break;
     case ANIMATION_DIRTY_SYREN_2:
+        this->isPlayingDirtySyren2Sample = false;
         stopAnimation = true;
         break;
     }
