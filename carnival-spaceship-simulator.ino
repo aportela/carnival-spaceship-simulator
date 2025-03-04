@@ -84,6 +84,7 @@ void loop()
 {
     eventsPtr->onExternalButton(externalButtonsPtr->getPressedButton());
     eventsPtr->onTM1638plusButton(tm1638plusPtr->getPressedButton());
+    eventsPtr->loop();
     tm1638plusPtr->loop();
     samplerPtr->loop();
 }

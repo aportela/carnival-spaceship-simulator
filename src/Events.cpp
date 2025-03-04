@@ -7,6 +7,7 @@
 Events::Events(ExternalButtons *externalButtonsPtr, ModuleTM1638plus *tm1638plusPtr, Sampler *samplerPtr) : externalButtonsPtr(externalButtonsPtr), tm1638plusPtr(tm1638plusPtr), samplerPtr(samplerPtr)
 {
     this->shuffleAlienVoiceSamplesQueue();
+    this->timerBackgroundSampleLastMillis = millis();
 }
 
 Events::~Events()
@@ -125,42 +126,49 @@ void Events::onTM1638plusButton(TM1638plusBUTTON button)
             break;
         case TM1638plusBUTTON_S4:
 #ifdef DEBUG_SERIAL
-            Serial.println("EVENTS:: TM1638plus button 4 pressed...");
+            Serial.println("EVENTS:: TM1638plus button 4 pressed... removing timer background samples");
 #endif
+            this->timerBackgroundSample = SAMPLE_NONE;
             break;
         case TM1638plusBUTTON_S5:
 #ifdef DEBUG_SERIAL
-            Serial.println("EVENTS:: TM1638plus button 5 pressed...");
+            Serial.println("EVENTS:: TM1638plus button 5 pressed... adding timer background alarm reverb sample");
 #endif
+            this->timerBackgroundSample = SAMPLE_ALARM_REVERB_SEQ_1;
             if (!this->isPlayingAlarmReverbSamples)
             {
+                this->timerBackgroundSampleLastMillis = millis();
                 this->isPlayingAlarmReverbSamples = true;
                 this->samplerPtr->play(SAMPLE_ALARM_REVERB_SEQ_1);
             }
             break;
         case TM1638plusBUTTON_S6:
 #ifdef DEBUG_SERIAL
-            Serial.println("EVENTS:: TM1638plus button 6 pressed...");
+            Serial.println("EVENTS:: TM1638plus button 6 pressed... adding timer background dirty syren 1 sample");
 #endif
+            this->timerBackgroundSample = SAMPLE_DIRTY_SYREN_1;
             if (!this->isPlayingDirtySyren1Sample)
             {
+                this->timerBackgroundSampleLastMillis = millis();
                 this->isPlayingDirtySyren1Sample = true;
                 this->samplerPtr->play(SAMPLE_DIRTY_SYREN_1);
             }
             break;
         case TM1638plusBUTTON_S7:
 #ifdef DEBUG_SERIAL
-            Serial.println("EVENTS:: TM1638plus button 7 pressed...");
+            Serial.println("EVENTS:: TM1638plus button 7 pressed... adding timer background dirty syren 2 sample");
 #endif
+            this->timerBackgroundSample = SAMPLE_DIRTY_SYREN_2;
             if (!this->isPlayingDirtySyren2Sample)
             {
+                this->timerBackgroundSampleLastMillis = millis();
                 this->isPlayingDirtySyren2Sample = true;
                 this->samplerPtr->play(SAMPLE_DIRTY_SYREN_2);
             }
             break;
         case TM1638plusBUTTON_S8:
 #ifdef DEBUG_SERIAL
-            Serial.println("EVENTS:: TM1638plus button 8 pressed...");
+            Serial.println("EVENTS:: TM1638plus button 8 pressed... rebooting");
 #endif
             rp2040.reboot();
             break;
@@ -837,5 +845,30 @@ void Events::stopAnimation(ANIMATION animation)
         this->currentAnimation = ANIMATION_DEFAULT;
         this->tm1638plusPtr->restoreDefaultLedAnimation();
         this->tm1638plusPtr->restoreDefaultSevenSegmentAnimation();
+    }
+}
+
+void Events::loop(void)
+{
+    uint64_t currentTimestamp = millis();
+    if (currentTimestamp - this->timerBackgroundSampleLastMillis > TIMER_BACKGROUND_SAMPLE_EVERY_MS)
+    {
+        this->timerBackgroundSampleLastMillis = currentTimestamp;
+        if (this->timerBackgroundSample != SAMPLE_NONE)
+        {
+            switch (this->timerBackgroundSample)
+            {
+            case SAMPLE_ALARM_REVERB:
+                this->isPlayingAlarmReverbSamples = true;
+                break;
+            case SAMPLE_DIRTY_SYREN_1:
+                this->isPlayingDirtySyren1Sample = true;
+                break;
+            case SAMPLE_DIRTY_SYREN_2:
+                this->isPlayingDirtySyren2Sample = true;
+                break;
+            }
+            this->samplerPtr->queueSample(this->timerBackgroundSample);
+        }
     }
 }

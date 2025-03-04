@@ -59,6 +59,11 @@ private:
 
     SEVEN_SEGMENT_ANIMATION_TYPE previousSevenSegmentAnimation = SEVEN_SEGMENT_ANIMATION_TYPE_NONE;
 
+#define TIMER_BACKGROUND_SAMPLE_EVERY_MS 30000 // play (active) background sample every 30 seconds
+
+    SAMPLE timerBackgroundSample = SAMPLE_NONE;
+    uint64_t timerBackgroundSampleLastMillis = 0;
+
     void shuffleAlienVoiceSamplesQueue(void);
     bool allowStartAnimation(ANIMATION animation);
     void refreshAnimation(ANIMATION animation);
@@ -72,6 +77,7 @@ public:
     void onSampleStopped(SAMPLE sample);
     void startAnimation(ANIMATION animation);
     void stopAnimation(ANIMATION animation);
+    void loop(void);
 };
 
 #endif // EVENTS_H
