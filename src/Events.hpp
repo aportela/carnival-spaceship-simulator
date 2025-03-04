@@ -59,7 +59,7 @@ private:
 
     SEVEN_SEGMENT_ANIMATION_TYPE previousSevenSegmentAnimation = SEVEN_SEGMENT_ANIMATION_TYPE_NONE;
 
-#define TIMER_BACKGROUND_SAMPLE_EVERY_MS 30000 // play (active) background sample every 30 seconds
+#define TIMER_BACKGROUND_SAMPLE_EVERY_MS 180000 // play (active) background sample every 3 minutes
 
     SAMPLE timerBackgroundSample = SAMPLE_NONE;
     uint64_t timerBackgroundSampleLastMillis = 0;
