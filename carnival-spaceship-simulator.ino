@@ -6,23 +6,6 @@
 #include "src/Events.hpp"
 #include "src/CommonDefines.hpp"
 
-// External button PIN SETTINGS
-#define EXTERNAL_BUTTON1_PIN 11
-#define EXTERNAL_BUTTON2_PIN 12
-#define EXTERNAL_BUTTON3_PIN 13
-#define EXTERNAL_BUTTON4_PIN 14
-#define EXTERNAL_BUTTON5_PIN 15
-
-// TM1638 (model 1) module PIN SETTINGS
-#define TM1638_STROBE_PIN 4 // strobe
-#define TM1638_CLOCK_PIN 6  // clock
-#define TM1638_DIO_PIN 7    // data
-
-// Stereo DAC module PCM5102A PIN SETTINGS
-#define DAC_I2S_BCK_PIN 26  // bit clock
-#define DAC_I2S_LRCK_PIN 27 // left right clock
-#define DAC_I2S_DATA_PIN 28 // data in
-
 ExternalButtons *externalButtonsPtr = nullptr;
 ModuleTM1638plus *tm1638plusPtr = nullptr;
 Sampler *samplerPtr = nullptr;
