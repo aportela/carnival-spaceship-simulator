@@ -6,6 +6,7 @@
 
 Events::Events(ExternalButtons *externalButtonsPtr, ModuleTM1638plus *tm1638plusPtr, Sampler *samplerPtr) : externalButtonsPtr(externalButtonsPtr), tm1638plusPtr(tm1638plusPtr), samplerPtr(samplerPtr)
 {
+    this->shuffleAlienVoiceSamplesQueue();
 }
 
 Events::~Events()
@@ -13,6 +14,33 @@ Events::~Events()
     this->externalButtonsPtr = nullptr;
     this->tm1638plusPtr = nullptr;
     this->samplerPtr = nullptr;
+}
+
+void Events::shuffleAlienVoiceSamplesQueue(void)
+{
+    SAMPLE validSamples[ALIEN_VOICE_SAMPLES_QUEUE_SIZE] = {
+        SAMPLE_ALIEN_VOICE_01,
+        SAMPLE_ALIEN_VOICE_02,
+        SAMPLE_ALIEN_VOICE_03,
+        SAMPLE_ALIEN_VOICE_04,
+        SAMPLE_ALIEN_VOICE_05,
+        SAMPLE_ALIEN_VOICE_06,
+        SAMPLE_ALIEN_VOICE_07,
+        SAMPLE_ALIEN_VOICE_08,
+        SAMPLE_ALIEN_VOICE_09,
+    };
+    for (int i = 0; i < ALIEN_VOICE_SAMPLES_QUEUE_SIZE; i++)
+    {
+        this->alienVoiceSamplesQueue[i] = validSamples[i];
+    }
+    for (int i = ALIEN_VOICE_SAMPLES_QUEUE_SIZE - 1; i > 0; i--)
+    {
+        int j = random(0, i + 1);
+        SAMPLE temp = this->alienVoiceSamplesQueue[i];
+        this->alienVoiceSamplesQueue[i] = this->alienVoiceSamplesQueue[j];
+        this->alienVoiceSamplesQueue[j] = temp;
+    }
+    this->alienVoiceSamplesQueueIndex = 0;
 }
 
 void Events::onExternalButton(EXTERNAL_BUTTON button)
@@ -40,15 +68,8 @@ void Events::onExternalButton(EXTERNAL_BUTTON button)
             if (!this->isPlayingEncountersOnThirdPhaseSamples && !this->isPlayingAlienVoiceSamples && !this->isPlayingSOSSamples)
             {
                 this->isPlayingEncountersOnThirdPhaseSamples = true;
-                switch (random(0, 2))
-                {
-                case 0:
-                    this->samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1);
-                    break;
-                case 1:
-                    this->samplerPtr->queueSample(SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1);
-                    break;
-                }
+                this->samplerPtr->queueSample(!lastEncountersOnThirdPhaseToneLow ? SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_LOW_TONE_1 : SAMPLE_CLOSE_ENCOUNTERS_OF_THE_THIRD_KIND_HIGH_TONE_1);
+                lastEncountersOnThirdPhaseToneLow = !lastEncountersOnThirdPhaseToneLow;
             }
             break;
         case EXTERNAL_BUTTON_4:
@@ -58,85 +79,11 @@ void Events::onExternalButton(EXTERNAL_BUTTON button)
             if (!this->isPlayingAlienVoiceSamples && !this->isPlayingSOSSamples && !this->isPlayingEncountersOnThirdPhaseSamples)
             {
                 this->isPlayingAlienVoiceSamples = true;
-                bool regenerateRandom = true;
-                while (regenerateRandom) // prevent replay last alien voice sample
+                if (this->alienVoiceSamplesQueueIndex >= ALIEN_VOICE_SAMPLES_QUEUE_SIZE)
                 {
-                    switch (random(0, 9))
-                    {
-                    case 0:
-                        if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_01)
-                        {
-                            this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_01);
-                            this->lastAlienVoiceSamplePlayed = SAMPLE_ALIEN_VOICE_01;
-                            regenerateRandom = false;
-                        }
-                        break;
-                    case 1:
-                        if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_02)
-                        {
-                            this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_02);
-                            this->lastAlienVoiceSamplePlayed = SAMPLE_ALIEN_VOICE_02;
-                            regenerateRandom = false;
-                        }
-                        break;
-                    case 2:
-                        if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_03)
-                        {
-                            this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_03);
-                            this->lastAlienVoiceSamplePlayed = SAMPLE_ALIEN_VOICE_03;
-                            regenerateRandom = false;
-                        }
-                        break;
-                    case 3:
-                        if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_04)
-                        {
-                            this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_04);
-                            this->lastAlienVoiceSamplePlayed = SAMPLE_ALIEN_VOICE_04;
-                            regenerateRandom = false;
-                        }
-                        break;
-                    case 4:
-                        if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_05)
-                        {
-                            this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_05);
-                            this->lastAlienVoiceSamplePlayed = SAMPLE_ALIEN_VOICE_05;
-                            regenerateRandom = false;
-                        }
-                        break;
-                    case 5:
-                        if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_06)
-                        {
-                            this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_06);
-                            this->lastAlienVoiceSamplePlayed = SAMPLE_ALIEN_VOICE_06;
-                            regenerateRandom = false;
-                        }
-                        break;
-                    case 6:
-                        if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_07)
-                        {
-                            this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_07);
-                            this->lastAlienVoiceSamplePlayed = SAMPLE_ALIEN_VOICE_07;
-                            regenerateRandom = false;
-                        }
-                        break;
-                    case 7:
-                        if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_08)
-                        {
-                            this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_08);
-                            this->lastAlienVoiceSamplePlayed = SAMPLE_ALIEN_VOICE_08;
-                            regenerateRandom = false;
-                        }
-                        break;
-                    case 8:
-                        if (this->lastAlienVoiceSamplePlayed != SAMPLE_ALIEN_VOICE_09)
-                        {
-                            this->samplerPtr->queueSample(SAMPLE_ALIEN_VOICE_09);
-                            this->lastAlienVoiceSamplePlayed = SAMPLE_ALIEN_VOICE_09;
-                            regenerateRandom = false;
-                        }
-                        break;
-                    }
+                    this->shuffleAlienVoiceSamplesQueue();
                 }
+                this->samplerPtr->queueSample(this->alienVoiceSamplesQueue[this->alienVoiceSamplesQueueIndex++]);
             }
             break;
         case EXTERNAL_BUTTON_5:

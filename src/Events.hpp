@@ -48,13 +48,18 @@ private:
     bool isPlayingDirtySyren1Sample = false;
     bool isPlayingDirtySyren2Sample = false;
     uint16_t laserShoots = 0;
+    bool lastEncountersOnThirdPhaseToneLow = false;
+
+#define ALIEN_VOICE_SAMPLES_QUEUE_SIZE 9
+    SAMPLE alienVoiceSamplesQueue[ALIEN_VOICE_SAMPLES_QUEUE_SIZE] = {SAMPLE_ALIEN_VOICE_01, SAMPLE_ALIEN_VOICE_02, SAMPLE_ALIEN_VOICE_03, SAMPLE_ALIEN_VOICE_04, SAMPLE_ALIEN_VOICE_05, SAMPLE_ALIEN_VOICE_06, SAMPLE_ALIEN_VOICE_07, SAMPLE_ALIEN_VOICE_08, SAMPLE_ALIEN_VOICE_09};
+    uint8_t alienVoiceSamplesQueueIndex = 0;
 
     LED_ANIMATION_TYPE previousLedEffect = LED_ANIMATION_TYPE_NONE;
     ANIMATION currentAnimation = ANIMATION_NONE;
 
     SEVEN_SEGMENT_ANIMATION_TYPE previousSevenSegmentAnimation = SEVEN_SEGMENT_ANIMATION_TYPE_NONE;
-    SAMPLE lastAlienVoiceSamplePlayed = SAMPLE_NONE;
 
+    void shuffleAlienVoiceSamplesQueue(void);
     bool allowStartAnimation(ANIMATION animation);
     void refreshAnimation(ANIMATION animation);
 
