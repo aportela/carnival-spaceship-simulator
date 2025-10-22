@@ -27,3 +27,9 @@ My mother has always been a big fan of carnivals and costumes, and due to her cu
 - Bounce2 by thomasfredericks
 
 - ESP8266Audio by earlephilhower
+
+### Sample credits
+
+- Alien voices by dtmp (Freesound) https://pixabay.com/sound-effects/alien-voice-102709/ (some samples splitted/combined)
+- Reverb alarm by Rvgerxini (Freesound) https://pixabay.com/sound-effects/emergency-alarm-with-reverb-29431/
+- Dirty Syren 1 by robpnicholson (Freesound) https://pixabay.com/sound-effects/dirty-siren-40635/
